@@ -6,12 +6,12 @@ window.addEventListener('DOMContentLoaded', () => {
         {
             title: 'Sofa',
             description: '凡爾賽',
-            imageUrl: 'Resourse/sofa.jpg'
+            imageUrl: '../Resourse/sofa.jpg'
         },
         {
             title: 'Bed',
             description: 'Bed',
-            imageUrl: 'Resourse/bed.png'
+            imageUrl: '../Resourse/bed.png'
         },
     ];
 
