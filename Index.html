@@ -7,19 +7,27 @@
     <title>Main Page</title>
 </head>
 <body>
-    <header id="navbar" class="">
-      <a class="active" href="">Home</a>
-      <a href="">News</a>
-      <a href="">Contact</a>
-    </header>
-  <script src="Sticky_Navbar.js"></script>
+    <!-- 固定的文字區域 -->
+    <div class="fixed-category">
+        <p>Sofa</p>
+        <p>Bed</p>
+    </div>
+
+    <!-- 將 header 和其他元素移動到固定文字區域的右側 -->
     <div id="mainPage">
-        <h1 id ="home-title">Main Page</h1>
+        <header id="navbar" class="">
+            <a class="active" href="">Home</a>
+            <a href="">News</a>
+            <a href="">Contact</a>
+        </header>
+        <h1 id="home-title">Main Page</h1>
         <div id="itemList">
             <!-- ItemCards will be added here using JavaScript -->
         </div>
     </div>
     
+    <script src="Sticky_Navbar.js"></script>
     <script src="ItemCard_Component.js"></script>
+    <script src="category.js"></script> <!-- 將這行移到 </body> 之前 -->
 </body>
 </html>
