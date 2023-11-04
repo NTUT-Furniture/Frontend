@@ -41,3 +41,20 @@ body {
     padding: 16px;
     text-decoration: none;
   }
+
+  /* 定義固定文字區域的樣式 */
+  .fixed-category {
+      position: fixed;
+      top: 50px;
+      left: 0;
+      width: 200px; /* 設定區域寬度 */
+      background-color: #333333;
+      color: #fff;
+      padding: 10px;
+  }
+  
+  /* 定義位於固定文字區域右側的樣式 */
+  #mainPage {
+      margin-left: 210px; /* 與固定文字區域寬度一致，形成空間 */
+      padding: 20px;
+  }
