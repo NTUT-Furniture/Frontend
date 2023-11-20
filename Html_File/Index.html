@@ -9,31 +9,68 @@
 <body>
     <!-- 固定的文字區域 -->
     <div class="fixed-category">
-      <p>Sofa</p>
-      <p>Bed</p>
+        <p>Sofa</p>
+        <p>Bed</p>
     </div>
     <!-- sticky navbar and login menu  -->
     <ul id="navbar" class="">
-      <li><a href="../Html_File/Index.html">Home</a></li>
-      <li><a href="javascript:void(0);">News</a></li>
-      <li><a href="javascript:void(0);">Contact</a></li>
-      <li class="dropdown">
-        <a href="../Html_File/Login.html" class="dropbtn">Login</a>
-        <div class="dropdown-content">
-          <a href="javascript:void(0);">Account</a>
-          <a href="javascript:void(0);">Shopping Cart</a>
-          <a href="javascript:void(0);">More</a>
-        </div>
-      </li>
+        <li><a href="../Html_File/Index.html">Home</a></li>
+        <li><a href="javascript:void(0);">News</a></li>
+        <li><a href="javascript:void(0);">Contact</a></li>
+        <li class="dropdown">
+            <a href="../Html_File/Login.html" class="dropbtn">Login</a>
+            <div class="dropdown-content">
+                <a href="javascript:void(0);">Account</a>
+                <a href="javascript:void(0);">Shopping Cart</a>
+                <a href="javascript:void(0);">More</a>
+            </div>
+        </li>
     </ul>
-  <script src="../JS_File/Sticky_Navbar.js"></script>
-    <div id="mainPage">
-        <h1 id ="home-title">Main Page</h1>
+    <script src="../JS_File/Sticky_Navbar.js"></script>
         <div id="itemList">
             <!-- ItemCards will be added here using JavaScript -->
         </div>
-    </div>
-    
-    <script src="../JS_File/ItemCard_Component.js"></script>
+
+    <script src="../JS_File/ItemcardComponent.js"></script>
+    <script>
+        console.log("in ItemcardComponent script")
+        // 假設有一組商品數據
+        const products = [
+        {
+            productType: "Furniture",
+            productName: "Comfortable Sofa",
+            productPrice: "$500",
+            productDescription: "A cozy sofa for your living room.",
+            imageUrl: "../Resourse/sofa.jpg"
+        },
+
+        {
+            productType: "Furniture",
+            productName: "Comfortable Bed",
+            productPrice: "$700",
+            productDescription: "A cozy Bed for your living room.",
+            imageUrl: "../Resourse/bed.png"
+        },
+        // Add more product data as needed
+        ];
+
+        // 獲取 #itemList 容器
+        const itemListContainer = document.getElementById("itemList");
+
+        // 使用迴圈創建並添加多個 ItemCardComponent 實例
+        for (const product of products) {
+        const itemCardInstance = new ItemCardComponent(
+            product.productType,
+            product.productName,
+            product.productPrice,
+            product.productDescription,
+            product.imageUrl
+        );
+
+        itemListContainer.appendChild(itemCardInstance.container);
+        }
+        
+    </script>
+  
 </body>
 </html>

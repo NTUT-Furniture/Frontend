@@ -1,0 +1,59 @@
+body {
+    background-image: url('../Resourse/Login_Background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}
+
+.login-container {
+    background-color: rgba(255, 255, 255, 0.905);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.436);
+}
+
+.login-container h2 {
+    text-align: center;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin: 10px 0;
+}
+
+.form-group label {
+    display:flex;
+    font-weight: bold;
+    width: 70px;
+}
+
+.form-group input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-group button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+a {
+    width: 70px;
+    text-decoration: none; /* 移除底線 */
+    color: rgb(89, 36, 247); /* 使用父元素的文本顏色 */
+}
