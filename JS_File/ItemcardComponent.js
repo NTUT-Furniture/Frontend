@@ -6,7 +6,6 @@ class ItemCardComponent {
         this.productDescription = productDescription;
         this.imageUrl = imageUrl;
         this.container = this.render(); // Save the container element
-        console.log("ItemCardComponent constructor called!");
     }
 
     render() {
