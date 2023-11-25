@@ -15,7 +15,7 @@ body {
 
 /* Style the navbar */
 #navbar {
-  position: fixed;
+  position: sticky;
   overflow: visible;
   background-color: #333;
   top: 0;
