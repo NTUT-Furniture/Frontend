@@ -12,7 +12,7 @@ function showAccountSetting() {
     var formGroups = [
       { label: 'E-mail', type: 'text', id: 'e-mail', name: 'e-mail', placeholder: 't110590028@ntut.org.tw', required: true },
       { label: 'Account', type: 'text', id: 'username', name: 'username', placeholder: 'Garry1128', required: true },
-      { label: 'Password', type: 'password', id: 'password', name: 'password', placeholder: 'jyk', required: true },
+      { label: 'Password', type: 'password', id: 'password', name: 'password', placeholder: '***', required: true },
       { label: 'Address', type: 'text', id: 'address', name: 'address', placeholder: '窩忘了', required: true },
       { label: 'PhoneNumber', type: 'text', id: 'phonenumber', name: 'phonenumber', placeholder: '窩不知道', required: true },
     ];
