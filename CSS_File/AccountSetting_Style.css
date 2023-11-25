@@ -1,18 +1,26 @@
 body{
-  margin: 0;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto; /* 居中对齐 */
   padding: 0;
   display: grid;
   background: #E0C9CB;
   font-family: 'Lato', sans-serif;
   text-transform: uppercase;
+  overflow: auto;
+  position: absolute;
+}
+.avator{
+  position: absolute;
+  display: inline-block;
+  top: 150px;
+  left: 250px;
 }
 
 .avatar-container {
-  position: fixed;
-  top: 189px;
-  left: 312px;
-  width: 323px;
-  height: 323px;
+  width: 330px;
+  height: 330px;
+  margin-left: 25px;
   flex-shrink: 0;
   border-radius: 50%; /* 50% 使其成為圓形 */
   border: 8px solid #FFF;
@@ -21,20 +29,18 @@ body{
 }
 
 .navigation-section {
-  position: fixed;
-  top: 553px;
-  left: 287px;
-  width: 350px;
+  width: 330px;
   height: 255px;
   flex-shrink: 0;
+  margin: 10px;
   padding: 20px;
-  display: flex;
   flex-direction: column;
   border-radius: 50px; /* 圓角設定，根據需要調整 */
   background-color: #D9D9D9; /* 白底 */
 }
 
 .navigation-section button {
+  width: 330px;
   margin-top: 10px;
   margin-bottom: 10px;
   padding: 10px;
@@ -51,9 +57,10 @@ body{
 }
 
 .content-section{
-  position: fixed;
-  top: 158px;
-  left: 950px;
+  top: 150px;
+  left: 850px;
+  position: absolute;
+  display: inline-block;
   box-sizing: border-box;
   width: 780px;
   height: 700px;
@@ -97,9 +104,10 @@ body{
   outline: none; /* 移除點擊時的輪廓效果 */
 }
 .AccountSetting-Button{
-  position: fixed;
-  top: 780px;
-  left: 1300px;
+  position: absolute;
+  top: 600px;
+  left: 400px;
+  display: flex;
 }
 
 .AccountSetting-Button button{
