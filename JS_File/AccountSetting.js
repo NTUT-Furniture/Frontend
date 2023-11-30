@@ -3,13 +3,13 @@ function showAccountSetting() {
     document.getElementById('content').innerHTML = '';
 
     // 創建 form 元素
-    var formElement = document.createElement('form');
+    const formElement = document.createElement('form');
     formElement.className = 'AccountSetting-form';
     formElement.action = ''; // 設置表單的 action 屬性
     formElement.method = 'POST'; // 設置表單的 method 屬性
 
     // 以下是 form 元素中的各個子元素
-    var formGroups = [
+    const formGroups = [
         {
             label: 'E-mail',
             type: 'text',
@@ -33,16 +33,16 @@ function showAccountSetting() {
 
     formGroups.forEach(function (group) {
         // 創建 form-group 元素
-        var formGroupElement = document.createElement('div');
+        const formGroupElement = document.createElement('div');
         formGroupElement.className = 'form-group';
 
         // 創建 label 元素
-        var labelElement = document.createElement('label');
+        const labelElement = document.createElement('label');
         labelElement.setAttribute('for', group.id);
         labelElement.textContent = group.label;
 
         // 創建 input 元素
-        var inputElement = document.createElement('input');
+        const inputElement = document.createElement('input');
         inputElement.type = group.type;
         inputElement.id = group.id;
         inputElement.name = group.name;
@@ -58,17 +58,17 @@ function showAccountSetting() {
     });
 
     // 創建 AccountSetting-Button 元素
-    var buttonContainer = document.createElement('div');
+    const buttonContainer = document.createElement('div');
     buttonContainer.className = 'AccountSetting-Button';
 
     // 創建 Modify 按鈕
-    var modifyButton = document.createElement('button');
+    const modifyButton = document.createElement('button');
     modifyButton.id = 'Confirm';
     modifyButton.type = 'submit';
     modifyButton.textContent = 'Confirm';
 
     // 創建 Cancel 按鈕
-    var cancelButton = document.createElement('button');
+    const cancelButton = document.createElement('button');
     cancelButton.id = 'Cancel';
     cancelButton.type = 'button'; // 如果是取消操作，使用 type="button"
     cancelButton.textContent = 'Cancel';
@@ -86,13 +86,13 @@ function showAccountSetting() {
 
 function showOrderRecord() {
     // 获取目标容器
-    var container = document.getElementById('content');
+    const container = document.getElementById('content');
 
     // 创建table元素
-    var table = document.createElement('table');
+    const table = document.createElement('table');
 
     // 创建thead元素并添加表头
-    var thead = document.createElement('thead');
+    const thead = document.createElement('thead');
     thead.innerHTML = `
           <tr>
               <th>Order Date</th>
@@ -105,7 +105,7 @@ function showOrderRecord() {
     table.appendChild(thead);
 
     // 创建tbody元素
-    var tbody = document.createElement('tbody');
+    const tbody = document.createElement('tbody');
 
     // 添加订单记录行
     tbody.innerHTML += `
@@ -166,7 +166,7 @@ function showOrderRecord() {
 }
 
 function toggleOpenDetail(detailId) {
-    var detailRow = document.getElementById(detailId + '-detail');
+    const detailRow = document.getElementById(detailId + '-detail');
     detailRow.style.display = (detailRow.style.display === 'none' || detailRow.style.display === '') ? 'table-row' : 'none';
 }
 
@@ -175,28 +175,28 @@ function showShopSetting() {
     document.getElementById('content').innerHTML = '';
 
     // 創建 form 元素
-    var formElement = document.createElement('form');
+    const formElement = document.createElement('form');
     formElement.className = 'AccountSetting-form';
     formElement.action = ''; // 設置表單的 action 屬性
     formElement.method = 'POST'; // 設置表單的 method 屬性
 
     // Create "Create Banner" button
-    var createBannerButton = document.createElement('button');
+    const createBannerButton = document.createElement('button');
     createBannerButton.id = 'Banner';
     createBannerButton.type = 'submit';
     createBannerButton.textContent = 'Create Banner';
 
     // 創建 form-group 元素
-    var shopNameFormGroup = document.createElement('div');
+    const shopNameFormGroup = document.createElement('div');
     shopNameFormGroup.className = 'form-group';
 
     // 創建 label 元素
-    var nameLabelElement = document.createElement('label');
+    const nameLabelElement = document.createElement('label');
     nameLabelElement.setAttribute('for', 'shopname');
     nameLabelElement.textContent = 'Name';
 
     // 創建 input 元素
-    var shopNameInput = document.createElement('input');
+    const shopNameInput = document.createElement('input');
     shopNameInput.type = 'text';
     shopNameInput.id = 'shopname';
     shopNameInput.name = 'shopname';
@@ -208,16 +208,16 @@ function showShopSetting() {
     shopNameFormGroup.appendChild(shopNameInput);
 
     // 創建 description form-group 元素
-    var descriptionFormGroup = document.createElement('div');
+    const descriptionFormGroup = document.createElement('div');
     descriptionFormGroup.className = 'form-group';
 
     // 創建 label 元素
-    var descriptionLabelElement = document.createElement('label');
+    const descriptionLabelElement = document.createElement('label');
     descriptionLabelElement.setAttribute('for', 'description');
     descriptionLabelElement.textContent = 'Description';
 
     // 創建 textarea 元素
-    var descriptionTextarea = document.createElement('textarea');
+    const descriptionTextarea = document.createElement('textarea');
     descriptionTextarea.type = 'text';
     descriptionTextarea.id = 'description';
     descriptionTextarea.name = 'description';
@@ -232,17 +232,17 @@ function showShopSetting() {
     descriptionFormGroup.appendChild(descriptionTextarea);
 
     // 創建 AccountSetting-Button 元素
-    var buttonContainer = document.createElement('div');
+    const buttonContainer = document.createElement('div');
     buttonContainer.className = 'AccountSetting-Button';
 
     // 創建 Confirm 按鈕
-    var confirmButton = document.createElement('button');
+    const confirmButton = document.createElement('button');
     confirmButton.id = 'Confirm';
     confirmButton.type = 'submit';
     confirmButton.textContent = 'Confirm';
 
     // 創建 Cancel 按鈕
-    var cancelButton = document.createElement('button');
+    const cancelButton = document.createElement('button');
     cancelButton.id = 'Cancel';
     cancelButton.type = 'button'; // 如果是取消操作，使用 type="button"
     cancelButton.textContent = 'Cancel';
