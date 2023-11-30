@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../CSS_File/AccountSetting_Style.css">
     <link rel="stylesheet" href="../CSS_File/Navbar.css">
-    <title>User Dashboard</title>
+    <script src="https://unpkg.com/htmx.org@1.7.0/dist/htmx.js"></script>
+    <link rel="stylesheet" href="../CSS_File/Shop_Style.css">
+    <script src="../JS_File/Banner.js" defer></script>
 </head>
 <body>
 <ul id="navbar" class="">
@@ -21,22 +23,9 @@
         </div>
     </li>
 </ul>
-<div class="container">
-    <div class="profile-section">
-        <div class="avatar-container">
-            <!-- <input type="file" id="avatarInput" accept="image/*">
-            <label for="avatarInput" class="avatar"></label> -->
-        </div>
-    </div>
-    <div class="navigation-section">
-        <button id="AccountSetting-Button" onclick="showAccountSetting()">Account Setting</button>
-        <button id="OrderRecord-Button" onclick="showOrderRecord()">Order Record</button>
-        <button id="ShopSetting-Button" onclick="showShopSetting()">Shop Setting</button>
-    </div>
-    <div class="content-section" id="content">
-    </div>
-</div>
-
-<script src="../JS_File/AccountSetting.js"></script>
+<div id="banner"></div>
+<div id="business-management"></div>
+<script src="../js_file/BusniessCard.js"></script>
+<script src="../js_file/BusniessCard.js"></script>
 </body>
 </html>

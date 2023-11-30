@@ -32,7 +32,7 @@ body {
 }
 
 .form-group label {
-    display:flex;
+    display: flex;
     font-weight: bold;
     width: 70px;
 }

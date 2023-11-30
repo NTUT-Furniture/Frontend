@@ -63,7 +63,7 @@ class ItemCardComponent {
         container.appendChild(pickElement);
         container.appendChild(sizesElement);
         container.appendChild(productElement);
-        
+
         return container;
     }
 }
