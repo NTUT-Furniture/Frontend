@@ -16,8 +16,16 @@ body {
     flex-shrink: 0;
     border-radius: 50%; /* 50% 使其成為圓形 */
     border: 8px solid #FFF;
-    background: url(../Resourse/avator.jpg) lightgray 50% / cover no-repeat; /* 使用 cover 讓背景圖片填滿容器 */
+    /* background: url(../Resourse/avator.jpg) lightgray 50% / cover no-repeat; 使用 cover 讓背景圖片填滿容器 */
     box-sizing: border-box;
+    overflow: hidden;
+
+}
+
+.avatar-container img{
+    width: 100%; /* 使图像占满容器的宽度 */
+    height: 100%; /* 保持宽高比例 */
+    object-fit: cover; /* 保持图像比例并填充整个容器 */
 }
 
 .navigation-section {

@@ -9,9 +9,16 @@ document.addEventListener('DOMContentLoaded', function () {
         banner.innerHTML = `
         <div class="container">
             <div class="image-wrapper">
-            <img src=${data.image} alt="" class="image"/>
-            <div class="image-text-container" style="font-size:40px">${data.shopname}</div>
-            <div class="image-text-container" style="font-size:30px; bottom:0">${data.description}</div>
+                <img src=${data.image} alt="" class="image"/>
+                <div class="image-overlay">
+                    <div class="avatar-container">
+                        <img src=${data.avatar} alt="Avatar" class="avatar"/>
+                    </div>
+                    <div class="text-content">
+                        <div class="shopname">${data.shopname}</div>
+                        <div class="description">${data.description}</div>
+                    </div>
+                </div>
             </div>
         </div>
         `;
@@ -20,9 +27,10 @@ document.addEventListener('DOMContentLoaded', function () {
     function fetchMockBannerData() {
         // 假的 JSON 數據
         const mockData = {
-            shopname: "GM's Shop",
+            shopname: "GM Furniture Emporium",
             description: "Shop Description",
-            image: "../Resourse/Banner.jpg"
+            image: "../Resourse/Banner.jpg",
+            avatar: "../Resourse/shop_avatar.jpg"
         };
         updateBanner(mockData);
     }

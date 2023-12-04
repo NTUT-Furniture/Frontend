@@ -1,26 +1,56 @@
-#banner .container{
-    display: block; 
-    flex-direction: column;
-    align-items: center;
-}
-
-#banner .image-wrapper{
-    margin-top: 1rem;
+#banner .container {
     display: flex;
+    justify-content: center;
+}
+
+#banner .image-wrapper {
     position: relative;
+    height: 300px; /* 調整固定高度，根據需求更改 */
+    overflow: hidden; /* 隱藏超出部分 */
 }
 
-#banner .image{
+#banner .image {
     width: 100%;
-    height: 70vh;
+    height: auto;
+    object-fit: cover; /* 控制圖片大小和位置 */
 }
 
-#banner .image-text-container{
+#banner .image-overlay {
     position: absolute;
-    text-align: left;
-    border-radius: 10%; /* Make corners circular */
-    background-color: red;
-}   
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: #fff;
+}
+
+#banner .shopname {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+#banner .description {
+    font-size: 1.5rem;
+}
+
+#banner .avatar-container {
+    position: absolute;
+    top: 20%;
+    left: -50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+#banner .avatar {
+    border-radius: 50%; /* ensure Avatar is circule */
+    /*border: 2px solid #fff;純粹個人美觀*/
+    z-index: 1;
+}
 
 #business-management {
     display: flex;
@@ -29,12 +59,12 @@
 }
 
 #business-management .business-card {
+    margin: 1rem;
     background-color: #f4f4f4;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     width: 300px; /* Adjust the width as needed */
-    margin-bottom: 1rem;
 }
 
 #business-management .card-content {
@@ -44,19 +74,21 @@
 #business-management h2 {
     color: #333;
     margin-bottom: 0.5rem;
+    margin-left: 1rem;
 }
 
 #business-management p {
     color: #666;
+    margin-left: 1rem;
 }
 
 #business-management button {
+    margin: 0.5rem 0.5rem 1rem 1rem;
     background-color: #007bff;
     color: #fff;
     border: none;
     padding: 0.5rem 1rem;
     cursor: pointer;
-    margin-top: 0.5rem;
     border-radius: 4px;
 }
 
