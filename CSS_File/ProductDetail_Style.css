@@ -1,0 +1,65 @@
+/* style.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #E0C9CB; /* 背景顏色 */
+}
+
+#product-container {
+    width: 90%; /* 容器寬度 */
+    margin: 0 auto;
+    border: 1px solid #ddd;
+    padding: 20px 40px; /* 左右內邊距 */
+    background-color: #fff; /* 產品容器的背景顏色 */
+}
+
+.product-upper {
+    display: flex;
+    flex-wrap: wrap; /* 允許元素換行 */
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.product-image {
+    flex: 1; /* 讓圖片區塊具有彈性 */
+    min-width: 300px; /* 設置最小寬度 */
+}
+
+.product-image img {
+    width: 100%; /* 圖片寬度填滿整個圖片區塊 */
+    max-width: 100%; /* 確保圖片不會超過其容器的寬度 */
+    display: block;
+    margin: 0 auto;
+}
+
+.product-info {
+    flex: 1; /* 讓描述區塊具有彈性 */
+    min-width: 200px; /* 設置最小寬度 */
+    padding-left: 20px;
+}
+
+.product-lower {
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.review {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+}
+
+.review-text {
+    font-size: 14px;
+    color: #333;
+}
+
+.review-author {
+    font-style: italic;
+    color: #666;
+}
+
+.price {
+    color: red;
+    font-weight: bold;
+}
