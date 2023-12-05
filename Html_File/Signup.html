@@ -9,7 +9,7 @@
 <body>
     <div class="signup-container" id="signupContainer">
         <h2>Sign Up</h2>
-        <form class="signup-form" action="your_server_side_script" method="POST">
+        <form class="signup-form" method="POST">
             <div class="form-group">
                 <label for="signupUsername">Account</label>
                 <input type="text" id="signupUsername" name="username" required>
@@ -20,7 +20,10 @@
             </div>
             <div class="form-group">
                 <label for="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" name="confirm_password" required>
+                <div class="input-container">
+                    <input type="password" id="confirmPassword" name="confirm_password" required>
+                    <span id="passwordError"></span>
+                </div>
             </div>
             <div class="form-group">
                 <label for="email">E-mail</label>
@@ -42,9 +45,10 @@
                 <label for="creditCard">Credit Card</label>
                 <input type="text" id="creditCard" name="credit_card" required>
             </div>
-            <button type="submit">Sign Up</button>
+            <button type="button" id="submitButton">Sign Up</button>
         </form>
-        <a href="../Html_File/Login.html">Login</a>
+        <a href="../Html_File/Signup.html">Login</a>
     </div>
+    <script src="../JS_File/Signup.js"></script>
 </body>
 </html>
