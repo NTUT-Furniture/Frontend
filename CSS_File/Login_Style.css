@@ -11,49 +11,59 @@ body {
     font-family: Arial, sans-serif;
 }
 
-.login-container {
+.login-container, .signup-container {
     background-color: rgba(255, 255, 255, 0.905);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.436);
+    width: 400px; /* Adjust the width as needed */
+    max-width: 100%; /* Ensure it doesn't overflow the viewport */
 }
 
-.login-container h2 {
+.login-container h2, .signup-container h2 {
     text-align: center;
 }
 
-.login-form {
+.login-form, .signup-form {
     display: flex;
     flex-direction: column;
 }
 
 .form-group {
     margin: 10px 0;
+    display: flex; /* Use flexbox for layout */
+    align-items: center; /* Aligns items vertically in the center */
 }
 
 .form-group label {
-    display:flex;
     font-weight: bold;
-    width: 70px;
+    width: 120px; /* Adjust the width as needed */
+    min-width: 120px; /* Prevents the label from shrinking */
+    margin-right: 10px; /* Adds some space between label and input */
+    font-size: 18px;
 }
 
 .form-group input {
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    font-size: 18px;
+    flex-grow: 1; /* Allows input to take up remaining space */
 }
 
-.form-group button {
+button {
     background-color: #007BFF;
     color: #fff;
     border: none;
     padding: 10px;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 18px; /* Increase font size */
+    width: 150px; /* Decrease width */
+    margin-left: auto; /* Center the button */
 }
 
 a {
-    width: 70px;
     text-decoration: none; /* 移除底線 */
     color: rgb(89, 36, 247); /* 使用父元素的文本顏色 */
 }
