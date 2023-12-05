@@ -1,6 +1,5 @@
 class ItemCardComponent {
     constructor(productType, productName, productPrice, productDescription, imageUrl) {
-        this.productType = productType;
         this.productName = productName;
         this.productPrice = productPrice;
         this.productDescription = productDescription;
@@ -63,7 +62,7 @@ class ItemCardComponent {
         container.appendChild(pickElement);
         container.appendChild(sizesElement);
         container.appendChild(productElement);
-        
+
         return container;
     }
 }

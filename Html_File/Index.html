@@ -2,40 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../CSS_File/Home_Style.css">
-    <link rel="stylesheet" href="../CSS_File/Navbar.css">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="../css_file/Home_Style.css" rel="stylesheet">
+    <link href="../css_file/Navbar.css" rel="stylesheet">
     <title>Main Page</title>
 </head>
 <body>
-    <!-- 固定的文字區域 -->
-    <div class="fixed-category">
-        <p>Sofa</p>
-        <p>Bed</p>
-    </div>
-    <!-- sticky navbar and login menu  -->
-    <ul id="navbar" class="">
-        <li><a href="../Html_File/Index.html">Home</a></li>
-        <li><a href="javascript:void(0);">News</a></li>
-        <li><a href="javascript:void(0);">Contact</a></li>
-        <li class="dropdown">
-            <a href="../Html_File/Login.html" class="dropbtn">Login</a>
-            <div class="dropdown-content">
-                <a href="../Html_File/AccountSetting.html">Account</a>
-                <a href="javascript:void(0);">Shopping Cart</a>
-                <a href="javascript:void(0);">More</a>
-            </div>
-        </li>
-    </ul>
-    <script src="../JS_File/Sticky_Navbar.js"></script>
-        <div id="itemList">
-            <!-- ItemCards will be added here using JavaScript -->
+<!-- 固定的文字區域 -->
+<div class="fixed-category">
+    <p>Sofa</p>
+    <p>Bed</p>
+</div>
+<!-- sticky navbar and login menu  -->
+<ul class="" id="navbar">
+    <li><a href="../html_file/Index.html">Home</a></li>
+    <li><a href="javascript:void(0);">News</a></li>
+    <li><a href="javascript:void(0);">Contact</a></li>
+    <li class="dropdown">
+        <a class="dropbtn" href="../html_file/Login.html">Login</a>
+        <div class="dropdown-content">
+            <a href="../html_file/AccountSetting.html">Account</a>
+            <a href="javascript:void(0);">Shopping Cart</a>
+            <a href="javascript:void(0);">More</a>
         </div>
+    </li>
+</ul>
+<script src="../js_file/Sticky_Navbar.js"></script>
+<div id="itemList">
+    <!-- ItemCards will be added here using JavaScript -->
+</div>
 
-    <script src="../JS_File/ItemcardComponent.js"></script>
-    <script>
-        // 假設有一組商品數據
-        const products = [
+<script src="../js_file/ItemcardComponent.js"></script>
+<script>
+    // 假設有一組商品數據
+    const products = [
         {
             productType: "Furniture",
             productName: "Comfortable Sofa",
@@ -52,13 +52,13 @@
             imageUrl: "../Resourse/bed.png"
         },
         // Add more product data as needed
-        ];
+    ];
 
-        // 獲取 #itemList 容器
-        const itemListContainer = document.getElementById("itemList");
+    // 獲取 #itemList 容器
+    const itemListContainer = document.getElementById("itemList");
 
-        // 使用迴圈創建並添加多個 ItemCardComponent 實例
-        for (const product of products) {
+    // 使用迴圈創建並添加多個 ItemCardComponent 實例
+    for (const product of products) {
         const itemCardInstance = new ItemCardComponent(
             product.productType,
             product.productName,
@@ -68,9 +68,9 @@
         );
 
         itemListContainer.appendChild(itemCardInstance.container);
-        }
-        
-    </script>
-  
+    }
+
+</script>
+
 </body>
 </html>
