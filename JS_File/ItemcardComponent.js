@@ -66,3 +66,68 @@ class ItemCardComponent {
         return container;
     }
 }
+
+
+// 假設有一組商品數據
+const products = [
+    {
+        productType: "Furniture",
+        productName: "Comfortable Sofa",
+        productPrice: "$500",
+        productDescription: "A cozy sofa for your living room.",
+        imageUrl: "../Resourse/sofa.jpg"
+    },
+
+    {
+        productType: "Furniture",
+        productName: "Comfortable Bed",
+        productPrice: "$700",
+        productDescription: "A cozy Bed for your living room.",
+        imageUrl: "../Resourse/bed.png"
+    },
+    {
+        productType: "Furniture",
+        productName: "Comfortable Sofa",
+        productPrice: "$500",
+        productDescription: "A cozy sofa for your living room.",
+        imageUrl: "../Resourse/sofa.jpg"
+    },
+
+    {
+        productType: "Furniture",
+        productName: "Comfortable Bed",
+        productPrice: "$700",
+        productDescription: "A cozy Bed for your living room.",
+        imageUrl: "../Resourse/bed.png"
+    },
+    {
+        productType: "Furniture",
+        productName: "Comfortable Bed",
+        productPrice: "$700",
+        productDescription: "A cozy Bed for your living room.",
+        imageUrl: "../Resourse/bed.png"
+    },
+    // Add more product data as needed
+    ];
+
+function generateItemCard(){
+    
+// 獲取 #itemList 容器
+const itemListContainer = document.getElementById("itemList");
+
+// 使用迴圈創建並添加多個 ItemCardComponent 實例
+for (const product of products) {
+const itemCardInstance = new ItemCardComponent(
+    product.productType,
+    product.productName,
+    product.productPrice,
+    product.productDescription,
+    product.imageUrl
+);
+
+itemListContainer.appendChild(itemCardInstance.container);
+}
+
+}
+
+generateItemCard()

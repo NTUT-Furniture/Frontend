@@ -1,158 +1,159 @@
-body {
-    margin: 0;
-    padding: 0;
-    display: grid;
-    background: #E0C9CB;
-    font-family: 'Lato', sans-serif;
-    text-transform: uppercase;
+body{
+  height: 100%;
+  width: 100%;
+  margin: 0 auto; /* 居中对齐 */
+  padding: 0;
+  display: grid;
+  background: #E0C9CB;
+  font-family: 'Lato', sans-serif;
+  text-transform: uppercase;
+  overflow: auto;
+  position: absolute;
+}
+.avator{
+  position: absolute;
+  display: inline-block;
+  top: 150px;
+  left: 250px;
 }
 
 .avatar-container {
-    position: fixed;
-    top: 189px;
-    left: 312px;
-    width: 323px;
-    height: 323px;
-    flex-shrink: 0;
-    border-radius: 50%; /* 50% 使其成為圓形 */
-    border: 8px solid #FFF;
-    /* background: url(../Resourse/avator.jpg) lightgray 50% / cover no-repeat; 使用 cover 讓背景圖片填滿容器 */
-    box-sizing: border-box;
-    overflow: hidden;
-
-}
-
-.avatar-container img{
-    width: 100%; /* 使图像占满容器的宽度 */
-    height: 100%; /* 保持宽高比例 */
-    object-fit: cover; /* 保持图像比例并填充整个容器 */
+  width: 330px;
+  height: 330px;
+  margin-left: 25px;
+  flex-shrink: 0;
+  border-radius: 50%; /* 50% 使其成為圓形 */
+  border: 8px solid #FFF;
+  background: url(../Resourse/avator.jpg) lightgray 50% / cover no-repeat; /* 使用 cover 讓背景圖片填滿容器 */
+  box-sizing: border-box;
 }
 
 .navigation-section {
-    position: fixed;
-    top: 553px;
-    left: 287px;
-    width: 350px;
-    height: 255px;
-    flex-shrink: 0;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    border-radius: 50px; /* 圓角設定，根據需要調整 */
-    background-color: #D9D9D9; /* 白底 */
+  width: 330px;
+  height: 255px;
+  flex-shrink: 0;
+  margin: 10px;
+  padding: 20px;
+  flex-direction: column;
+  border-radius: 50px; /* 圓角設定，根據需要調整 */
+  background-color: #D9D9D9; /* 白底 */
 }
 
 .navigation-section button {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    padding: 10px;
-    cursor: pointer;
-    background-color: white; /* 按鈕背景顏色 */
-    border: none;
-    border-radius: 25px; /* 圓角設定，根據需要調整 */
-    color: #000;
-    text-align: center;
-    font-size: 40px;
-    font-weight: 400;
-    line-height: normal;
+  width: 330px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 10px;
+  cursor: pointer;
+  background-color: white; /* 按鈕背景顏色 */
+  color: black; /* 按鈕文字顏色 */
+  border: none;
+  border-radius: 25px; /* 圓角設定，根據需要調整 */
+  color: #000;
+  text-align: center;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: normal;
 }
 
-.content-section {
-    position: fixed;
-    top: 158px;
-    left: 950px;
-    box-sizing: border-box;
-    width: 780px;
-    height: 700px;
-    flex-shrink: 0;
-    border-radius: 47px;
-    background: #D9D9D9;
+.content-section{
+  top: 150px;
+  left: 850px;
+  position: absolute;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 780px;
+  height: 700px;
+  flex-shrink: 0;
+  border-radius: 47px;
+  background: #D9D9D9;
 }
 
-.AccountSetting-form {
-    margin-top: 25px;
-    margin-left: 40px;
+.AccountSetting-form{
+  margin-top: 25px;
+  margin-left:40px;
 }
 
-.form-group {
-    box-sizing: border-box;
-    width: 681px;
-    height: 115px;
-    flex-shrink: 0;
+.form-group{
+  box-sizing: border-box;
+  width: 681px;
+  height: 115px;
+  flex-shrink: 0;
 }
 
-.form-group label {
-    box-sizing: border-box;
-    width: 681px;
-    height: 115px;
-    font-size: 40px;
-    font-weight: 400;
-    line-height: normal;
-    color: #000;
+.form-group label{
+  box-sizing: border-box;
+  width: 681px;
+  height: 115px;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: normal;
+  color: #000;
+  }
+
+.form-group input{
+  box-sizing: border-box;
+  margin-left: 10px;
+  padding-left: 15px; /* 將文字項目下移 10px */
+  width: 681px;
+  height: 56px;
+  flex-shrink: 0;
+  font-size: 42px;
+  border-radius: 15px;
+  border: none; /* 將邊框設為無 */
+  outline: none; /* 移除點擊時的輪廓效果 */
+}
+.AccountSetting-Button{
+  position: absolute;
+  top: 600px;
+  left: 400px;
+  display: flex;
 }
 
-.form-group input {
-    box-sizing: border-box;
-    margin-left: 10px;
-    padding-left: 15px; /* 將文字項目下移 10px */
-    width: 681px;
-    height: 56px;
-    flex-shrink: 0;
-    font-size: 42px;
-    border-radius: 15px;
-    border: none; /* 將邊框設為無 */
-    outline: none; /* 移除點擊時的輪廓效果 */
+.AccountSetting-Button button{
+  width: 162px;
+  height: 52px;
+  margin-left: 20px;
+  flex-shrink: 0;
+  border-radius: 15px;
+  background: #FFF;
+  border: none; /* 將邊框設為無 */
+  font-size: 40px;
 }
 
-.AccountSetting-Button {
-    position: fixed;
-    top: 780px;
-    left: 1300px;
+#description{
+  margin-left: 10px;
+  width: 660px;
+  height: 250px;
+  flex-shrink: 0;
+  font-size: 24px;
+  padding: 10px;
+  border-radius: 15px;
+  max-height: 300px;
+  border: none; /* 將邊框設為無 */
+  outline: none; /* 移除點擊時的輪廓效果 */
+  resize: none;/*用戶將無法調整其大小*/
 }
 
-.AccountSetting-Button button {
-    width: 162px;
-    height: 52px;
-    margin-left: 20px;
-    flex-shrink: 0;
-    border-radius: 15px;
-    background: #FFF;
-    border: none; /* 將邊框設為無 */
-    font-size: 40px;
+#Banner{
+  margin-left: 10px;
+  margin-top: 10px;
+  width: 680px;
+  height: 100px;
+  border-radius: 15px;
+  border: none; /* 將邊框設為無 */
+  outline: none; /* 移除點擊時的輪廓效果 */
+  flex-shrink: 0;
+  font-size: 24px;
 }
 
-#description {
-    margin-left: 10px;
-    width: 660px;
-    height: 250px;
-    flex-shrink: 0;
-    font-size: 24px;
-    padding: 10px;
-    border-radius: 15px;
-    max-height: 300px;
-    border: none; /* 將邊框設為無 */
-    outline: none; /* 移除點擊時的輪廓效果 */
-    resize: none; /*用戶將無法調整其大小*/
+#Confirm{
+  color: cornflowerblue;
 }
 
-#Banner {
-    margin-left: 10px;
-    margin-top: 10px;
-    width: 680px;
-    height: 100px;
-    border-radius: 15px;
-    border: none; /* 將邊框設為無 */
-    outline: none; /* 移除點擊時的輪廓效果 */
-    flex-shrink: 0;
-    font-size: 24px;
-}
+#Cancel{
+  color: red;
 
-#Confirm {
-    color: cornflowerblue;
-}
-
-#Cancel {
-    color: red;
 }
 
 table {
