@@ -6,9 +6,7 @@ const passwordError = document.getElementById('passwordError');
         formData[input.name] = input.value;
     });
     if (formData['password'] === formData['confirm_password']) {
-        // 密码和确认密码匹配，可以继续提交数据到API
-        passwordError.textContent = ''; // 清除错误消息
-        // 发送数据到API
+        passwordError.textContent = '';
         fetch(`https://nft.servehttp.com/api/account/?\
 name=${encodeURIComponent(formData['name'])}&\
 pwd=${encodeURIComponent(formData['password'])}&\
