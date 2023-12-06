@@ -3,7 +3,6 @@ body {
     width: 100%;
     margin: 0 auto; /* 居中对齐 */
     padding: 0;
-    display: grid;
     background: #E0C9CB;
     font-family: 'Lato', sans-serif;
     text-transform: uppercase;
@@ -12,27 +11,32 @@ body {
 }
 
 .avator {
-    position: absolute;
-    display: inline-block;
-    top: 10%;
-    left: 10%;
+    position: relative;
+    width: 75%;
+    height: auto;
+    top: 15%;
+    left: 7%;
 }
 
 .avatar-container {
     position: relative;
-    width: 25%;
-    height: auto;
-    border-radius: 50%; /* 50% 使其成為圓形 */
+    width: 25%; /* 设置容器宽度 */
+    padding-bottom: 25%; /* 设置与宽度相等的底部填充，以确保高度与宽度相同 */
+    border-radius: 50%; /* 使其成为圆形 */
     border: 8px solid #FFF;
     box-sizing: border-box;
     overflow: hidden;
 }
 
 .avatar-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%; /* 使图像占满容器的宽度 */
-    height: 100%; /* 保持宽高比例 */
+    height: 100%; /* 使图像高度与容器宽度相同 */
     object-fit: cover; /* 保持图像比例并填充整个容器 */
 }
+
 
 .container {
     margin: 24px;
@@ -50,7 +54,7 @@ body {
 }
 
 .navigation-section button {
-    width: 330px;
+    width: 100%;
     margin-top: 10px;
     margin-bottom: 10px;
     padding: 10px;
