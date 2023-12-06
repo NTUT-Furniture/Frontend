@@ -1,5 +1,7 @@
-window.onscroll = function() {myFunction()};
-var navbar = document.getElementById("navbar");
+window.onscroll = function () {
+    myFunction()
+};
+const navbar = document.getElementById("navbar");
 
 function myFunction() {
     if (window.scrollY > 0) {

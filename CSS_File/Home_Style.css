@@ -11,8 +11,9 @@ body {
 }
 
 #home-title {
-  padding-top: 35px;
+    padding-top: 35px;
 }
+
 
 /* 定義category文字區域的樣式 */
 .fixed-category {
@@ -28,9 +29,6 @@ body {
 
 /* 定義位於category文字區域右側的樣式 */
 #mainPage {
-  margin-left: 210px; /* 與固定文字區域寬度一致，形成空間 */
-  padding: 20px;
-  padding-top: 70px;
+    margin-left: 210px; /* 與固定文字區域寬度一致，形成空間 */
+    padding: 70px 20px 20px;
 }
-
-
