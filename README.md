@@ -1,1 +1,3 @@
 # Frontend
+
+npm install htmx

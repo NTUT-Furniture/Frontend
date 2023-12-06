@@ -6,7 +6,7 @@
   top: 0; /* 确保导航栏固定在顶部 */
   overflow: visible;
   background-color: #333;
-  order: 0;
+  z-index: 1000;
 }
 
 /* Navbar links */
@@ -37,6 +37,7 @@ li a, .dropbtn {
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
+
 }
 
 li a:hover,
