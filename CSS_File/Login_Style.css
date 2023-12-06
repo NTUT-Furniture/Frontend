@@ -51,6 +51,16 @@ body {
     flex-grow: 1; /* Allows input to take up remaining space */
 }
 
+#confirmPassword{
+    width: 258px;
+}
+
+.input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Aligns items to the start of the flex container */
+}
+
 button {
     background-color: #007BFF;
     color: #fff;
@@ -66,4 +76,11 @@ button {
 a {
     text-decoration: none; /* 移除底線 */
     color: rgb(89, 36, 247); /* 使用父元素的文本顏色 */
+    font-size: 18px;
+}
+
+#passwordError {
+    display: block; /* To ensure it takes up the full width below the input */
+    margin-top: 5px; /* Adds some space between the input and the error message */
+    color: red; /* Error message in red for better visibility */
 }
