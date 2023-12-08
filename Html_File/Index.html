@@ -23,13 +23,36 @@
         <a class="dropbtn" href="../html_file/Login.html">Login</a>
         <div class="dropdown-content">
             <a href="../html_file/AccountSetting.html">Account</a>
-            <a href="javascript:void(0);">Shopping Cart</a>
+            <a href="javascript:void(0);" id="shoppingCartLink">Shopping Cart</a>
             <a href="../html_file/Shop.html">Shop Manage</a>
             <a href="javascript:void(0);">More</a>
         </div>
     </li>
 </ul>
 <script src="../js_file/Sticky_Navbar.js"></script>
+
+<script>
+    // Add click event listener to the "Shopping Cart" link
+    document.getElementById('shoppingCartLink').addEventListener('click', function () {
+        // Call the shopping cart logic from ShoppingCart.js
+        // You can customize this part based on your actual shopping cart logic
+        // For now, it will execute the code in ShoppingCart.js
+        const floatingTableContainer = document.getElementById('floating-table-container');
+        if (floatingTableContainer) {
+            // Remove the existing floating table container if it exists
+            floatingTableContainer.remove();
+        }
+
+        // Execute the ShoppingCart.js logic
+        const script = document.createElement('script');
+        script.src = '../js_file/ShoppingCart.js';
+        document.body.appendChild(script);
+
+        // Display a message (you can customize this part)
+        alert('Shopping Cart link clicked!');
+    });
+</script>
+
 <div id="itemList">
     <!-- ItemCards will be added here using JavaScript -->
 </div>
