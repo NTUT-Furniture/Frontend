@@ -1,5 +1,3 @@
-// business-management-card.js
-
 document.addEventListener('DOMContentLoaded', function () {
     const managementContainer = document.getElementById('business-management');
 
@@ -22,23 +20,36 @@ document.addEventListener('DOMContentLoaded', function () {
         const deleteButton = card.querySelector('.delete-button');
 
         editButton.addEventListener('click', function () {
-            // Call your edit function here, e.g., editBusiness(business.id);
-            showEditForm(business);
+            showEditForm(business, card);
         });
 
         deleteButton.addEventListener('click', function () {
-            // Call your delete function here, e.g., deleteBusiness(business.id);
-            showDeleteForm(business);
+            showDeleteForm(business, card);
         });
 
         managementContainer.appendChild(card);
     }
 
-// Function to show edit form with quantity input
-    function showEditForm(business) {
-        // Create a form element
+    // Function to show edit form with name, description, and quantity input
+    function showEditForm(business, card) {
         const form = document.createElement('form');
         form.classList.add('edit-form');
+
+        // Create input for business name
+        const nameInput = document.createElement('input');
+        nameInput.type = 'text';
+        nameInput.value = business.name;
+        nameInput.name = 'name';
+        nameInput.placeholder = 'Name';
+        form.appendChild(nameInput);
+
+        // Create input for business description
+        const descriptionInput = document.createElement('input');
+        descriptionInput.type = 'text';
+        descriptionInput.value = business.description;
+        descriptionInput.name = 'description';
+        descriptionInput.placeholder = 'Description';
+        form.appendChild(descriptionInput);
 
         // Create input for business quantity
         const quantityInput = document.createElement('input');
@@ -61,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Create submit button
         const submitButton = document.createElement('button');
-        submitButton.type = 'button'; // You can change it to 'submit' if you want to submit the form
+        submitButton.type = 'button';
         submitButton.textContent = 'Save';
         form.appendChild(submitButton);
 
@@ -78,24 +89,34 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         submitButton.addEventListener('click', function () {
-            // Get the updated quantity value
+            // Get the updated values
+            const updatedName = nameInput.value;
+            const updatedDescription = descriptionInput.value;
             const updatedQuantity = parseInt(quantityInput.value, 10);
 
-            // Perform your logic to update the business data (replace this with your actual implementation)
-            alert(`Update business ${business.id} with quantity ${updatedQuantity}`);
+            // Update the business data
+            business.name = updatedName;
+            business.description = updatedDescription;
+            business.quantity = updatedQuantity;
+
+            // Update the card content
+            card.querySelector('h2').textContent = updatedName;
+            card.querySelector('p:nth-child(2)').textContent = updatedDescription;
+            card.querySelector('p:nth-child(3)').textContent = `Quantity: ${updatedQuantity}`;
 
             // Close or remove the form after handling the submission
             form.remove();
         });
 
-        // Show the form (replace this with your actual implementation, e.g., displaying a modal)
-        document.body.appendChild(form);
+        // Show the form
+        card.appendChild(form);
     }
 
-
     // Function to show delete form
-    function showDeleteForm(business) {
+    function showDeleteForm(business, card) {
         // Replace this alert with your actual delete form implementation
+        // For demonstration purposes, I'll remove the card from the container
+        card.remove();
         alert(`Delete business ${business.id}`);
     }
 
