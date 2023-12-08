@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <img src=${data.avatar} alt="Avatar" class="avatar"/>
                     </div>
                     <div class="text-content">
-                        <div class="shopname">${data.shopname}</div>
+                        <div class="shop-name">${data.shopname}</div>
                         <div class="description">${data.description}</div>
                     </div>
                 </div>
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
             shopname: "GM Furniture Emporium",
             description: "Shop Description",
             image: "../Resourse/Banner.jpg",
-            avatar: "../Resourse/shop_avatar.jpg"
+            avatar: "../Resourse/frog_avatar.jpg"
         };
         updateBanner(mockData);
     }
