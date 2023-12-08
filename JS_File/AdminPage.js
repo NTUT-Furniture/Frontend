@@ -6,6 +6,7 @@ function fetchAccounts() {
             renderTable(data);
         })
         .catch(error => console.error('Error:', error));
+    // addEditButtonEventListeners();
 }
 
 // 渲染單行帳號資訊
@@ -88,8 +89,77 @@ function addTestAccount() {
     renderRow(testAccount);
 }
 
+// 讓表格行可編輯並添加確認和取消按鈕
+function makeRowEditable(row) {
+    for (let i = 0; i < row.cells.length - 1; i++) {
+        let cell = row.cells[i];
+        let cellText = cell.innerHTML;
+        // 保存原始數據
+        cell.setAttribute('data-original-text', cellText);
+        let input = document.createElement('input');
+        input.type = 'text';
+        input.value = cellText;
+        cell.innerHTML = '';
+        cell.appendChild(input);
+    }
+    // 添加確認和取消按鈕
+    let actionsCell = row.cells[row.cells.length - 1];
+    actionsCell.innerHTML = `<button class="confirm-btn">確認</button>
+                             <button class="cancel-btn">取消</button>`;
+    // 為確認和取消按鈕添加事件處理器
+    actionsCell.getElementsByClassName('confirm-btn')[0].addEventListener('click', () => confirmEdit(row));
+    actionsCell.getElementsByClassName('cancel-btn')[0].addEventListener('click', () => cancelEdit(row));
+}
+
+// 確認編輯
+function confirmEdit(row) {
+    console.log("確認編輯");
+    // ...將編輯後的數據保存到後端...
+
+    // 將輸入欄位轉換回文本
+    for (let i = 0; i < row.cells.length - 1; i++) {
+        let cell = row.cells[i];
+        let input = cell.firstChild;
+        cell.innerHTML = input.value; // 或者將數據保存到後端後再更新
+    }
+    // 恢復原來的修改按鈕
+    row.cells[row.cells.length - 1].innerHTML = `<button class="modify-btn">修改</button>
+                                                 <button class="delete-btn">刪除</button>`;
+    addEditButtonEventListener(row.cells[row.cells.length - 1].getElementsByClassName('modify-btn')[0]);
+}
+
+// 取消編輯
+function cancelEdit(row) {
+    // 在這裡添加取消編輯的邏輯，通常是恢復原始數據
+    console.log("取消編輯");
+    for (let i = 0; i < row.cells.length - 1; i++) {
+        let cell = row.cells[i];
+        // 恢復原始數據
+        cell.innerHTML = cell.getAttribute('data-original-text');
+    }
+    // 恢復原來的修改按鈕
+    row.cells[row.cells.length - 1].innerHTML = `<button class="modify-btn">修改</button>
+                                                <button class="delete-btn">刪除</button>`;
+    addEditButtonEventListener(row.cells[row.cells.length - 1].getElementsByClassName('modify-btn')[0]);
+}
+
+// 為修改按鈕添加事件處理器
+function addEditButtonEventListener(button) {
+    button.addEventListener('click', function() {
+        let row = this.parentNode.parentNode;
+        makeRowEditable(row);
+    });
+}
+
+// 為所有修改按鈕添加事件處理器
+function addEditButtonEventListeners() {
+    const editButtons = document.querySelectorAll('.modify-btn');
+    editButtons.forEach(addEditButtonEventListener);
+}
+
 // 在頁面加載時添加測試帳號
 window.onload = function() {
     fetchAccounts();
     addTestAccount(); // 添加測試帳號
+    addEditButtonEventListeners();
 };

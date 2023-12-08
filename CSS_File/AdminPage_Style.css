@@ -38,6 +38,14 @@ table {
     table-layout: auto;
 }
 
+/* 確保輸入框不會超出表格單元格的寬度 */
+table td input[type="text"] {
+    width: 100%; /* 使輸入框寬度與單元格相同 */
+    box-sizing: border-box; /* 包括邊框和內邊距在內的寬度計算方式 */
+    margin: 0; /* 移除可能的外邊距 */
+    padding: 2px; /* 略微內邊距，視覺美觀 */
+}
+
 table, th, td {
     border: 1px solid black;
 }
@@ -68,6 +76,35 @@ th {
 .delete-btn {
     background-color: #dc3545;
     color: white;
+}
+
+/* 確認和取消按鈕的樣式 */
+.confirm-btn, .cancel-btn {
+    padding: 5px 10px;
+    margin: 2px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.confirm-btn {
+    background-color: #4CAF50; /* 綠色背景 */
+    color: white;
+}
+
+.confirm-btn:hover {
+    background-color: #45a049; /* 深綠色 */
+}
+
+.cancel-btn {
+    background-color: #f44336; /* 紅色背景 */
+    color: white;
+}
+
+.cancel-btn:hover {
+    background-color: #d32f2f; /* 深紅色 */
 }
 
 /* 模態框樣式 */
