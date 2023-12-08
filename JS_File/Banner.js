@@ -29,8 +29,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const mockData = {
             shopname: "GM Furniture Emporium",
             description: "Shop Description",
-            image: "../Resourse/Banner.jpg",
-            avatar: "../Resourse/frog_avatar.jpg"
+            image: "../Resources/Banner.jpg",
+            avatar: "../Resources/frog_avatar.jpg"
         };
         updateBanner(mockData);
     }
