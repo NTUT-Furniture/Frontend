@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const managementContainer = document.getElementById('business-management');
+    const addButton = document.getElementById('add-business-button');
+    
 
     // Function to render a business card
     function renderBusinessCard(business) {
@@ -32,6 +34,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Function to show edit form with name, description, and quantity input
     function showEditForm(business, card) {
+        // const form = document.createElement('form');
+        // form.classList.add('edit-form');
+        const existingForm = card.querySelector('.edit-form');
+
+        if (existingForm) {
+            // If a form already exists, you can choose to focus on it or do nothing
+            existingForm.querySelector('input[name="name"]').focus();
+            return;
+        }
+
         const form = document.createElement('form');
         form.classList.add('edit-form');
 
@@ -144,4 +156,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Fetch and render mock data on page load
     fetchMockBusinessData();
+
+    // Add event listener for the "Add Business" button
+    addButton.addEventListener('click', function () {
+        // Create a new business object with default values
+        const newBusiness = {
+            id: generateUniqueId(),
+            name: 'New Business',
+            description: 'Description',
+            quantity: 0,
+        };
+
+        // Render the new business card
+        renderBusinessCard(newBusiness);
+    });
+
+    // Function to generate a unique ID
+    function generateUniqueId() {
+        return Date.now();
+    }
+
 });
