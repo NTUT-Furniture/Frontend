@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const managementContainer = document.getElementById('business-management');
     const addButton = document.getElementById('add-business-button');
+    let openDetailForm = null;
 
     function renderBusinessCard(business) {
         const card = document.createElement('div');
@@ -11,30 +12,94 @@ document.addEventListener('DOMContentLoaded', function () {
             <p class="quantity">Quantity: ${business.quantity}</p>
             <p class="price">Price: ${business.price}</p>
             <img class="image" src="${business.image_url}" alt="${business.name}">
-            <button class="edit-button">Edit</button>
             <button class="detail-button">Detail</button>
             <button class="delete-button">Delete</button>
         `;
-        card.querySelector('.edit-button').addEventListener('click', () => showEditForm(business, card));
         card.querySelector('.delete-button').addEventListener('click', () => showDeleteForm(business, card));
-        card.querySelector('.detail-button').addEventListener('click', () => showDetailPopup(business));
+        card.querySelector('.detail-button').addEventListener('click', () => showDetailPopup(business, card));
         managementContainer.appendChild(card);
     }
 
-    function showEditForm(business, card) {
-        const formExists = card.querySelector('.edit-form');
+    function showDetailPopup(business, card) {
+
+        if (openDetailForm) {
+            openDetailForm.remove();
+            openDetailForm = null;
+        }
+
+        const popup = document.createElement('div');
+        popup.classList.add('detail-popup', 'large');
+        popup.innerHTML = `
+            <div class="content-container" style="position: fixed; top: 85%; display: flex; flex-direction: column; height: 15%; justify-content: flex-end; align-items: flex-end; width: 100%;">
+                <div class="bottom-buttons" style="display: flex; justify-content: space-around; width: 100%;">
+                    <button class="detail-button">Edit</button>
+                    <button class="detail-button">Status</button>
+                    <button class="detail-button">Comment</button>
+                    <button class="close-button">Close</button>
+                </div>
+            </div>
+        `;
+
+        popup.querySelectorAll('.detail-button').forEach((button, index) => {
+            button.addEventListener('click', () => handleDetailButtonClick(business, card, popup, index + 1));
+        });
+
+        const closeButton = popup.querySelector('.close-button');
+        closeButton.addEventListener('click', () => {
+            popup.remove();
+            openDetailForm = null;
+        });
+
+        // 將懸浮視窗附加到 #business-management
+        const businessManagement = document.getElementById('business-management');
+        businessManagement.appendChild(popup);
+
+        // 顯示懸浮視窗
+        popup.classList.add('show');
+        openDetailForm = popup;
+    }
+
+    function handleDetailButtonClick(business, card, popup, buttonIndex) {
+        switch (buttonIndex) {
+            case 1:
+                console.log('Edit button clicked');
+                showEditForm(business, card, popup);
+                break;
+            case 2:
+                // Status button clicked
+                showStatusTable();
+                console.log('Status button clicked');
+                break;
+            case 3:
+                console.log('Comment button clicked');
+                break;
+            default:
+                break;
+        }
+    }
+
+
+    function showEditForm(business, card, popup) {
+        const formExists = popup.querySelector('.edit-form');
         if (formExists) return formExists.querySelector('input[name="name"]').focus();
 
         const form = document.createElement('form');
         form.classList.add('edit-form');
 
-        // 修改欄位列表，包括 'name', 'description', 'quantity', 'price', 'image_url'
+        form.style.margin = "20px"; // 設定 form 的 margin
+        form.style.maxWidth = "300px"; // 設定 form 的最大寬度
+
         ['name', 'description', 'quantity', 'price', 'image_url'].forEach((field) => {
             const input = document.createElement('input');
             input.type = field === 'quantity' || field === 'price' ? 'number' : 'text';
             input.value = business[field];
             input.name = field;
             input.placeholder = field.charAt(0).toUpperCase() + field.slice(1);
+            input.style.display = "block";
+
+            // 在 JavaScript 中添加額外的樣式
+            input.style.marginBottom = "10px"; // 設定 input 之間的距離
+
             form.appendChild(input);
         });
 
@@ -42,32 +107,61 @@ document.addEventListener('DOMContentLoaded', function () {
         submitButton.type = 'button';
         submitButton.textContent = 'Save';
         submitButton.addEventListener('click', () => {
-            // 修改欄位列表，包括 'name', 'description', 'quantity', 'price', 'image_url'
+            // 直接更新卡片內容
             ['name', 'description', 'quantity', 'price', 'image_url'].forEach((field) => {
                 const inputValue = form.querySelector(`input[name="${field}"]`).value;
                 business[field] = inputValue;
-                const element = card.querySelector(`.${field}`);
-                if (element) {
-                    element.innerText = field === 'quantity' || field === 'price' ? `${field.charAt(0).toUpperCase() + field.slice(1)}: ${inputValue}` : inputValue;
+                if (field === 'image_url') {
+                    // 如果是 image_url，更新對應的 img 標籤的 src 和 alt 屬性
+                    const imageElement = card.querySelector('.image');
+                    if (imageElement) {
+                        imageElement.src = inputValue;
+                        imageElement.alt = business.name;
+                    }
+                } else {
+                    // 其他欄位正常更新
+                    const element = card.querySelector(`.${field}`);
+                    if (element) {
+                        element.innerText = field === 'quantity' || field === 'price' ? `${field.charAt(0).toUpperCase() + field.slice(1)}: ${inputValue}` : inputValue;
+                    }
                 }
             });
-            // console.log(business['name']);
-            // console.log(business['description']);
-            // console.log(business['quantity']);
-
             form.remove();
         });
-
+        console.log(business);
         form.append(submitButton);
-        card.appendChild(form);
+        popup.appendChild(form);
     }
-
 
     function showDeleteForm(business, card) {
         card.remove(); // Replace with actual delete form implementation
         alert(`Delete business ${business.id}`);
     }
-    
+
+    function showStatusTable() {
+        if (openDetailForm) {
+            const statusTable = document.createElement('table');
+            statusTable.innerHTML = `
+            <tr>
+                <th>Status</th>
+                <th>Date</th>
+            </tr>
+            <tr>
+                <td>InProgress</td>
+                <td>2023-01-01</td>
+            </tr>
+            <tr>
+                <td>Completed</td>
+                <td>2023-01-15</td>
+            </tr>
+            <!-- Add more rows as needed -->
+        `;
+
+            openDetailForm.appendChild(statusTable);
+        }
+    }
+
+
     function fetchMockBusinessData() {
         const mockData = [
             {
