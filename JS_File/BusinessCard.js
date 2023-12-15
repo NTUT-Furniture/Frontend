@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const managementContainer = document.getElementById('business-management');
     const addButton = document.getElementById('add-business-button');
     let openDetailForm = null;
+    let currentDetailType = null;
 
     function renderBusinessCard(business) {
         const card = document.createElement('div');
@@ -18,6 +19,11 @@ document.addEventListener('DOMContentLoaded', function () {
         card.querySelector('.delete-button').addEventListener('click', () => showDeleteForm(business, card));
         card.querySelector('.detail-button').addEventListener('click', () => showDetailPopup(business, card));
         managementContainer.appendChild(card);
+    }
+
+    function showDeleteForm(business, card) {
+        card.remove(); // Replace with actual delete form implementation
+        alert(`Delete business ${business.id}`);
     }
 
     function showDetailPopup(business, card) {
@@ -60,25 +66,73 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function handleDetailButtonClick(business, card, popup, buttonIndex) {
+        // assume that already have a form be called, hide it
+        if (currentDetailType) {
+            hideDetailContent(popup);
+        }
+
         switch (buttonIndex) {
             case 1:
                 console.log('Edit button clicked');
                 showEditForm(business, card, popup);
+                currentDetailType = 'edit';
                 break;
             case 2:
-                // Status button clicked
-                showStatusTable();
                 console.log('Status button clicked');
+                showStatusTable(popup);
+                currentDetailType = 'status';
                 break;
             case 3:
                 console.log('Comment button clicked');
                 showCommentSection(business, popup);
+                currentDetailType = 'comment';
                 break;
             default:
                 break;
         }
     }
 
+    function hideDetailContent(popup) {
+        // 根據當前的詳細類型隱藏相應的內容
+        switch (currentDetailType) {
+            case 'edit':
+                hideEditForm(popup);
+                break;
+            case 'status':
+                hideStatusTable(popup);
+                break;
+            case 'comment':
+                hideCommentSection(popup);
+                break;
+            default:
+                break;
+        }
+
+        currentDetailType = null;
+    }
+
+    function hideEditForm(popup) {
+        const editForm = popup.querySelector('.edit-form');
+        if (editForm) {
+            editForm.remove();
+        }
+    }
+
+    function hideStatusTable(popup) {
+        console.log("status clean be called");
+        const statusTable = popup.querySelector('.table');
+        if (statusTable) {
+            console.log("status be cleaned");
+            statusTable.remove();
+        }
+    }
+
+    function hideCommentSection(popup) {
+        const commentSection = popup.querySelector('.comment-section');
+        if (commentSection) {
+            commentSection.remove();
+        }
+    }
 
     function showEditForm(business, card, popup) {
         const formExists = popup.querySelector('.edit-form');
@@ -113,14 +167,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const inputValue = form.querySelector(`input[name="${field}"]`).value;
                 business[field] = inputValue;
                 if (field === 'image_url') {
-                    // 如果是 image_url，更新對應的 img 標籤的 src 和 alt 屬性
                     const imageElement = card.querySelector('.image');
                     if (imageElement) {
                         imageElement.src = inputValue;
                         imageElement.alt = business.name;
                     }
                 } else {
-                    // 其他欄位正常更新
                     const element = card.querySelector(`.${field}`);
                     if (element) {
                         element.innerText = field === 'quantity' || field === 'price' ? `${field.charAt(0).toUpperCase() + field.slice(1)}: ${inputValue}` : inputValue;
@@ -133,35 +185,6 @@ document.addEventListener('DOMContentLoaded', function () {
         form.append(submitButton);
         popup.appendChild(form);
     }
-
-    function showDeleteForm(business, card) {
-        card.remove(); // Replace with actual delete form implementation
-        alert(`Delete business ${business.id}`);
-    }
-
-    function showStatusTable() {
-        if (openDetailForm) {
-            const statusTable = document.createElement('table');
-            statusTable.innerHTML = `
-            <tr>
-                <th>Status</th>
-                <th>Date</th>
-            </tr>
-            <tr>
-                <td>InProgress</td>
-                <td>2023-01-01</td>
-            </tr>
-            <tr>
-                <td>Completed</td>
-                <td>2023-01-15</td>
-            </tr>
-            <!-- Add more rows as needed -->
-        `;
-
-            openDetailForm.appendChild(statusTable);
-        }
-    }
-
 
     function showCommentSection(business, popup) {
         const commentSectionExists = popup.querySelector('.comment-section');
@@ -180,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
         submitButton.addEventListener('click', () => {
             const commentText = commentInput.value;
             if (commentText.trim() !== '') {
-                addCommentToPopup(commentText, business, popup);
+                addCommentToPopup(commentText, 'You', popup);
                 commentInput.value = '';
             }
         });
@@ -189,14 +212,62 @@ document.addEventListener('DOMContentLoaded', function () {
         commentSection.appendChild(submitButton);
 
         popup.appendChild(commentSection);
+
+        // Mock comment to addCommentToPopup
+        const mockData = [
+            {
+                name: 'Kyynk',
+                comment: 'Great work!',
+            },
+            {
+                name: 'GM',
+                comment: 'Nice job!',
+            },
+            {
+                name: 'Vincent',
+                comment: 'Awesome!',
+            },
+        ];
+        mockData.forEach(data => {
+            addCommentToPopup(data.comment, data.name, popup);
+        });
+
     }
 
-    function addCommentToPopup(commentText, business, popup) {
+
+    function showStatusTable(popup) {
+        const tableExists = popup.querySelector('.table');
+        if (tableExists) return;
+
+        if (openDetailForm) {
+            const statusTable = document.createElement('table');
+            statusTable.classList.add('table');
+            statusTable.innerHTML = `
+            <tr>
+                <th>Status</th>
+                <th>Date</th>
+            </tr>
+            <tr>
+                <td>InProgress</td>
+                <td>2023-01-01</td>
+            </tr>
+            <tr>
+                <td>Completed</td>
+                <td>2023-01-15</td>
+            </tr>
+        `;
+
+            popup.appendChild(statusTable);
+        }
+    }
+
+    function addCommentToPopup(commentText, name, popup) {
+        //console.log("name", name, "comment Test", commentText);
         const commentContainer = document.createElement('div');
         commentContainer.classList.add('comment-container');
 
         const commentAuthor = document.createElement('span');
-        commentAuthor.textContent = 'You: ';
+        commentAuthor.textContent = name + ': ';
 
         const commentTextElement = document.createElement('span');
         commentTextElement.textContent = commentText;
@@ -204,8 +275,10 @@ document.addEventListener('DOMContentLoaded', function () {
         commentContainer.appendChild(commentAuthor);
         commentContainer.appendChild(commentTextElement);
 
+        //console.log(commentContainer.innerHTML);
         const commentsSection = popup.querySelector('.comment-section');
         if (commentsSection) {
+            //console.log("success to comment");
             commentsSection.appendChild(commentContainer);
         }
     }
