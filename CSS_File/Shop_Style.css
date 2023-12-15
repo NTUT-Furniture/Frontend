@@ -192,3 +192,32 @@
 #business-container #business-management .detail-popup.show {
     display: block; /* 顯示懸浮視窗 */
 }
+
+#comment-section {
+    margin-top: 20px;
+}
+
+#comments-list {
+    list-style: none;
+    padding: 0;
+}
+
+#comment-input {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+
+#submit-button {
+    margin-top: 10px;
+    background-color: #007bff;
+    color: #fff;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#submit-button:hover {
+    background-color: #0056b3;
+}

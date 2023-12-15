@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 break;
             case 3:
                 console.log('Comment button clicked');
+                showCommentSection(business, popup);
                 break;
             default:
                 break;
@@ -158,6 +159,54 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
 
             openDetailForm.appendChild(statusTable);
+        }
+    }
+
+
+    function showCommentSection(business, popup) {
+        const commentSectionExists = popup.querySelector('.comment-section');
+        if (commentSectionExists) return;
+
+        const commentSection = document.createElement('div');
+        commentSection.classList.add('comment-section');
+
+        const commentInput = document.createElement('textarea');
+        commentInput.placeholder = 'Type your comment here...';
+        commentInput.classList.add('comment-input');
+
+        const submitButton = document.createElement('button');
+        submitButton.type = 'button';
+        submitButton.textContent = 'Submit';
+        submitButton.addEventListener('click', () => {
+            const commentText = commentInput.value;
+            if (commentText.trim() !== '') {
+                addCommentToPopup(commentText, business, popup);
+                commentInput.value = '';
+            }
+        });
+
+        commentSection.appendChild(commentInput);
+        commentSection.appendChild(submitButton);
+
+        popup.appendChild(commentSection);
+    }
+
+    function addCommentToPopup(commentText, business, popup) {
+        const commentContainer = document.createElement('div');
+        commentContainer.classList.add('comment-container');
+
+        const commentAuthor = document.createElement('span');
+        commentAuthor.textContent = 'You: ';
+
+        const commentTextElement = document.createElement('span');
+        commentTextElement.textContent = commentText;
+
+        commentContainer.appendChild(commentAuthor);
+        commentContainer.appendChild(commentTextElement);
+
+        const commentsSection = popup.querySelector('.comment-section');
+        if (commentsSection) {
+            commentsSection.appendChild(commentContainer);
         }
     }
 
