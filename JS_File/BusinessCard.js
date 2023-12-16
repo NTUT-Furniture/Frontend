@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const popup = document.createElement('div');
         popup.classList.add('detail-popup', 'large');
         popup.innerHTML = `
-            <div class="content-container" style="position: fixed; top: 85%; display: flex; flex-direction: column; height: 15%; justify-content: flex-end; align-items: flex-end; width: 100%;">
+            <div class="button-container" style="position: fixed; top: 85%; display: flex; flex-direction: column; height: 15%; justify-content: flex-end; align-items: flex-end; width: 100%;">
                 <div class="bottom-buttons" style="display: flex; justify-content: space-around; width: 100%;">
                     <button class="detail-button">Edit</button>
                     <button class="detail-button">Status</button>
@@ -186,10 +186,124 @@ document.addEventListener('DOMContentLoaded', function () {
         popup.appendChild(form);
     }
 
+    function showStatusTable(popup) {
+        const tableExists = popup.querySelector('.table');
+        if (tableExists) return;
+
+        if (openDetailForm) {
+            const statusTableContainer = document.createElement('div');
+            statusTableContainer.classList.add('table-container');
+            statusTableContainer.style.position = 'absolute';
+            statusTableContainer.style.top = '0';
+            statusTableContainer.style.left = '0';
+            statusTableContainer.style.right = '0';
+            statusTableContainer.style.bottom = '15%'; // Adjust the bottom value as needed
+            statusTableContainer.style.overflow = 'auto';
+
+            const statusTable = document.createElement('table');
+            statusTable.classList.add('table');
+            // Header row
+            statusTable.innerHTML = `
+            <tr>
+                <th>Order ID</th>
+                <th>Customer Name</th>
+                <th>Product Name</th>
+                <th>Status</th>
+                <th>Date Ordered</th>
+                <th>Expected Delivery Date</th>
+            </tr>
+        `;
+
+            // Mock Data
+            const mockOrderData = [
+                {
+                    orderId: 1,
+                    customerName: 'John Doe',
+                    productName: 'Product A',
+                    status: 'InProgress',
+                    dateOrdered: '2023-01-01',
+                    expectedDeliveryDate: '2023-01-10'
+                },
+                {
+                    orderId: 2,
+                    customerName: 'Jane Smith',
+                    productName: 'Product B',
+                    status: 'Completed',
+                    dateOrdered: '2023-01-15',
+                    expectedDeliveryDate: '2023-01-25'
+                },
+                {
+                    orderId: 2,
+                    customerName: 'Jane Smith',
+                    productName: 'Product B',
+                    status: 'Completed',
+                    dateOrdered: '2023-01-15',
+                    expectedDeliveryDate: '2023-01-25'
+                },
+                {
+                    orderId: 2,
+                    customerName: 'Jane Smith',
+                    productName: 'Product B',
+                    status: 'Completed',
+                    dateOrdered: '2023-01-15',
+                    expectedDeliveryDate: '2023-01-25'
+                },
+                {
+                    orderId: 2,
+                    customerName: 'Jane Smith',
+                    productName: 'Product B',
+                    status: 'Completed',
+                    dateOrdered: '2023-01-15',
+                    expectedDeliveryDate: '2023-01-25'
+                },
+                {
+                    orderId: 2,
+                    customerName: 'Jane Smith',
+                    productName: 'Product B',
+                    status: 'Completed',
+                    dateOrdered: '2023-01-15',
+                    expectedDeliveryDate: '2023-01-25'
+                }, {
+                    orderId: 2,
+                    customerName: 'Jane Smith',
+                    productName: 'Product B',
+                    status: 'Completed',
+                    dateOrdered: '2023-01-15',
+                    expectedDeliveryDate: '2023-01-25'
+                },
+
+                // Add more mock data as needed
+            ];
+
+            // Data rows
+            mockOrderData.forEach(order => {
+                statusTable.innerHTML += `
+                <tr>
+                    <td>${order.orderId}</td>
+                    <td>${order.customerName}</td>
+                    <td>${order.productName}</td>
+                    <td>${order.status}</td>
+                    <td>${order.dateOrdered}</td>
+                    <td>${order.expectedDeliveryDate}</td>
+                </tr>
+            `;
+            });
+            statusTableContainer.appendChild(statusTable);
+            popup.appendChild(statusTableContainer);
+        }
+    }
+
     function showCommentSection(business, popup) {
         const commentSectionExists = popup.querySelector('.comment-section');
         if (commentSectionExists) return;
-
+        const commentSectionContainer = document.createElement('div');
+        commentSectionContainer.classList.add('table-container');
+        commentSectionContainer.style.position = 'absolute';
+        commentSectionContainer.style.top = '0';
+        commentSectionContainer.style.left = '0';
+        commentSectionContainer.style.right = '0';
+        commentSectionContainer.style.bottom = '15%'; // Adjust the bottom value as needed
+        commentSectionContainer.style.overflow = 'auto';
         const commentSection = document.createElement('div');
         commentSection.classList.add('comment-section');
 
@@ -210,8 +324,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         commentSection.appendChild(commentInput);
         commentSection.appendChild(submitButton);
-
-        popup.appendChild(commentSection);
+        commentSectionContainer.appendChild(commentSection);
+        popup.appendChild(commentSectionContainer);
 
         // Mock comment to addCommentToPopup
         const mockData = [
@@ -227,38 +341,72 @@ document.addEventListener('DOMContentLoaded', function () {
                 name: 'Vincent',
                 comment: 'Awesome!',
             },
+            {
+                name: 'Vincent',
+                comment: 'Awesome!',
+            },
+            {
+                name: 'Vincent',
+                comment: 'Awesome!',
+            },
+            {
+                name: 'Vincent',
+                comment: 'Awesome!',
+            },
+            {
+                name: 'Vincent',
+                comment: 'Awesome!',
+            },
+            {
+                name: 'Vincent',
+                comment: 'Awesome!',
+            },
+            {
+                name: 'Vincent',
+                comment: 'Awesome!',
+            },
+            {
+                name: 'Vincent',
+                comment: 'Awesome!',
+            },
+            {
+                name: 'Vincent',
+                comment: 'Awesome!',
+            },
+            {
+                name: 'Vincent',
+                comment: 'Awesome!',
+            },
+            {
+                name: 'Vincent',
+                comment: 'Awesome!',
+            },
+            {
+                name: 'Vincent',
+                comment: 'Awesome!',
+            },
+            {
+                name: 'Vincent',
+                comment: 'Awesome!',
+            },
+            {
+                name: 'Vincent',
+                comment: 'Awesome!',
+            }, {
+                name: 'Vincent',
+                comment: 'Awesome!',
+            },
+            {
+                name: 'Vincent',
+                comment: 'Awesome!',
+            },
+
+
         ];
         mockData.forEach(data => {
             addCommentToPopup(data.comment, data.name, popup);
         });
 
-    }
-
-
-    function showStatusTable(popup) {
-        const tableExists = popup.querySelector('.table');
-        if (tableExists) return;
-
-        if (openDetailForm) {
-            const statusTable = document.createElement('table');
-            statusTable.classList.add('table');
-            statusTable.innerHTML = `
-            <tr>
-                <th>Status</th>
-                <th>Date</th>
-            </tr>
-            <tr>
-                <td>InProgress</td>
-                <td>2023-01-01</td>
-            </tr>
-            <tr>
-                <td>Completed</td>
-                <td>2023-01-15</td>
-            </tr>
-        `;
-
-            popup.appendChild(statusTable);
-        }
     }
 
     function addCommentToPopup(commentText, name, popup) {
