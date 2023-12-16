@@ -1,7 +1,7 @@
-document.getElementById('submitButton').addEventListener('click', function() {
-const inputElements = document.querySelectorAll('input');
-const formData = {};
-const passwordError = document.getElementById('passwordError');
+document.getElementById('submitButton').addEventListener('click', function () {
+    const inputElements = document.querySelectorAll('input');
+    const formData = {};
+    const passwordError = document.getElementById('passwordError');
     inputElements.forEach(input => {
         formData[input.name] = input.value;
     });
@@ -22,14 +22,14 @@ const passwordError = document.getElementById('passwordError');
             },
             body: JSON.stringify(formData),
         })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-        })
-        .catch(error => {
-            // 处理API请求错误
-            console.error('API Error:', error);
-        });
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+            })
+            .catch(error => {
+                // 处理API请求错误
+                console.error('API Error:', error);
+            });
     } else {
         // 密码和确认密码不匹配，显示错误消息
         passwordError.textContent = 'Passwords do not match.';

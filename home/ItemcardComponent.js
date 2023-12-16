@@ -75,7 +75,7 @@ const products = [
         productName: "Comfortable Sofa",
         productPrice: "$500",
         productDescription: "A cozy sofa for your living room.",
-        imageUrl: "../Resourse/sofa.jpg"
+        imageUrl: "../Resources/sofa.jpg"
     },
 
     {
@@ -83,14 +83,14 @@ const products = [
         productName: "Comfortable Bed",
         productPrice: "$700",
         productDescription: "A cozy Bed for your living room.",
-        imageUrl: "../Resourse/bed.png"
+        imageUrl: "../Resources/bed.png"
     },
     {
         productType: "Furniture",
         productName: "Comfortable Sofa",
         productPrice: "$500",
         productDescription: "A cozy sofa for your living room.",
-        imageUrl: "../Resourse/sofa.jpg"
+        imageUrl: "../Resources/sofa.jpg"
     },
 
     {
@@ -98,35 +98,35 @@ const products = [
         productName: "Comfortable Bed",
         productPrice: "$700",
         productDescription: "A cozy Bed for your living room.",
-        imageUrl: "../Resourse/bed.png"
+        imageUrl: "../Resources/bed.png"
     },
     {
         productType: "Furniture",
         productName: "Comfortable Bed",
         productPrice: "$700",
         productDescription: "A cozy Bed for your living room.",
-        imageUrl: "../Resourse/bed.png"
+        imageUrl: "../Resources/bed.png"
     },
     // Add more product data as needed
-    ];
+];
 
-function generateItemCard(){
-    
+function generateItemCard() {
+
 // 獲取 #itemList 容器
-const itemListContainer = document.getElementById("itemList");
+    const itemListContainer = document.getElementById("itemList");
 
 // 使用迴圈創建並添加多個 ItemCardComponent 實例
-for (const product of products) {
-const itemCardInstance = new ItemCardComponent(
-    product.productType,
-    product.productName,
-    product.productPrice,
-    product.productDescription,
-    product.imageUrl
-);
+    for (const product of products) {
+        const itemCardInstance = new ItemCardComponent(
+            product.productType,
+            product.productName,
+            product.productPrice,
+            product.productDescription,
+            product.imageUrl
+        );
 
-itemListContainer.appendChild(itemCardInstance.container);
-}
+        itemListContainer.appendChild(itemCardInstance.container);
+    }
 
 }
 

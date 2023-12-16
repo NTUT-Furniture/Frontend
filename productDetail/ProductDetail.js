@@ -36,8 +36,8 @@ const productDetail = urlParams.get('productDetail');
 const productURL = urlParams.get('productSrc');
 const price = urlParams.get('productPrice');
 const reviews = [
-    { text: "Great sofa, very comfortable!", author: "John Doe" },
-    { text: "Loved it, perfect for my living room.", author: "Jane Smith" }
+    {text: "Great sofa, very comfortable!", author: "John Doe"},
+    {text: "Loved it, perfect for my living room.", author: "Jane Smith"}
 ];
 
 
