@@ -32,13 +32,13 @@ function generateProductHTML(productName, productURL, productDetail, price, revi
 // 示例數據
 const productName = "Sofa";
 const productDetail = "Comfortable leather sofa";
-const productURL = "../Resourse/sofa.jpg"
+const productURL = "../Resources/sofa.jpg"
 const price = "5000";
 const reviews = [
-    { text: "Great sofa, very comfortable!", author: "John Doe" },
-    { text: "Loved it, perfect for my living room.", author: "Jane Smith" }
+    {text: "Great sofa, very comfortable!", author: "John Doe"},
+    {text: "Loved it, perfect for my living room.", author: "Jane Smith"}
 ];
 
-window.onload = function() {
+window.onload = function () {
     generateProductHTML(productName, productURL, productDetail, price, reviews);
 };

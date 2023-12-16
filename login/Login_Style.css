@@ -1,5 +1,5 @@
 body {
-    background-image: url('../Resourse/Login_Background.jpg');
+    background-image: url('../Resources/Login_Background.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -51,7 +51,7 @@ body {
     flex-grow: 1; /* Allows input to take up remaining space */
 }
 
-#confirmPassword{
+#confirmPassword {
     width: 258px;
 }
 
