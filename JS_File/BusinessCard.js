@@ -120,17 +120,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function hideStatusTable(popup) {
         console.log("status clean be called");
+        const TableContainer = popup.querySelector('.table-container');
         const statusTable = popup.querySelector('.table');
         if (statusTable) {
-            console.log("status be cleaned");
             statusTable.remove();
+            TableContainer.remove();
         }
     }
 
     function hideCommentSection(popup) {
+        const TableContainer = popup.querySelector('.table-container');
         const commentSection = popup.querySelector('.comment-section');
         if (commentSection) {
             commentSection.remove();
+            TableContainer.remove();
         }
     }
 
