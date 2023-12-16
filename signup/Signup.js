@@ -7,15 +7,15 @@ document.getElementById('submitButton').addEventListener('click', function () {
     });
     if (formData['password'] === formData['confirm_password']) {
         passwordError.textContent = '';
-        fetch(`https://nft.servehttp.com/api/account/?\
-        name=${encodeURIComponent(formData['name'])}&\
-        pwd=${encodeURIComponent(formData['password'])}&\
-        image_url=${encodeURIComponent(formData['image_url'])}&\
-        email=${encodeURIComponent(formData['email'])}&\
-        phone=${encodeURIComponent(formData['phone'])}&\
-        credit_card=${encodeURIComponent(formData['credit_card'])}&\
-        birthday=${encodeURIComponent(formData['birthday'])}&\
-        address=${encodeURIComponent(formData['address'])}`, {
+        fetch(`https://nft.servehttp.com/api/account/?` +
+        (formData['name'] ? `name=${encodeURIComponent(formData['name'])}&` : '') +
+        (formData['password'] ? `pwd=${encodeURIComponent(formData['password'])}&` : '') +
+        (formData['image_url'] ? `image_url=${encodeURIComponent(formData['image_url'])}&` : '') +
+        (formData['email'] ? `email=${encodeURIComponent(formData['email'])}&` : '') +
+        (formData['phone'] ? `phone=${encodeURIComponent(formData['phone'])}&` : '') +
+        (formData['credit_card'] ? `credit_card=${encodeURIComponent(formData['credit_card'])}&` : '') +
+        (formData['birthday'] ? `birthday=${encodeURIComponent(formData['birthday'])}&` : '') +
+        (formData['address'] ? `address=${encodeURIComponent(formData['address'])}` : ''), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

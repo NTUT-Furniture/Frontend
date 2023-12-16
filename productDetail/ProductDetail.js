@@ -30,15 +30,17 @@ function generateProductHTML(productName, productURL, productDetail, price, revi
 }
 
 // 示例數據
-const productName = "Sofa";
-const productDetail = "Comfortable leather sofa";
-const productURL = "../Resources/sofa.jpg"
-const price = "5000";
+var urlParams = new URLSearchParams(window.location.search);
+const productName = urlParams.get('productName');
+const productDetail = urlParams.get('productDetail');
+const productURL = urlParams.get('productSrc');
+const price = urlParams.get('productPrice');
 const reviews = [
     {text: "Great sofa, very comfortable!", author: "John Doe"},
     {text: "Loved it, perfect for my living room.", author: "Jane Smith"}
 ];
 
-window.onload = function () {
+
+window.onload = function() {
     generateProductHTML(productName, productURL, productDetail, price, reviews);
 };
