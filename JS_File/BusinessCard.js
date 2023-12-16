@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function showDeleteForm(business, card) {
-        card.remove(); // Replace with actual delete form implementation
+        card.remove(); // Replace with actual delete form implementation 
         alert(`Delete business ${business.id}`);
     }
 
