@@ -16,18 +16,30 @@ function showAccountSetting() {
             id: 'e-mail',
             name: 'e-mail',
             placeholder: 't110590028@ntut.org.tw',
-            required: true
         },
-        {label: 'Account', type: 'text', id: 'username', name: 'username', placeholder: 'Garry1128', required: true},
-        {label: 'Password', type: 'password', id: 'password', name: 'password', placeholder: '***', required: true},
-        {label: 'Address', type: 'text', id: 'address', name: 'address', placeholder: '窩忘了', required: true},
+        {label: 'Account', type: 'text', id: 'username', name: 'username', placeholder: 'Garry1128'},
+        {label: 'Password', type: 'password', id: 'password', name: 'password', placeholder: '***'},
+        {label: 'Address', type: 'text', id: 'address', name: 'address', placeholder: '窩忘了'},
         {
             label: 'PhoneNumber',
             type: 'text',
             id: 'phonenumber',
             name: 'phonenumber',
-            placeholder: '窩不知道',
-            required: true
+            placeholder: '窩不知道'
+        },
+        {
+            label: 'Birthday',
+            type: 'date',
+            id: 'birthday',
+            name: 'birthday',
+            placeholder: '2023/01/01'
+        },
+        {
+            label: 'CredCard',
+            type: 'text',
+            id: 'credcard',
+            name: 'credcard',
+            placeholder: '123123123'
         },
     ];
 
@@ -72,6 +84,9 @@ function showAccountSetting() {
     cancelButton.id = 'Cancel';
     cancelButton.type = 'button'; // 如果是取消操作，使用 type="button"
     cancelButton.textContent = 'Cancel';
+    cancelButton.addEventListener('click', function() {
+        showAccountSetting(); // 调用 showAccountSetting() 函数
+    });
 
     // 將 Modify 和 Cancel 按鈕添加到 AccountSetting-Button 元素中
     buttonContainer.appendChild(modifyButton);
@@ -246,6 +261,9 @@ function showShopSetting() {
     cancelButton.id = 'Cancel';
     cancelButton.type = 'button'; // 如果是取消操作，使用 type="button"
     cancelButton.textContent = 'Cancel';
+    cancelButton.addEventListener('click', function() {
+        showShopSetting(); // 调用 showAccountSetting() 函数
+    });
 
     // 將 Confirm 和 Cancel 按鈕添加到 AccountSetting-Button 元素中
     buttonContainer.appendChild(confirmButton);
