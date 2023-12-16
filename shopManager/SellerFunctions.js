@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
     const managementContainer = document.getElementById('business-management');
-    const addButton = document.getElementById('add-business-button');
+    const addButton = document.createElement('button');
+    addButton.textContent = 'Add Business';
+    document.body.appendChild(addButton);
     let openDetailForm = null;
     let currentDetailType = null;
 
@@ -460,7 +462,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     fetchMockBusinessData();
 
-    // Add event listener for the "Add Business" button
+
     addButton.addEventListener('click', () => {
         // Create a new business object with default values
         const newBusiness = {
