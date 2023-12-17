@@ -129,5 +129,5 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-# jetbrains env
+# jetbrains environment
 .idea/
