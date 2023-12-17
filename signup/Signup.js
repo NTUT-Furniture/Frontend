@@ -51,8 +51,6 @@ function UserSignup(userData,name,pwd) {
     if (userData.msg==="Success") {
         alert('Sign up successful! Redirecting to HomePage.');
         UserLogin(name,pwd)
-        // document.cookie = `account_uuid = ${data.}; path=/; SameSite=Lax`;
-        // window.location.href = '../home/Index.html';
     } 
     else {
         alert('Sign up error! Please check your information');
@@ -76,10 +74,8 @@ function UserLogin(username ,password) {
     })
     .then(response => response.json())
     .then(data => {
-        console.log(username,password);
-        console.log(data);
-        // document.cookie = `account_uuid = ${data.}; path=/; SameSite=Lax`;
-        // window.location.href = '../home/Index.html';
+        document.cookie = `account_uuid = ${data.account_uuid}; path=/; SameSite=Lax`;
+        window.location.href = '../home/Index.html';
     })
     .catch(error => console.error('Error:', error));
 }
