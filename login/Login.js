@@ -3,31 +3,38 @@ function submitForm() {
     const passwordInput = document.getElementById('password');
     const username = usernameInput.value;
     const password = passwordInput.value;
-    var xhr = new XMLHttpRequest();
-    // 設置請求方法和URL
-    xhr.open("GET", "http://localhost:8000/api/account", true);
-    // 設置當請求完成時的處理函數
-    xhr.onreadystatechange = function () {
-        // 檢查請求的狀態
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            // 請求成功，處理返回的資料
-            var responseData = JSON.parse(xhr.responseText);
-            console.log(responseData);
-            UserLogin(responseData,username,password)
-        }
-    };
-    // 發送請求
-    xhr.send();
+
+    fetch('http://localhost:8000/api/token', {
+        method: 'POST', // 修改为 POST 方法
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+            grant_type: '',
+            username: username,
+            password: password,
+            scope: '',
+            client_id: '',
+            client_secret: ''
+        }).toString()
+    })
+    .then(response => response.json())
+    .then(data => {
+        // console.log(data);
+        UserLogin(data);
+    })
+    .catch(error => console.error('Error:', error));
 }
-function UserLogin(userData,username,password) {
-    const matchedUser = userData.data.find(user => user.name === username && user.pwd === password);
-    if (matchedUser) {
-        // 登录成功，跳转到HomePage
-        alert('Login successful! Redirecting to HomePage.');
-        window.location.href = '../Html_File/Index.html';
-    } else {
-        // 登录失败，给出提示
+function UserLogin(userData) {
+    if (userData.detail==="Incorrect username or password") {
         alert('Invalid username or password. Please try again.');
+    } 
+    else if (userData.detail && userData.detail[0].type==="missing") {
+        alert('Missing username or password. Please try again.');
+    }else {
+        alert('Login successful! Redirecting to HomePage.');
+        window.location.href = '../home/Index.html';
     }
 }
 
