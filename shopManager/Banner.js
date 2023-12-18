@@ -25,7 +25,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function fetchMockBannerData() {
-        // 假的 JSON 數據
+        
+        
         const mockData = {
             shopname: "GM Furniture Emporium",
             description: "Shop Description",
