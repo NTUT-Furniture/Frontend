@@ -31,7 +31,8 @@ document.getElementById('submitButton').addEventListener('click', function () {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(formData);
+                // console.log(data);
+                // console.log(formData);
                 UserSignup(data,formData['email'],formData['password']);
             })
             .catch(error => {
@@ -48,7 +49,8 @@ function validateEmail(email) {
 }
 
 function UserSignup(userData,name,pwd) {
-    if (userData.msg==="Success") {
+    // console.log(userData.account_uuid);
+    if (userData.account_uuid!==undefined) {
         alert('Sign up successful! Redirecting to HomePage.');
         UserLogin(name,pwd)
     } 
@@ -91,7 +93,7 @@ async function GetAccount(token, type) {
         const data = await response.json();
         localStorage.setItem("account_uuid", data.account_uuid);
         localStorage.setItem("token",token);
-        window.location.href = '../home/Index.html';
+        // window.location.href = '../home/Index.html';
     } catch (error) {
         throw new Error('Error fetching account data: ' + error.message);
     }
