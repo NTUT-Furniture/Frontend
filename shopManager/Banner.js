@@ -2,38 +2,26 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     const banner = document.getElementById('banner');
-    let shopName = null;
-    let shopDescription = null;
 
     // 更新橫幅內容
     function updateBanner(data) {
+        console.log("IN update Banner",data);
         banner.innerHTML = `
         <div class="container">
             <div class="image-wrapper">
-                <img src=${data.image} alt="" class="image"/>
+                <img src=${data.bannerImage} alt="" class="image"/>
                 <div class="image-overlay">
                     <div class="avatar-container">
                         <img src=${data.avatar} alt="Avatar" class="avatar"/>
                     </div>
                     <div class="text-content">
-                        <div class="shop-name">${shopName}</div>
-                        <div class="description">${shopDescription}</div>
+                        <div class="shop-name">${data.shopname}</div>
+                        <div class="description">${data.description}</div>
                     </div>
                 </div>
             </div>
         </div>
         `;
-    }
-
-    function fetchMockBannerData() {
-        // 假的 JSON 數據
-        const mockData = {
-            shopname: "GM Furniture Emporium",
-            description: "Shop Description",
-            image: "../Resources/Banner.jpg",
-            avatar: "../Resources/frog_avatar.jpg"
-        };
-        updateBanner(mockData);
     }
 
     async function fetchImage(UUID,imgType) {
@@ -79,24 +67,27 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    const accountUUID = '9b6a5a9c-2eed-45df-a438-77406dccc000';
-    getShop(accountUUID)
-    .then(({ data: [shopData] }) => {
-        console.log('Shop data:', shopData);
-        const { name, description } = shopData;
-        shopName = name;
-        shopDescription = description;
-        console.log("name:", name);
-        console.log("description:", description);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        // 在這裡處理錯誤
-    });
+    async function initBanner() {
+        try {
+            const accountUUID = localStorage.getItem("account_uuid");
+            const { data: [shopData] } = await getShop(accountUUID);
+            const bannerImage = await fetchImage(shopData.shop_uuid,"banner");
+            const shopAvatar = await fetchImage(shopData.shop_uuid,"avatar");
+            const Data = {
+                shopname: shopData.name,
+                description: shopData.description,
+                bannerImage: bannerImage,
+                avatar: shopAvatar
+            };
+            console.log(Data);
+            updateBanner(Data);
 
-    document.body.addEventListener('htmx:afterSwap', function (event) {
-        if (event.target === banner) {
-            fetchMockBannerData();
+        } catch (error) {
+            console.error('Error initializing banner:', error);
         }
-    });
+    }
+
+    // Initialize the banner
+    initBanner();
+
 });
