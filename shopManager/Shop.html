@@ -25,6 +25,16 @@
 </ul>
 <div id="banner"></div>
 <div id="business-management"></div>
-<script src="../shopManager/BusinessCard.js"></script>
+<script>
+    // 假設這裡獲取用戶類型的邏輯，可以是後端返回的值或其他方式
+    const userType = "seller"; // 或 "seller"
+
+    // 根據用戶類型引入相應的功能文件
+    if (userType === "seller") {
+        document.write('<script src="SellerFunctions.js"><\/script>');
+    } else {
+        document.write('<script src="BuyerFunctions.js"><\/script>');
+    }
+</script>
 </body>
 </html>
