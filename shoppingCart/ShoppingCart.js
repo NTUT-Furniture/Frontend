@@ -29,6 +29,14 @@ function toggleCart() {
 
 function showCartItems() {
   const cartPopup = document.getElementById('cart-popup');
+  // Add a close button
+  const closeButton = document.createElement('button');
+  closeButton.innerText = 'Close';
+  closeButton.onclick = toggleCart;
+  closeButton.style.position = 'absolute';
+  closeButton.style.bottom = '10px';  // Adjust the bottom spacing as needed
+  closeButton.style.right = '10px';  // Adjust the right spacing as needed
+  cartPopup.appendChild(closeButton);
 
   if (shoppingCart.length === 0) {
     cartPopup.innerHTML = '<h2>Cart is empty</h2>';
@@ -64,7 +72,7 @@ function addItemToCart(item) {
   }
 
   saveShoppingCart(shoppingCart);
-  toggleCart();
+  // toggleCart();
 }
 
 function removeItem(itemId) {
