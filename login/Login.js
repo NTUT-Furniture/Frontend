@@ -5,10 +5,10 @@ function submitForm() {
     const password = passwordInput.value;
 
     fetch('http://localhost:8000/api/token', {
-        method: 'POST', // 修改为 POST 方法
+        method: 'POST',
         headers: {
             'Accept': 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: new URLSearchParams({
             grant_type: '',
@@ -21,13 +21,14 @@ function submitForm() {
     })
     .then(response => response.json())
     .then(data => {
-        // console.log(data);
+        console.log("in get token");
         UserLogin(data);
     })
     .catch(error => console.error('Error:', error));
 }
 
 async function UserLogin(userData) {
+    console.log("in User Login");
     if (userData.detail === "Incorrect username or password") {
         alert('Invalid username or password. Please try again.');
     } else if (userData.detail && userData.detail[0].type === "missing") {
@@ -53,20 +54,19 @@ function setCookie(name, value, days) {
     document.cookie = name + "=" + value + expires + "; path=/";
     //console.log(document.cookie);
 }
-
 async function GetAccount(token, type) {
     try {
         const response = await fetch('http://localhost:8000/api/account/', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
-                'Authorization': type + " " + token
+                'Authorization': type + " " + token,
             },
         });
+
         const data = await response.json();
         setCookie("account_uuid", data.account_uuid, 7);
         setCookie("token", token, 7);
-        console.log("fjsgjklfdjgklfdsjkl");
     } catch (error) {
         throw new Error('Error fetching account data: ' + error.message);
     }
