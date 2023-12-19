@@ -97,8 +97,13 @@ function updateQuantity(itemId, newQuantity) {
   showCartItems();
 }
 
+function testAddItem() {
+    const item = {id: 1, name: 'Item 1', price: 50};
+    addItemToCart(item);
+}
+
 // Example items
-const item1 = { id: 1, name: 'Item 1', price: 20 };
+const item1 = { id: 5, name: 'Item 1', price: 20 };
 const item2 = { id: 2, name: 'Item 2', price: 30 };
 
 addItemToCart(item1);
