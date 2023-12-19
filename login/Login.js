@@ -26,15 +26,36 @@ function submitForm() {
     })
     .catch(error => console.error('Error:', error));
 }
-function UserLogin(userData) {
-    if (userData.detail==="Incorrect username or password") {
+
+async function UserLogin(userData) {
+    if (userData.detail === "Incorrect username or password") {
         alert('Invalid username or password. Please try again.');
-    } 
-    else if (userData.detail && userData.detail[0].type==="missing") {
+    } else if (userData.detail && userData.detail[0].type === "missing") {
         alert('Missing username or password. Please try again.');
-    }else {
-        alert('Login successful! Redirecting to HomePage.');
-        window.location.href = '../home/Index.html';
+    } else {
+        try {
+            alert('Login successful! Redirecting to HomePage.');
+            await GetAccount(userData.access_token, userData.token_type);
+            window.location.href = '../home/Index.html';
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 }
 
+async function GetAccount(token, type) {
+    try {
+        const response = await fetch('http://localhost:8000/api/account/', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': type + " " + token
+            },
+        });
+        const data = await response.json();
+        localStorage.setItem("account_uuid", data.account_uuid);
+        localStorage.setItem("token",token);
+    } catch (error) {
+        throw new Error('Error fetching account data: ' + error.message);
+    }
+}
