@@ -37,23 +37,24 @@ body {
   border-bottom: 1px solid #ccc;
   padding: 10px;
   display: flex;
-  flex-direction: column; /* Display elements in a column layout */
-  align-items: center; /* Center items horizontally */
+  flex-wrap: nowrap; /* Display items on the same line */
+  justify-content: space-between;
+  align-items: center;
 }
 
 #cart-popup .item span {
-  margin-bottom: 5px; /* Add space below the quantity span */
-  white-space: nowrap; /* Prevent line breaks for the quantity span */
+  margin-right: 10px;
 }
 
 #cart-popup .item input {
   width: 30px;
   text-align: center;
-  margin-bottom: 5px; /* Add space below the input field */
+  margin-right: 10px;
+  margin-top: 2px; /* Add margin-top to ensure top border is visible */
 }
 
 #cart-popup .item div {
-  margin-top: 5px; /* Add space above the price div */
+  flex-grow: 1; /* Allow the details to take up the remaining space */
 }
 
 #cart-popup button {
@@ -62,6 +63,7 @@ body {
   border: none;
   padding: 5px 10px;
   cursor: pointer;
+  margin-top: 5px; /* Add space above the button */
 }
 
 #cart-popup button:hover {
