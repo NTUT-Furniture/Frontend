@@ -1,3 +1,5 @@
+// script.js
+
 let shoppingCart = [];
 
 function toggleCart() {
@@ -20,14 +22,16 @@ function showCartItems() {
   if (shoppingCart.length === 0) {
     cartPopup.innerHTML = '<h2>Cart is empty</h2>';
   } else {
-    const totalAmount = shoppingCart.reduce((sum, item) => sum + item.price, 0);
+    const totalAmount = shoppingCart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
     shoppingCart.forEach(item => {
       const itemDiv = document.createElement('div');
       itemDiv.classList.add('item');
       itemDiv.innerHTML = `
-        <div>${item.name}</div>
-        <div>$${item.price}</div>
+        <span>${item.name} (Qty: </span>
+        <input type="number" min="1" value="${item.quantity}" onchange="updateQuantity(${item.id}, this.value)">
+        <span>)</span>
+        <div>$${item.price * item.quantity}</div>
         <button onclick="removeItem(${item.id})">Remove</button>
       `;
       cartPopup.appendChild(itemDiv);
@@ -40,14 +44,42 @@ function showCartItems() {
 }
 
 function addItemToCart(item) {
-  shoppingCart.push(item);
+  const existingItem = shoppingCart.find(cartItem => cartItem.id === item.id);
+
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    shoppingCart.push({ ...item, quantity: 1 });
+  }
+
   toggleCart();
 }
 
 function removeItem(itemId) {
-  shoppingCart = shoppingCart.filter(item => item.id !== itemId);
+  const index = shoppingCart.findIndex(item => item.id === itemId);
+
+  if (index !== -1) {
+    shoppingCart.splice(index, 1);
+  }
+
+  // Clear the cartPopup and show the updated items
   const cartPopup = document.getElementById('cart-popup');
-  cartPopup.innerHTML = ''; // Clear previous content
+  cartPopup.innerHTML = '';
+  showCartItems();
+}
+
+function updateQuantity(itemId, newQuantity) {
+  const parsedQuantity = parseInt(newQuantity, 10);
+  if (!isNaN(parsedQuantity) && parsedQuantity >= 1) {
+    const item = shoppingCart.find(item => item.id === itemId);
+    if (item) {
+      item.quantity = parsedQuantity;
+    }
+  }
+
+  // Clear the cartPopup and show the updated items
+  const cartPopup = document.getElementById('cart-popup');
+  cartPopup.innerHTML = '';
   showCartItems();
 }
 

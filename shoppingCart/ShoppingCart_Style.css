@@ -7,7 +7,7 @@ body {
 
 #cart {
   position: fixed;
-  top: 50px;
+  top: 50px; /* Adjust the top position as needed */
   right: 10px;
   cursor: pointer;
   font-size: 20px;
@@ -19,7 +19,7 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 20px;
+  padding: 50px; /* Adjust the padding to increase the background size */
   border: 1px solid #ccc;
   background-color: #fff;
   max-width: 300px;
@@ -37,8 +37,23 @@ body {
   border-bottom: 1px solid #ccc;
   padding: 10px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column; /* Display elements in a column layout */
+  align-items: center; /* Center items horizontally */
+}
+
+#cart-popup .item span {
+  margin-bottom: 5px; /* Add space below the quantity span */
+  white-space: nowrap; /* Prevent line breaks for the quantity span */
+}
+
+#cart-popup .item input {
+  width: 30px;
+  text-align: center;
+  margin-bottom: 5px; /* Add space below the input field */
+}
+
+#cart-popup .item div {
+  margin-top: 5px; /* Add space above the price div */
 }
 
 #cart-popup button {
