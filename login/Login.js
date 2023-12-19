@@ -43,6 +43,17 @@ async function UserLogin(userData) {
     }
 }
 
+function setCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + value + expires + "; path=/";
+    //console.log(document.cookie);
+}
+
 async function GetAccount(token, type) {
     try {
         const response = await fetch('http://localhost:8000/api/account/', {
@@ -53,8 +64,9 @@ async function GetAccount(token, type) {
             },
         });
         const data = await response.json();
-        localStorage.setItem("account_uuid", data.account_uuid);
-        localStorage.setItem("token",token);
+        setCookie("account_uuid", data.account_uuid, 7);
+        setCookie("token", token, 7);
+        console.log("fjsgjklfdjgklfdsjkl");
     } catch (error) {
         throw new Error('Error fetching account data: ' + error.message);
     }
