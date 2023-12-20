@@ -39,7 +39,9 @@ function showCartItems() {
   cartPopup.appendChild(closeButton);
 
   if (shoppingCart.length === 0) {
-    cartPopup.innerHTML = '<h2>Cart is empty</h2>';
+    const emptyText = document.createElement('div');
+    emptyText.innerHTML = `<h2>Cart is empty</h2>`;
+    cartPopup.appendChild(emptyText);
   } else {
     const totalAmount = shoppingCart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
