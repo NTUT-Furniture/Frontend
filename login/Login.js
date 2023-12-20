@@ -22,6 +22,7 @@ function submitForm() {
     .then(response => response.json())
     .then(data => {
         console.log("in get token");
+        console.log(data);
         UserLogin(data);
     })
     .catch(error => console.error('Error:', error));
@@ -54,6 +55,7 @@ function setCookie(name, value, days) {
     document.cookie = name + "=" + value + expires + "; path=/";
     //console.log(document.cookie);
 }
+
 async function GetAccount(token, type) {
     try {
         const response = await fetch('http://localhost:8000/api/shop/mine', {

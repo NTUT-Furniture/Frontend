@@ -83,17 +83,19 @@ function UserLogin(username ,password) {
 
 async function GetAccount(token, type) {
     try {
-        const response = await fetch('http://localhost:8000/api/account/', {
+        const response = await fetch('http://localhost:8000/api/shop/mine', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
-                'Authorization': type + " " + token
+                'Authorization': type + " " + token,
             },
         });
+
         const data = await response.json();
-        localStorage.setItem("account_uuid", data.account_uuid);
-        localStorage.setItem("token",token);
-        // window.location.href = '../home/Index.html';
+        setCookie("account_uuid", data.account_uuid, 7);
+        setCookie("token", token, 7);
+        setCookie("shop_uuid", data.shop_uuid);
+        console.log(document.cookie);
     } catch (error) {
         throw new Error('Error fetching account data: ' + error.message);
     }
