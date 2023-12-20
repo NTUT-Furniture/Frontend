@@ -1,5 +1,5 @@
 #banner .container {
-    display: flex;
+    /* display: flex; */
     justify-content: center;
 }
 
@@ -21,7 +21,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    color: #fff;
+    /* color: #fff; */
 }
 
 #banner .shop-name {

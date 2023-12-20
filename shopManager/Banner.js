@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 更新橫幅內容
     function updateBanner(data) {
-        console.log("IN update Banner", data);
         banner.innerHTML = `
         <div class="container">
             <div class="image-wrapper">
@@ -44,14 +43,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    async function getShop(accountUUID) {
+    async function getShop() {
         try {
             // 替換 baseURL 為實際的 API 基礎 URL
             const baseURL = 'http://localhost:8000/api/shop/';
             const url = new URL(baseURL);
-
-            // 添加 query 參數，這裡使用 account_uuid，您可以根據實際需求調整
-            url.searchParams.append('account_uuid', accountUUID);
+            const self_shop_uuid = getCookie("shop_uuid");
+            url.searchParams.append('shop_uuid', self_shop_uuid);
 
             const response = await fetch(url.toString());
 
@@ -69,28 +67,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function initBanner() {
         try {
-            const accountUUID = getCookie("account_uuid");
-            console.log("init banner accountUUid:",accountUUID);
-            const { data: [shopData] } = await getShop(accountUUID);
+            const shopData = await getShop();
             const bannerImage = await fetchImage(shopData.shop_uuid, "banner");
             const shopAvatar = await fetchImage(shopData.shop_uuid, "avatar");
             const Data = {
+                shop_uuid: shopData.shop_uuid,
                 shopname: shopData.name,
                 description: shopData.description,
                 bannerImage: bannerImage,
                 avatar: shopAvatar
             };
-            console.log(Data);
             updateBanner(Data);
 
         } catch (error) {
-            console.error('Error initializing banner:', error);
+            // If getShop fails, provide default values for the banner
+            const defaultData = {
+                shopname: 'Default Shop',
+                description: 'Default Description',
+                bannerImage: '../Resources/default_banner.webp',
+                avatar: '../Resources/default_avatar.webp'
+            };
+            updateBanner(defaultData);
         }
     }
-
-    // Initialize the banner
     initBanner();
-
 });
 
 // 以下是新增的 cookie 操作函數
@@ -108,7 +108,6 @@ function setCookie(name, value, days) {
 function getCookie(name) {
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
-    console.log("see all cookie",document.cookie);
     for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
         while (c.charAt(0) == ' ') c = c.substring(1, c.length);
