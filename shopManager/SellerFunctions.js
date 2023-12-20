@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <p class="description">${business.description}</p>
             <p class="quantity">Quantity: ${business.quantity}</p>
             <p class="price">Price: ${business.price}</p>
-            <img class="image" src="${business.image_url}" alt="${business.name}">
+            <img class="image" src="${business.image}" alt="${business.name}">
             <button class="detail-button">Detail</button>
             <button class="delete-button">Delete</button>
         `;
@@ -149,7 +149,7 @@ document.addEventListener('DOMContentLoaded', function () {
         form.style.margin = "20px"; // 設定 form 的 margin
         form.style.maxWidth = "300px"; // 設定 form 的最大寬度
 
-        ['name', 'description', 'quantity', 'price', 'image_url'].forEach((field) => {
+        ['name', 'description', 'quantity', 'price', 'image'].forEach((field) => {
             const input = document.createElement('input');
             input.type = field === 'quantity' || field === 'price' ? 'number' : 'text';
             input.value = business[field];
@@ -168,10 +168,10 @@ document.addEventListener('DOMContentLoaded', function () {
         submitButton.textContent = 'Save';
         submitButton.addEventListener('click', () => {
             // 直接更新卡片內容
-            ['name', 'description', 'quantity', 'price', 'image_url'].forEach((field) => {
+            ['name', 'description', 'quantity', 'price', 'image'].forEach((field) => {
                 const inputValue = form.querySelector(`input[name="${field}"]`).value;
                 business[field] = inputValue;
-                if (field === 'image_url') {
+                if (field === 'image') {
                     const imageElement = card.querySelector('.image');
                     if (imageElement) {
                         imageElement.src = inputValue;
@@ -437,31 +437,43 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    function fetchMockBusinessData() {
-        const mockData = [
-            {
-                id: 1,
-                name: 'Business A',
-                description: 'Description A',
-                quantity: 10,
-                price: 50,
-                image_url: '../Resources/bed.png',
-            },
-            {
-                id: 2,
-                name: 'Business B',
-                description: 'Description B',
-                quantity: 5,
-                price: 30,
-                image_url: '../Resources/chair.jpg',
-            },
-            // Add more mock data as needed
-        ];
-        mockData.forEach(renderBusinessCard);
+    async function fetchBusinessCardData() {
+        try {
+            const baseURL = 'http://localhost:8000/api/product/all?';
+            const url = new URL(baseURL);
+            const self_shop_uuid = getCookie("shop_uuid");
+            url.searchParams.append('order', "shop_uuid");
+            url.searchParams.append('shop_uuid', self_shop_uuid);
+            const response = await fetch(url.toString());
+            const data = await response.json();
+            console.log("return data", data);
+            return data;
+        } catch (error) {
+            throw new Error('Error fetching businessCard data: ' + error.message);
+        }
+    }
+    
+    async function renderBusinessCards() {
+        try {
+            const products = await fetchBusinessCardData();
+            const productsData = products.products;
+            console.log(products, typeof(products));
+            const mappedData = productsData.map(product => ({
+                id: product.product_uuid, // Using product_uuid as the ID, you can modify this if needed
+                name: product.name,
+                description: product.description,
+                quantity: product.stock,
+                price: product.price,
+                image: `../Resources/default_banner.webp`, // Assuming the image name follows the tag
+            }));
+            console.log(mappedData);
+            mappedData.forEach(renderBusinessCard);
+        } catch (error) {
+            console.error(error.message);
+        }
     }
 
-    fetchMockBusinessData();
-
+    renderBusinessCards();
 
     addButton.addEventListener('click', () => {
         // Create a new business object with default values
@@ -471,7 +483,7 @@ document.addEventListener('DOMContentLoaded', function () {
             description: 'Description',
             quantity: 0,
             price: 0,
-            image_url: 'https://example.com/defaultImage.jpg', // Provide a default image URL
+            image: '../Resources/default_banner.webp', // Provide a default image URL
         };
 
         // Render the new business card

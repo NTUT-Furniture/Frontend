@@ -45,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function getShop() {
         try {
-            // 替換 baseURL 為實際的 API 基礎 URL
             const baseURL = 'http://localhost:8000/api/shop/';
             const url = new URL(baseURL);
             const self_shop_uuid = getCookie("shop_uuid");
@@ -61,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return data;
         } catch (error) {
             console.error('Error fetching shopname and description:', error);
-            throw error; // 可以根據實際需求處理錯誤
+            throw error;
         }
     }
 
