@@ -48,7 +48,7 @@ function showCartItems() {
         itemDiv.classList.add('item');
         itemDiv.innerHTML = `
             <span>${item.name} (Qty: </span>
-            <input type="number" min="1" value="${item.quantity}" onchange="updateQuantity(${item.id}, this.value)">
+            <input type="number" min="1" value="${item.quantity}" onchange="updateQuantity('${item.id}', this.value)">
             <span>)</span>
             <div>$${item.price * item.quantity}</div>
             <button onclick="removeItem(${item.id})">Remove</button>
@@ -63,6 +63,7 @@ function showCartItems() {
 }
 
 function addItemToCart(item) {
+    // console.log(item.id);
     const existingItem = shoppingCart.find(cartItem => cartItem.id === item.id);
 
     if (existingItem) {
@@ -72,6 +73,7 @@ function addItemToCart(item) {
     }
 
     saveShoppingCart(shoppingCart);
+    // console.log(shoppingCart);
     // toggleCart();
 }
 
@@ -90,12 +92,17 @@ function removeItem(itemId) {
 }
 
 function updateQuantity(itemId, newQuantity) {
+    console.log(itemId);
+    console.log(typeof(itemId));
+    console.log(shoppingCart);
+    const itemToUpdate = shoppingCart.find(item => item.id === itemId);
     const parsedQuantity = parseInt(newQuantity, 10);
-    if (!isNaN(parsedQuantity) && parsedQuantity >= 1) {
-        const item = shoppingCart.find(item => item.id === itemId);
-        if (item) {
-        item.quantity = parsedQuantity;
-        }
+
+    if (itemToUpdate && parsedQuantity >= 1) {
+        itemToUpdate.quantity = parsedQuantity;
+        saveShoppingCart(shoppingCart);
+    } else {
+        console.error(`Item with ID ${itemId} not found in the shopping cart.`);
     }
 
     // Clear the cartPopup and show the updated items
@@ -106,13 +113,13 @@ function updateQuantity(itemId, newQuantity) {
 }
 
 function testAddItem() {
-    const item = {id: 1, name: 'Item 1', price: 50};
+    const item = {id: "1", name: 'Item 1', price: 50};
     addItemToCart(item);
 }
 
 // Example items
-const item1 = { id: 5, name: 'Item 1', price: 20 };
-const item2 = { id: 2, name: 'Item 2', price: 30 };
+// const item1 = { id: "5", name: 'Item 1', price: 20 };
+// const item2 = { id: "2", name: 'Item 2', price: 30 };
 
-addItemToCart(item1);
-addItemToCart(item2);
+// addItemToCart(item1);
+// addItemToCart(item2);
