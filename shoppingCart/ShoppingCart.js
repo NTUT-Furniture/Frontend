@@ -1,5 +1,3 @@
-// script.js
-
 let shoppingCart = [];
 
 // Function to get the shopping cart from local storage

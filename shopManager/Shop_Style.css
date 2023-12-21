@@ -7,6 +7,8 @@
     position: relative;
     height: 300px; /* 調整固定高度，根據需求更改 */
     overflow: hidden; /* 隱藏超出部分 */
+    margin-right: 20px; /* Add margin to the right side */
+    margin-left: 20px; /* Add margin to the left side */
 }
 
 #banner .image {
