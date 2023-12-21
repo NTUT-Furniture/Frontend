@@ -19,8 +19,21 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
                 </div>
             </div>
+            <div class="buttons"> <button class="like" id="subscriptionButton"style="width: 50px; height: 50px;"> <span style="display: inline-block; transform: scale(2);">♥</span> </button> </div>
         </div>
         `;
+        const subButton = document.getElementById('subscriptionButton');
+        subButton.addEventListener('click', function () {
+            handleLikeButtonClick(data.shop_uuid);
+        });
+    }
+
+    async function handleLikeButtonClick(shopUuid) {
+        // 处理按钮点击事件
+        console.log('Sub button clicked for shop:', shopUuid);
+
+        // 调用订阅函数或其他逻辑
+        // 例如： subscribe(shopUuid);
     }
 
     async function fetchImage(UUID, imgType) {
