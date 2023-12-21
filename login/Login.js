@@ -65,8 +65,8 @@ async function GetAccount(token, type) {
         });
 
         const data = await response.json();
-        setCookie("account_uuid", data.account_uuid, 7);
-        setCookie("token", token, 7);
+        setCookie("account_uuid", data.account_uuid);
+        setCookie("token", token);
         setCookie("shop_uuid", data.shop_uuid);
         console.log(document.cookie);
     } catch (error) {
