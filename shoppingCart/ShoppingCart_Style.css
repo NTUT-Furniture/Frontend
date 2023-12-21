@@ -7,10 +7,11 @@ body {
 
 #cart {
     position: fixed;
-    top: 50px; /* Adjust the top position as needed */
+    top: 150px; /* Adjust the top position as needed */
     right: 10px;
     cursor: pointer;
     font-size: 20px;
+    z-index: 2000;
 }
 
 #cart-popup {
@@ -26,6 +27,7 @@ body {
     width: 100%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
+    z-index: 2000;
 }
 
 #cart-popup h2 {

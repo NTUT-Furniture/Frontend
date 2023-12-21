@@ -6,9 +6,13 @@
     <link rel="stylesheet" href="../home/Home_Style.css">
     <link rel="stylesheet" href="../navbar/Navbar.css">
     <link rel="stylesheet" href="../home/ItemCard_Style.css">
+    <link href="../shoppingCart/ShoppingCart_Style.css" rel="stylesheet">
+    <script defer src="../shoppingCart/ShoppingCart.js"></script>
     <title>Main Page</title>
 </head>
 <body>
+<div id="cart" onclick="toggleCart()">🛒</div>
+<div id="cart-popup"></div>
 <!-- 固定的文字區域 -->
 <div class="fixed-category">
     <p>Sofa</p>
@@ -23,7 +27,7 @@
         <a class="dropbtn" href="../login/Login.html">Login</a>
         <div class="dropdown-content">
             <a href="../accountSetting/AccountSetting.html">Account</a>
-            <a href="javascript:void(0);">Shopping Cart</a>
+            <!-- <a href="javascript:void(0);">Shopping Cart</a> -->
             <a href="../shopManager/Shop.html">Shop</a>
         </div>
     </li>
