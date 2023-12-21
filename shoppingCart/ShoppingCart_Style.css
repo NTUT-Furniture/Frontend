@@ -1,45 +1,45 @@
 body {
-  font-family: 'Arial', sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f4;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
 }
 
 #cart {
-  position: fixed;
-  top: 50px; /* Adjust the top position as needed */
-  right: 10px;
-  cursor: pointer;
-  font-size: 20px;
+    position: fixed;
+    top: 50px; /* Adjust the top position as needed */
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
 }
 
 #cart-popup {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 50px; /* Adjust the padding to increase the background size */
-  border: 1px solid #ccc;
-  background-color: #fff;
-  max-width: 300px;
-  width: 100%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 50px; /* Adjust the padding to increase the background size */
+    border: 1px solid #ccc;
+    background-color: #fff;
+    max-width: 300px;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 #cart-popup h2 {
-  margin-bottom: 10px;
-  color: #333;
+    margin-bottom: 10px;
+    color: #333;
 }
 
 #cart-popup .item {
-  border-bottom: 1px solid #ccc;
-  padding: 10px;
-  display: flex;
-  flex-wrap: nowrap; /* Display items on the same line */
-  justify-content: space-between;
-  align-items: center;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    display: flex;
+    flex-wrap: nowrap; /* Display items on the same line */
+    justify-content: space-between;
+    align-items: center;
 }
 
 #cart-popup .item span {
@@ -47,10 +47,10 @@ body {
 }
 
 #cart-popup .item input {
-  width: 30px;
-  text-align: center;
-  margin-right: 10px;
-  margin-top: 2px; /* Add margin-top to ensure top border is visible */
+    width: 30px;
+    text-align: center;
+    margin-right: 10px;
+    margin-top: 2px; /* Add margin-top to ensure top border is visible */
 }
 
 #cart-popup .item div {
@@ -58,14 +58,14 @@ body {
 }
 
 #cart-popup button {
-  background-color: #ff5c5c;
-  color: #fff;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-  margin-top: 5px; /* Add space above the button */
+    background-color: #ff5c5c;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 5px; /* Add space above the button */
 }
 
 #cart-popup button:hover {
-  background-color: #ff0000;
+    background-color: #ff0000;
 }
