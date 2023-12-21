@@ -38,8 +38,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
             return imageUrl;
         } catch (error) {
-            console.error('Error fetching shop image:', error);
-            throw error;
+            console.error(`Error fetching shop ${imgType} image:`, error);
+            //throw error;
+            if(imgType == "avatar"){
+                return "../Resources/default_avatar.webp";
+            }
+            else{
+                return "../Resources/default_banner.webp";
+            }
         }
     }
 
@@ -48,8 +54,10 @@ document.addEventListener('DOMContentLoaded', function () {
             // 替換 baseURL 為實際的 API 基礎 URL
             const baseURL = 'http://localhost:8000/api/shop/';
             const url = new URL(baseURL);
-            const self_shop_uuid = getCookie("shop_uuid");
-            url.searchParams.append('shop_uuid', self_shop_uuid);
+            const urlParams = new URLSearchParams(window.location.search);
+            const passedShopUUID = urlParams.get('shop_uuid');
+            const shopUUID = passedShopUUID || getCookie("shop_uuid");
+            url.searchParams.append('shop_uuid', shopUUID);
 
             const response = await fetch(url.toString());
 
