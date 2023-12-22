@@ -26,10 +26,17 @@
 <div id="banner"></div>
 <div id="business-management"></div>
 <script>
-    // 假設這裡獲取用戶類型的邏輯，可以是後端返回的值或其他方式
-    const userType = "buyer"; // 或 "seller"
+    function getUserType() {
+        // Get the query parameter from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const userType = urlParams.get('userType');
 
-    // 根據用戶類型引入相應的功能文件
+        // Set the user type to "buyer" if not specified
+        return userType || 'buyer';
+    }
+
+    // Dynamically load functions based on user type
+    const userType = getUserType();
     if (userType === "seller") {
         document.write('<script src="SellerFunctions.js"><\/script>');
     } else {
