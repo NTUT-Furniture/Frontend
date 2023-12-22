@@ -31,7 +31,7 @@ document.getElementById('submitButton').addEventListener('click', function () {
         })
             .then(response => response.json())
             .then(data => {
-                // console.log(data);
+                console.log(data);
                 // console.log(formData);
                 UserSignup(data,formData['email'],formData['password']);
             })
@@ -50,40 +50,45 @@ function validateEmail(email) {
 
 function UserSignup(userData,name,pwd) {
     // console.log(userData.account_uuid);
-    if (userData.account_uuid!==undefined) {
+    if (userData.access_token!==undefined) {
         alert('Sign up successful! Redirecting to HomePage.');
         UserLogin(name,pwd)
     } 
     else {
+        console.log(userData.account_uuid);
         alert('Sign up error! Please check your information');
     }
 }
-function UserLogin(username ,password) {
-    fetch('http://localhost:8000/api/token', {
-        method: 'POST', // 修改为 POST 方法
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        body: new URLSearchParams({
-            grant_type: '',
-            username: username,
-            password: password,
-            scope: '',
-            client_id: '',
-            client_secret: ''
-        }).toString()
-    })
-    .then(response => response.json())
-    .then(data => {
-        GetAccount(data.access_token, data.token_type);
-    })
-    .catch(error => console.error('Error:', error));
+async function UserLogin(username, password) {
+    try {
+        const response = await fetch('http://localhost:8000/api/token', {
+            method: 'POST', // 使用 POST 方法
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                grant_type: '',
+                username: username,
+                password: password,
+                scope: '',
+                client_id: '',
+                client_secret: ''
+            }).toString()
+        });
+
+        const data = await response.json();
+        console.log(data);
+        await GetAccount(data.access_token, data.token_type);
+    } catch (error) {
+        console.error('Error:', error);
+    }
 }
 
 async function GetAccount(token, type) {
+
     try {
-        const response = await fetch('http://localhost:8000/api/shop/mine', {
+        const response = await fetch('http://localhost:8000/api/account/', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -92,11 +97,24 @@ async function GetAccount(token, type) {
         });
 
         const data = await response.json();
+        console.log(data);
         setCookie("account_uuid", data.account_uuid, 7);
         setCookie("token", token, 7);
-        setCookie("shop_uuid", data.shop_uuid);
+        // setCookie("shop_uuid", data.shop_uuid);
         console.log(document.cookie);
+        window.location.href = '../home/Index.html';
     } catch (error) {
         throw new Error('Error fetching account data: ' + error.message);
     }
+}
+
+function setCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + value + expires + "; path=/";
+    //console.log(document.cookie);
 }

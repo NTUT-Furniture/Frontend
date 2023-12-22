@@ -115,6 +115,7 @@ async function GetAccountDetail(type,token) {
         }
 
         const jsonData = await response.json();
+        console.log(jsonData)
         return updateFormGroups(jsonData);
     } catch (error) {
         console.error('The Account Error: ', error);
