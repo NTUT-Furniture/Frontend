@@ -35,7 +35,7 @@ async function showAccountSetting() {
 
     const modifyButton = document.createElement('button');
     modifyButton.id = 'Confirm';
-    modifyButton.type = 'submit';
+    modifyButton.type = 'button';
     modifyButton.textContent = 'Confirm';
     modifyButton.addEventListener('click',async function(event) {
         event.preventDefault();
@@ -70,7 +70,9 @@ async function modifyAccountSetting(type, token) {
     inputElements.forEach(input => {
         formData[input.name] = input.value;
     });
-
+    if(formData['password']==="***"){
+        formData['password'] = "";
+    }
     try {
         const response = await fetch(`http://localhost:8000/api/account/?` +
             // `account_uuid=${getCookie("account_uuid")}&`+

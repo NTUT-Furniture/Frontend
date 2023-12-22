@@ -12,7 +12,7 @@ body {
 
 .avator {
     position: relative;
-    width: 75%;
+    width: 17%;
     height: auto;
     top: 15%;
     left: 7%;
@@ -20,12 +20,18 @@ body {
 
 .avatar-container {
     position: relative;
-    width: 25%; /* 设置容器宽度 */
-    padding-bottom: 25%; /* 设置与宽度相等的底部填充，以确保高度与宽度相同 */
+    width: 100%; /* 设置容器宽度 */
+    padding-bottom: 100%; /* 设置与宽度相等的底部填充，以确保高度与宽度相同 */
     border-radius: 50%; /* 使其成为圆形 */
     border: 8px solid #FFF;
     box-sizing: border-box;
     overflow: hidden;
+}
+
+.change-avatar {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
 }
 
 .avatar-container img {
@@ -155,12 +161,15 @@ body {
     margin-left: 10px;
     margin-top: 10px;
     width: 680px;
-    height: 100px;
+    height: 180px;
     border-radius: 15px;
     border: none; /* 將邊框設為無 */
     outline: none; /* 移除點擊時的輪廓效果 */
     flex-shrink: 0;
     font-size: 24px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 #Confirm {

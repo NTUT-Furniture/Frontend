@@ -1,14 +1,13 @@
 async function showShopSetting() {
-    // 先清空 content 區域的內容
     document.getElementById('content').innerHTML = '';
 
-    // 創建 form 元素
     const formElement = document.createElement('form');
     formElement.className = 'AccountSetting-form';
     formElement.action = ''; // 設置表單的 action 屬性
     formElement.method = 'POST'; // 設置表單的 method 屬性
     let data =""
     const shopUuid = getCookie('shop_uuid');
+    const token = getCookie('token');
     console.log(shopUuid === 'undefined');
     if (shopUuid === 'undefined') {
         try {
@@ -39,8 +38,17 @@ async function showShopSetting() {
     console.log(data);
     const createBannerButton = document.createElement('button');
     createBannerButton.id = 'Banner';
-    createBannerButton.type = 'submit';
+    createBannerButton.type = 'button';
     createBannerButton.textContent = 'Create Banner';
+    
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.id = 'bannerFileInput';
+    fileInput.style.display = 'none';
+    
+    createBannerButton.addEventListener('click', function() {
+        fileInput.click();
+    });
 
     const shopNameFormGroup = document.createElement('div');
     shopNameFormGroup.className = 'form-group';
@@ -80,8 +88,18 @@ async function showShopSetting() {
 
     const confirmButton = document.createElement('button');
     confirmButton.id = 'Confirm';
-    confirmButton.type = 'submit';
+    confirmButton.type = 'button';
     confirmButton.textContent = 'Confirm';
+    confirmButton.addEventListener('click',async function(event){
+        event.preventDefault();
+        modifyShopSetting("Bearer",token);
+        try {
+            await modifyShopSetting("Bearer", token);
+            window.location.reload();
+        } catch (error) {
+            console.error('Error during shop modification:', error);
+        }
+    });
 
     const cancelButton = document.createElement('button');
     cancelButton.id = 'Cancel';
@@ -95,11 +113,49 @@ async function showShopSetting() {
     buttonContainer.appendChild(cancelButton);
 
     formElement.appendChild(createBannerButton);
+    formElement.appendChild(fileInput);
     formElement.appendChild(shopNameFormGroup);
     formElement.appendChild(descriptionFormGroup);
     formElement.appendChild(buttonContainer);
 
     document.getElementById('content').appendChild(formElement);
+
+    loadBannerImage();
+
+    fileInput.addEventListener('change', async function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                createBannerButton.style.backgroundImage = `url(${e.target.result})`;
+                createBannerButton.textContent = 'Banner'; // 清除按钮文字
+            };
+            reader.readAsDataURL(file);
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch(`http://localhost:8000/api/image/?shop_uuid=${shopUuid}&img_type=banner`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Success');
+                    console.log(data);
+                } else {
+                    console.error('Error');
+                }
+            } catch (error) {
+                console.error('Upload Error', error);
+            }
+        }
+    });
 }
 
 
@@ -124,5 +180,45 @@ async function GetAccount(type,token) {
         return data
     } catch (error) {
         throw new Error('Error fetching account data: ' + error.message);
+    }
+}
+
+async function modifyShopSetting(type, token) {
+    var shopName = document.getElementById('shopname').value;
+    var description = document.getElementById('description').value;
+
+    try {
+        const response = await fetch(`http://localhost:8000/api/shop/?` +
+            `name=${shopName}&`+
+            `description=${description}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Authorization': type + " " + token,
+                },
+            });
+
+        const data = await response.json();
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.error('API Error:', error);
+        throw error;
+    }
+}
+
+async function loadBannerImage() {
+    const shopUuid = getCookie('shop_uuid');
+    const imageUrl = `http://localhost:8000/api/image/${shopUuid}?img_type=banner`;
+    try {
+        const response = await fetch(imageUrl);
+        if (response.ok) {
+            document.getElementById('Banner').style.backgroundImage = `url(${imageUrl})`;
+            document.getElementById('Banner').textContent = "Banner";
+        } else if (response.status === 404) {
+            console.log('Image not found, not changing the banner.');
+        }
+    } catch (error) {
+        console.error('Error fetching image:', error);
     }
 }
