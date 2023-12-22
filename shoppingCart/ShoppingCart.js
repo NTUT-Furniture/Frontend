@@ -25,6 +25,12 @@ function toggleCart() {
     }
 }
 
+// Function to redirect to checkout page
+function redirectToCheckout() {
+    // Implement the logic to navigate to the checkout page
+    console.log('Redirecting to checkout page');
+}
+
 function showCartItems() {
     const cartPopup = document.getElementById('cart-popup');
     // Add a close button
@@ -51,7 +57,7 @@ function showCartItems() {
             <input type="number" min="1" value="${item.quantity}" onchange="updateQuantity('${item.id}', this.value)">
             <span>)</span>
             <div>$${item.price * item.quantity}</div>
-            <button onclick="removeItem(${item.id})">Remove</button>
+            <button onclick="removeItem('${item.id}')">Remove</button>
         `;
         cartPopup.appendChild(itemDiv);
         });
@@ -59,6 +65,14 @@ function showCartItems() {
         const totalDiv = document.createElement('div');
         totalDiv.innerHTML = `<strong>Total:</strong> $${totalAmount}`;
         cartPopup.appendChild(totalDiv);
+
+        // Add a Checkout button
+        const checkoutButton = document.createElement('button');
+        checkoutButton.innerText = 'Checkout';
+        checkoutButton.onclick = redirectToCheckout; // Use your checkout function here
+        checkoutButton.style.marginTop = '10px'; // Add some spacing from the total
+        checkoutButton.classList.add('checkout-button'); // Optionally, add a class for styling
+        cartPopup.appendChild(checkoutButton);
     }
 }
 
