@@ -72,6 +72,11 @@ if (sharedPages.includes(currentPage)) {
     // window.addEventListener('beforeunload', clearShoppingCartCookie);
 }
 
+window.addEventListener('unload', function () {
+    // Clear the shopping cart cookie when the user closes the browser tab or window
+    clearShoppingCartCookie();
+});
+
 function toggleCart() {
     const cartPopup = document.getElementById('cart-popup');
     cartPopup.innerHTML = ''; // Clear previous content
