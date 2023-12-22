@@ -1,14 +1,75 @@
 let shoppingCart = [];
 
-// Function to get the shopping cart from local storage
-function getShoppingCart() {
-    const storedCart = localStorage.getItem('shoppingCart');
-    return storedCart ? JSON.parse(storedCart) : [];
+// // Function to get the shopping cart from local storage
+// function getShoppingCart() {
+//     const storedCart = localStorage.getItem('shoppingCart');
+//     return storedCart ? JSON.parse(storedCart) : [];
+// }
+
+// // Function to save the shopping cart to local storage
+// function saveShoppingCart(cart) {
+//     localStorage.setItem('shoppingCart', JSON.stringify(cart));
+// }
+
+// Function to save the shopping cart items in a cookie
+function saveShoppingCartToCookie() {
+    // Convert the shoppingCart array to a JSON string
+    const cartString = JSON.stringify(shoppingCart);
+    
+    // Set the cookie with the shopping cart data
+    document.cookie = `shoppingCart=${cartString}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
 }
 
-// Function to save the shopping cart to local storage
-function saveShoppingCart(cart) {
-    localStorage.setItem('shoppingCart', JSON.stringify(cart));
+// Function to load the shopping cart items from a cookie
+function loadShoppingCartFromCookie() {
+    // Retrieve the shopping cart data from the cookie
+    const cartString = getCookie('shoppingCart');
+
+    try {
+        // Check if the cartString is empty or null
+        if (cartString && cartString.trim() !== '') {
+            // Attempt to parse the JSON string to get the shopping cart array
+            shoppingCart = JSON.parse(cartString);
+        } else {
+            // If cartString is empty or null, initialize shoppingCart with an empty array
+            shoppingCart = [];
+        }
+    } catch (error) {
+        // Handle the error (e.g., log it or set shoppingCart to an empty array)
+        console.error('Error parsing JSON data:', error);
+        shoppingCart = [];
+    }
+}
+
+// Function to clear the shopping cart cookie
+function clearShoppingCartCookie() {
+    document.cookie = 'shoppingCart=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+}
+
+// Helper function to get the value of a cookie by name
+function getCookie(cookieName) {
+    const name = `${cookieName}=`;
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookieArray = decodedCookie.split(';');
+    for (let i = 0; i < cookieArray.length; i++) {
+        let cookie = cookieArray[i].trim();
+        if (cookie.indexOf(name) === 0) {
+            return cookie.substring(name.length, cookie.length);
+        }
+    }
+    return '';
+}
+
+// Check if the page is one of the shared pages
+const sharedPages = ['/home/Index.html', '/shopManager/Shop.html', /* Add other shared pages here */];
+const currentPage = window.location.pathname;
+
+if (sharedPages.includes(currentPage)) {
+    // Load the shopping cart from the cookie on shared pages
+    window.addEventListener('load', loadShoppingCartFromCookie);
+
+    // // Add logic to clear the cookie on page refresh (F5)
+    // window.addEventListener('beforeunload', clearShoppingCartCookie);
 }
 
 function toggleCart() {
@@ -86,7 +147,8 @@ function addItemToCart(item) {
         shoppingCart.push({ ...item, quantity: 1 });
     }
 
-    saveShoppingCart(shoppingCart);
+    // saveShoppingCart(shoppingCart);
+    saveShoppingCartToCookie();
     // console.log(shoppingCart);
     // toggleCart();
 }
@@ -101,20 +163,23 @@ function removeItem(itemId) {
     // Clear the cartPopup and show the updated items
     const cartPopup = document.getElementById('cart-popup');
     cartPopup.innerHTML = '';
-    saveShoppingCart(shoppingCart);
+    // saveShoppingCart(shoppingCart);
+    saveShoppingCartToCookie();
     showCartItems();
 }
 
 function updateQuantity(itemId, newQuantity) {
-    console.log(itemId);
-    console.log(typeof(itemId));
-    console.log(shoppingCart);
+    // console.log(itemId);
+    // console.log(typeof(itemId));
+    // console.log(shoppingCart);
+    console.log(`Updating quantity for item ${itemId} to ${newQuantity}`);
     const itemToUpdate = shoppingCart.find(item => item.id === itemId);
     const parsedQuantity = parseInt(newQuantity, 10);
 
     if (itemToUpdate && parsedQuantity >= 1) {
         itemToUpdate.quantity = parsedQuantity;
-        saveShoppingCart(shoppingCart);
+        // saveShoppingCart(shoppingCart);
+        saveShoppingCartToCookie();
     } else {
         console.error(`Item with ID ${itemId} not found in the shopping cart.`);
     }
@@ -122,7 +187,8 @@ function updateQuantity(itemId, newQuantity) {
     // Clear the cartPopup and show the updated items
     const cartPopup = document.getElementById('cart-popup');
     cartPopup.innerHTML = '';
-    saveShoppingCart(shoppingCart);
+    // saveShoppingCart(shoppingCart);
+    saveShoppingCartToCookie();
     showCartItems();
 }
 
