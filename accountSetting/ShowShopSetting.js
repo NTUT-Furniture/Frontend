@@ -15,7 +15,7 @@ async function showShopSetting() {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
-                    'Authorization': 'Bearer ' + getCookie('token'),
+                    'Authorization': 'Bearer ' + token,
                 },
             });
 
@@ -32,7 +32,26 @@ async function showShopSetting() {
         }
     }
     else{
-        data = await GetAccount('Bearer',getCookie('token'));
+        try {
+            const response = await fetch('http://localhost:8000/api/shop/mine', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': 'Bearer ' + token,
+                },
+            });
+
+            data = await response.json();
+            console.log(data);
+            if (response.ok) {
+                console.log('Get Shop Success:', data);
+            } else {
+                throw new Error('Get Shop Error');
+            }
+            setCookie("shop_uuid", data.shop_uuid);
+        } catch (error) {
+            console.error('API GET Shop Error:', error);
+        }
     }
 
     console.log(data);
@@ -120,8 +139,6 @@ async function showShopSetting() {
 
     document.getElementById('content').appendChild(formElement);
 
-    loadBannerImage();
-
     fileInput.addEventListener('change', async function(event) {
         const file = event.target.files[0];
         if (file) {
@@ -146,16 +163,18 @@ async function showShopSetting() {
 
                 if (response.ok) {
                     const data = await response.json();
-                    console.log('Success');
+                    console.log('Success Upload Banner');
                     console.log(data);
                 } else {
-                    console.error('Error');
+                    console.error('Error Upload Banner');
                 }
             } catch (error) {
-                console.error('Upload Error', error);
+                console.error('Upload to API Error', error);
             }
         }
     });
+
+    loadBannerImage();
 }
 
 
@@ -209,18 +228,25 @@ async function modifyShopSetting(type, token) {
 
 async function loadBannerImage() {
     const shopUuid = getCookie('shop_uuid');
-    const imageUrl = `http://localhost:8000/api/image/${shopUuid}?img_type=banner`;
-    try {
-        const response = await fetch(imageUrl);
-        if (response.ok) {
-            document.getElementById('Banner').style.backgroundImage = `url(${imageUrl})`;
-            document.getElementById('Banner').textContent = "Banner";
-        } else if (response.status === 404) {
-            console.log('Image not found, not changing the banner.');
-        }
-    } catch (error) {
-        console.error('Error fetching image:', error);
-    }
+    console.log(shopUuid);
+    // 添加時間戳和隨機數以產生唯一的 URL
+    // const timestamp = new Date().getTime();
+    // const randomNum = Math.random();
+    imageUrl = `http://localhost:8000/api/image/${shopUuid}?img_type=banner`;
+    console.log(imageUrl);
+    document.getElementById('Banner').style.backgroundImage = `url(${imageUrl})`;
+    // try {
+    //     const response = await fetch(imageUrl);
+    //     if (response.ok) {
+            
+    //         console.log(imageUrl);
+    //         document.getElementById('Banner').textContent = "Banner";
+    //     } else if (response.status === 404) {
+    //         console.log('Image not found, not changing the banner.');
+    //     }
+    // } catch (error) {
+    //     console.error('Error fetching image:', error);
+    // }
 }
 
 function setCookie(name, value, days) {
