@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.appendChild(addButton);
     let openDetailForm = null;
     let currentDetailType = null;
-
+    
     function renderBusinessCard(business) {
         const card = document.createElement('div');
         card.classList.add('business-card');
