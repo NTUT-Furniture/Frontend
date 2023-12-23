@@ -456,24 +456,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     
     async function fetchImage(UUID, imgType) {
-        try {
-            // Replace baseURL with the actual API base URL for fetching images
-            const baseURL = `http://localhost:8000/api/image/${UUID}?img_type=${imgType}`;
-            const response = await fetch(baseURL);
-
-            if (!response.ok) {
-                throw new Error('Failed to fetch shop image from the API');
-            }
-
-            const imageData = await response.blob(); // Get image data as Blob
-            const imageUrl = URL.createObjectURL(imageData); // Convert Blob to URL
-
-            return imageUrl;
-        } catch (error) {
-            console.error('Error fetching shop image:', error);
-            //throw error;
-
-        }
+        return `http://localhost:8000/api/image/${UUID}?img_type=${imgType}`;
     }
 
     async function renderBusinessCards() {
