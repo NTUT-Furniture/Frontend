@@ -8,10 +8,10 @@ document.addEventListener('DOMContentLoaded', function () {
         banner.innerHTML = `
         <div class="container">
             <div class="image-wrapper">
-                <img src=${data.bannerImage} alt="" class="image" onerror="this.src='../Resources/default_banner.web'"/>
+                <img src=${data.bannerImage} alt="" class="image" onerror="this.src='../Resources/default_banner.webp'"/>
                 <div class="image-overlay">
                     <div class="avatar-container">
-                        <img src=${data.avatar} alt="Avatar" class="avatar" onerror="this.src='../Resources/default_avatar.web'"/>
+                        <img src=${data.avatar} alt="Avatar" class="avatar" onerror="this.src='../Resources/default_avatar.webp'"/>
                     </div>
                     <div class="text-content">
                         <div class="shop-name">${data.shopname}</div>
@@ -67,8 +67,8 @@ document.addEventListener('DOMContentLoaded', function () {
     async function initBanner() {
         try {
             const shopData = await getShop();
-            const bannerImage = fetchImage(shopData.shop_uuid, "banner");
-            const shopAvatar = fetchImage(shopData.shop_uuid, "avatar");
+            const bannerImage = await fetchImage(shopData.shop_uuid, "banner");
+            const shopAvatar = await fetchImage(shopData.shop_uuid, "avatar");
             const Data = {
                 shop_uuid: shopData.shop_uuid,
                 shopname: shopData.name,
