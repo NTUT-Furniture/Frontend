@@ -42,6 +42,7 @@ function loadAvatarImage() {
     account_uuid = getCookie('account_uuid');
     const imageUrl = `http://localhost:8000/api/image/${account_uuid}?img_type=avatar`;
     document.getElementById('avatarImage').src = imageUrl;
+    console.log(imageUrl)
 }
 
 window.addEventListener('load', loadAvatarImage);

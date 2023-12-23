@@ -8,10 +8,10 @@ document.addEventListener('DOMContentLoaded', function () {
         banner.innerHTML = `
         <div class="container">
             <div class="image-wrapper">
-                <img src=${data.bannerImage} alt="" class="image" onerror="this.src='../Resources/default_banner.web'"/>
+                <img src=${data.bannerImage} alt="" class="image" onerror="this.src='../Resources/default_banner.webp'"/>
                 <div class="image-overlay">
                     <div class="avatar-container">
-                        <img src=${data.avatar} alt="Avatar" class="avatar" onerror="this.src='../Resources/default_avatar.web'"/>
+                        <img src=${data.avatar} alt="Avatar" class="avatar" onerror="this.src='../Resources/default_avatar.webp'"/>
                     </div>
                     <div class="text-content">
                         <div class="shop-name">${data.shopname}</div>
@@ -40,15 +40,64 @@ document.addEventListener('DOMContentLoaded', function () {
         return `http://localhost:8000/api/image/${UUID}?img_type=${imgType}`;
     }
 
+    async function getShopUUID(){
+        const urlParams = new URLSearchParams(window.location.search);
+        const passedShopUUID = urlParams.get('shop_uuid');
+        if(passedShopUUID == null){
+            console.log("get self shop_uuid");
+            const response = await fetch("http://localhost:8000/api/shop/mine", {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': 'Bearer ' + getCookie('token'),
+                },
+            });
+            
+            if (response.ok) {
+                //get a self shop_uuid
+                const jsonResponse = await response.json();
+                console.log("success to get self shop")
+                setCookie("shop_uuid", jsonResponse.shop_uuid);
+                return jsonResponse.shop_uuid;
+            } 
+            else if (response.status == 404){
+                console.log("fail to get self shop, because dont have shop");
+                try {
+                    const response = await fetch('http://localhost:8000/api/shop/?name=Default Shop&description=Default Description', {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Authorization': 'Bearer ' + getCookie('token'),
+                        },
+                    });
+        
+                    data = await response.json();
+                    console.log(data);
+                    if (response.ok) {
+                        console.log('Shop Create Success:', data);
+                    } else {
+                        throw new Error('Shop Create Error');
+                    }
+                    setCookie("shop_uuid", data.shop_uuid);
+                    return data.shop_uuid;
+                } catch (error) {
+                    console.error('Create Shop Error:', error);
+                }
+            }
+        }
+        else{
+            return passedShopUUID;
+        }
+        //const shopUUID = passedShopUUID || getCookie("shop_uuid");
+    }
+    
     async function getShop() {
         try {
             // 替換 baseURL 為實際的 API 基礎 URL
             const baseURL = 'http://localhost:8000/api/shop/';
             const url = new URL(baseURL);
-            const urlParams = new URLSearchParams(window.location.search);
-            const passedShopUUID = urlParams.get('shop_uuid');
-            const shopUUID = passedShopUUID || getCookie("shop_uuid");
-            url.searchParams.append('shop_uuid', shopUUID);
+
+            url.searchParams.append('shop_uuid', await getShopUUID());
 
             const response = await fetch(url.toString());
 
@@ -60,15 +109,14 @@ document.addEventListener('DOMContentLoaded', function () {
             return data;
         } catch (error) {
             console.error('Error fetching shopname and description:', error);
-            throw error; // 可以根據實際需求處理錯誤
         }
     }
 
     async function initBanner() {
         try {
             const shopData = await getShop();
-            const bannerImage = fetchImage(shopData.shop_uuid, "banner");
-            const shopAvatar = fetchImage(shopData.shop_uuid, "avatar");
+            const bannerImage = await fetchImage(shopData.shop_uuid, "banner");
+            const shopAvatar = await fetchImage(shopData.shop_uuid, "avatar");
             const Data = {
                 shop_uuid: shopData.shop_uuid,
                 shopname: shopData.name,
@@ -80,13 +128,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         } catch (error) {
             // If getShop fails, provide default values for the banner
-            const defaultData = {
-                shopname: 'Default Shop',
-                description: 'Default Description',
-                bannerImage: '../Resources/default_banner.webp',
-                avatar: '../Resources/default_avatar.webp'
-            };
-            updateBanner(defaultData);
         }
     }
     initBanner();
