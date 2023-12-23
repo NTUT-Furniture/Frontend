@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link href="../shoppingCart/ShoppingCart_Style.css" rel="stylesheet"> -->
+    <script defer src="../shoppingCart/ShoppingCart.js"></script>
+    <link href="Checkout_Style.css" rel="stylesheet">
+    <script defer src="Checkout.js"></script>
+    <title>checkout</title>
+</head>
+<body>
+    <h2>checkout page</h2>
+
+    <table id="cart">
+        <thead>
+            <tr>
+                <th>商品</th>
+                <th>價格</th>
+            </tr>
+        </thead>
+        <tbody id="cartBody">
+            <!-- 商品清單將顯示在這裡 -->
+        </tbody>
+    </table>
+
+    <div id="couponInput">
+        <label for="coupon">優惠碼：</label>
+        <input type="text" id="coupon" placeholder="輸入優惠碼">
+        <button onclick="applyCoupon()">套用優惠碼</button>
+        <p id="message"></p>
+    </div>
+
+    <button onclick="checkout()">結帳</button>
+    <button onclick="continueShopping()">繼續購買</button>
+</body>
+</html>
