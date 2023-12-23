@@ -8,10 +8,10 @@ document.addEventListener('DOMContentLoaded', function () {
         banner.innerHTML = `
         <div class="container">
             <div class="image-wrapper">
-                <img src=${data.bannerImage} alt="" class="image"/>
+                <img src=${data.bannerImage} alt="" class="image" onerror="this.src='../Resources/default_banner.web'"/>
                 <div class="image-overlay">
                     <div class="avatar-container">
-                        <img src=${data.avatar} alt="Avatar" class="avatar"/>
+                        <img src=${data.avatar} alt="Avatar" class="avatar" onerror="this.src='../Resources/default_avatar.web'"/>
                     </div>
                     <div class="text-content">
                         <div class="shop-name">${data.shopname}</div>
@@ -19,28 +19,25 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
                 </div>
             </div>
+            <div class="buttons"> <button class="like" id="subscriptionButton"style="width: 50px; height: 50px;"> <span style="display: inline-block; transform: scale(2);">♥</span> </button> </div>
         </div>
         `;
+        const subButton = document.getElementById('subscriptionButton');
+        subButton.addEventListener('click', function () {
+            handleLikeButtonClick(data.shop_uuid);
+        });
     }
 
-    async function fetchImage(UUID, imgType) {
-        try {
-            // Replace baseURL with the actual API base URL for fetching images
-            const baseURL = `http://localhost:8000/api/image/${UUID}?img_type=${imgType}`;
-            const response = await fetch(baseURL);
+    async function handleLikeButtonClick(shopUuid) {
+        // 处理按钮点击事件
+        console.log('Sub button clicked for shop:', shopUuid);
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch shop image from the API');
-            }
+        // 调用订阅函数或其他逻辑
+        // 例如： subscribe(shopUuid);
+    }
 
-            const imageData = await response.blob(); // Get image data as Blob
-            const imageUrl = URL.createObjectURL(imageData); // Convert Blob to URL
-
-            return imageUrl;
-        } catch (error) {
-            console.error('Error fetching shop image:', error);
-            throw error;
-        }
+    function fetchImage(UUID, imgType) {
+        return `http://localhost:8000/api/image/${UUID}?img_type=${imgType}`;
     }
 
     async function getShop() {
@@ -48,8 +45,10 @@ document.addEventListener('DOMContentLoaded', function () {
             // 替換 baseURL 為實際的 API 基礎 URL
             const baseURL = 'http://localhost:8000/api/shop/';
             const url = new URL(baseURL);
-            const self_shop_uuid = getCookie("shop_uuid");
-            url.searchParams.append('shop_uuid', self_shop_uuid);
+            const urlParams = new URLSearchParams(window.location.search);
+            const passedShopUUID = urlParams.get('shop_uuid');
+            const shopUUID = passedShopUUID || getCookie("shop_uuid");
+            url.searchParams.append('shop_uuid', shopUUID);
 
             const response = await fetch(url.toString());
 
@@ -68,8 +67,8 @@ document.addEventListener('DOMContentLoaded', function () {
     async function initBanner() {
         try {
             const shopData = await getShop();
-            const bannerImage = await fetchImage(shopData.shop_uuid, "banner");
-            const shopAvatar = await fetchImage(shopData.shop_uuid, "avatar");
+            const bannerImage = fetchImage(shopData.shop_uuid, "banner");
+            const shopAvatar = fetchImage(shopData.shop_uuid, "avatar");
             const Data = {
                 shop_uuid: shopData.shop_uuid,
                 shopname: shopData.name,

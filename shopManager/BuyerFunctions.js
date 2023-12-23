@@ -33,29 +33,61 @@ document.addEventListener('DOMContentLoaded', function () {
         alert(`Buy ${quantity} of ${business.name}`);
     }
 
-    function fetchMockBusinessData() {
-        const mockData = [
-            {
-                id: 1,
-                name: 'Business A',
-                description: 'Description A',
-                quantity: 10,
-                price: 50,
-                image_url: '../Resources/bed.png',
-            },
-            {
-                id: 2,
-                name: 'Business B',
-                description: 'Description B',
-                quantity: 5,
-                price: 30,
-                image_url: '../Resources/chair.jpg',
-            },
-            // Add more mock data as needed
-        ];
-        mockData.forEach(renderBusinessCard);
+    async function fetchBusinessCardData() {
+        try {
+            const baseURL = 'http://localhost:8000/api/product/all?';
+            const url = new URL(baseURL);
+            const urlParams = new URLSearchParams(window.location.search);
+            const passedShopUUID = urlParams.get('shop_uuid');
+            const shopUUID = passedShopUUID || getCookie("shop_uuid");
+            url.searchParams.append('order', "shop_uuid");
+            url.searchParams.append('shop_uuid', shopUUID);
+            url.searchParams.append('is_active', '1');
+            const response = await fetch(url.toString());
+            const data = await response.json();
+            console.log("fetch all product data", data);
+            return data;
+        } catch (error) {
+            throw new Error('Error fetch all product data: ' + error.message);
+        }
+    }
+    
+    function fetchImage(UUID, imgType) {
+        return `http://localhost:8000/api/image/${UUID}?img_type=${imgType}`;
     }
 
-    fetchMockBusinessData();
+    async function renderBusinessCards() {
+        try {
+            // Assuming fetchBusinessCardData returns an object with 'products' property
+            const products = await fetchBusinessCardData();
+            const productsData = products.products;
+    
+            const mappedData = [];
+    
+            for (const product of productsData) {
+                try {
+                    const productImage = fetchImage(product.product_uuid, "avatar");
+                    console.log("here", product.product_uuid);
+                    mappedData.push({
+                        id: product.product_uuid,
+                        name: product.name,
+                        description: product.description,
+                        quantity: product.stock,
+                        price: product.price,
+                        tag: product.tags,
+                        image_url: productImage || "../Resources/default_banner.webp", // Use fetched image or default if not available
+                    });
+                } catch (imageError) {
+                    console.error(`Error fetching image for product ${product.product_uuid}: ${imageError.message}`);
+                }
+            }
+    
+            console.log("mappedData:", mappedData);
+            mappedData.forEach((business) => renderBusinessCard(business));
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
 
+    renderBusinessCards();
 });
