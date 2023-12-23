@@ -76,7 +76,7 @@ function showOrderRecord() {
     // 将table添加到容器
     container.innerHTML = '';
     container.appendChild(table);
-    document.getElementById('content').appendChild(container);
+    // document.getElementById('content').appendChild(container);
 }
 
 function toggleOpenDetail(detailId) {
