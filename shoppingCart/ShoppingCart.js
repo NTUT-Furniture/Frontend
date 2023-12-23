@@ -1,120 +1,210 @@
-// script.js
-
 let shoppingCart = [];
 
-// Function to get the shopping cart from local storage
-function getShoppingCart() {
-  const storedCart = localStorage.getItem('shoppingCart');
-  return storedCart ? JSON.parse(storedCart) : [];
+// // Function to get the shopping cart from local storage
+// function getShoppingCart() {
+//     const storedCart = localStorage.getItem('shoppingCart');
+//     return storedCart ? JSON.parse(storedCart) : [];
+// }
+
+// // Function to save the shopping cart to local storage
+// function saveShoppingCart(cart) {
+//     localStorage.setItem('shoppingCart', JSON.stringify(cart));
+// }
+
+// Function to save the shopping cart items in a cookie
+function saveShoppingCartToCookie() {
+    // Convert the shoppingCart array to a JSON string
+    const cartString = JSON.stringify(shoppingCart);
+    
+    // Set the cookie with the shopping cart data
+    document.cookie = `shoppingCart=${cartString}; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/`;
 }
 
-// Function to save the shopping cart to local storage
-function saveShoppingCart(cart) {
-  localStorage.setItem('shoppingCart', JSON.stringify(cart));
+// Function to load the shopping cart items from a cookie
+function loadShoppingCartFromCookie() {
+    // Retrieve the shopping cart data from the cookie
+    const cartString = getCookie('shoppingCart');
+
+    try {
+        // Check if the cartString is empty or null
+        if (cartString && cartString.trim() !== '') {
+            // Attempt to parse the JSON string to get the shopping cart array
+            shoppingCart = JSON.parse(cartString);
+        } else {
+            // If cartString is empty or null, initialize shoppingCart with an empty array
+            shoppingCart = [];
+        }
+    } catch (error) {
+        // Handle the error (e.g., log it or set shoppingCart to an empty array)
+        console.error('Error parsing JSON data:', error);
+        shoppingCart = [];
+    }
 }
+
+// Function to clear the shopping cart cookie
+function clearShoppingCartCookie() {
+    document.cookie = 'shoppingCart=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+}
+
+// Helper function to get the value of a cookie by name
+function getCookie(cookieName) {
+    const name = `${cookieName}=`;
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookieArray = decodedCookie.split(';');
+    for (let i = 0; i < cookieArray.length; i++) {
+        let cookie = cookieArray[i].trim();
+        if (cookie.indexOf(name) === 0) {
+            return cookie.substring(name.length, cookie.length);
+        }
+    }
+    return '';
+}
+
+// Check if the page is one of the shared pages
+const sharedPages = ['/home/Index.html', '/shopManager/Shop.html', /* Add other shared pages here */];
+const currentPage = window.location.pathname;
+
+if (sharedPages.includes(currentPage)) {
+    // Load the shopping cart from the cookie on shared pages
+    window.addEventListener('load', loadShoppingCartFromCookie);
+
+    // // Add logic to clear the cookie on page refresh (F5)
+    // window.addEventListener('beforeunload', clearShoppingCartCookie);
+}
+
+window.addEventListener('unload', function () {
+    // Clear the shopping cart cookie when the user closes the browser tab or window
+    clearShoppingCartCookie();
+});
 
 function toggleCart() {
-  const cartPopup = document.getElementById('cart-popup');
-  cartPopup.innerHTML = ''; // Clear previous content
+    const cartPopup = document.getElementById('cart-popup');
+    cartPopup.innerHTML = ''; // Clear previous content
 
-  if (cartPopup.style.display === 'none' || cartPopup.style.display === '') {
-    // Show cart content
-    cartPopup.style.display = 'block';
-    showCartItems();
-  } else {
-    // Hide cart content
-    cartPopup.style.display = 'none';
-  }
+    if (cartPopup.style.display === 'none' || cartPopup.style.display === '') {
+        // Show cart content
+        cartPopup.style.display = 'block';
+        showCartItems();
+    } else {
+        // Hide cart content
+        cartPopup.style.display = 'none';
+    }
+}
+
+// Function to redirect to checkout page
+function redirectToCheckout() {
+    // Implement the logic to navigate to the checkout page
+    console.log('Redirecting to checkout page');
 }
 
 function showCartItems() {
-  const cartPopup = document.getElementById('cart-popup');
-  // Add a close button
-  const closeButton = document.createElement('button');
-  closeButton.innerText = 'Close';
-  closeButton.onclick = toggleCart;
-  closeButton.style.position = 'absolute';
-  closeButton.style.bottom = '10px';  // Adjust the bottom spacing as needed
-  closeButton.style.right = '10px';  // Adjust the right spacing as needed
-  cartPopup.appendChild(closeButton);
+    const cartPopup = document.getElementById('cart-popup');
+    // Add a close button
+    const closeButton = document.createElement('button');
+    closeButton.innerText = 'Close';
+    closeButton.onclick = toggleCart;
+    closeButton.style.position = 'absolute';
+    closeButton.style.bottom = '10px';  // Adjust the bottom spacing as needed
+    closeButton.style.right = '10px';  // Adjust the right spacing as needed
+    cartPopup.appendChild(closeButton);
 
-  if (shoppingCart.length === 0) {
-    const emptyText = document.createElement('div');
-    emptyText.innerHTML = `<h2>Cart is empty</h2>`;
-    cartPopup.appendChild(emptyText);
-  } else {
-    const totalAmount = shoppingCart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    if (shoppingCart.length === 0) {
+        const emptyText = document.createElement('div');
+        emptyText.innerHTML = `<h2>Cart is empty</h2>`;
+        cartPopup.appendChild(emptyText);
+    } else {
+        const totalAmount = shoppingCart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
-    shoppingCart.forEach(item => {
-      const itemDiv = document.createElement('div');
-      itemDiv.classList.add('item');
-      itemDiv.innerHTML = `
-        <span>${item.name} (Qty: </span>
-        <input type="number" min="1" value="${item.quantity}" onchange="updateQuantity(${item.id}, this.value)">
-        <span>)</span>
-        <div>$${item.price * item.quantity}</div>
-        <button onclick="removeItem(${item.id})">Remove</button>
-      `;
-      cartPopup.appendChild(itemDiv);
-    });
+        shoppingCart.forEach(item => {
+        const itemDiv = document.createElement('div');
+        itemDiv.classList.add('item');
+        itemDiv.innerHTML = `
+            <span>${item.name} (Qty: </span>
+            <input type="number" min="1" value="${item.quantity}" onchange="updateQuantity('${item.id}', this.value)">
+            <span>)</span>
+            <div>$${item.price * item.quantity}</div>
+            <button onclick="removeItem('${item.id}')">Remove</button>
+        `;
+        cartPopup.appendChild(itemDiv);
+        });
 
-    const totalDiv = document.createElement('div');
-    totalDiv.innerHTML = `<strong>Total:</strong> $${totalAmount}`;
-    cartPopup.appendChild(totalDiv);
-  }
+        const totalDiv = document.createElement('div');
+        totalDiv.innerHTML = `<strong>Total:</strong> $${totalAmount}`;
+        cartPopup.appendChild(totalDiv);
+
+        // Add a Checkout button
+        const checkoutButton = document.createElement('button');
+        checkoutButton.innerText = 'Checkout';
+        checkoutButton.onclick = redirectToCheckout; // Use your checkout function here
+        checkoutButton.style.marginTop = '10px'; // Add some spacing from the total
+        checkoutButton.classList.add('checkout-button'); // Optionally, add a class for styling
+        cartPopup.appendChild(checkoutButton);
+    }
 }
 
 function addItemToCart(item) {
-  const existingItem = shoppingCart.find(cartItem => cartItem.id === item.id);
+    // console.log(item.id);
+    const existingItem = shoppingCart.find(cartItem => cartItem.id === item.id);
 
-  if (existingItem) {
-    existingItem.quantity += 1;
-  } else {
-    shoppingCart.push({ ...item, quantity: 1 });
-  }
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        shoppingCart.push({ ...item, quantity: 1 });
+    }
 
-  saveShoppingCart(shoppingCart);
-  // toggleCart();
+    // saveShoppingCart(shoppingCart);
+    saveShoppingCartToCookie();
+    // console.log(shoppingCart);
+    // toggleCart();
 }
 
 function removeItem(itemId) {
-  const index = shoppingCart.findIndex(item => item.id === itemId);
+    const index = shoppingCart.findIndex(item => item.id === itemId);
 
-  if (index !== -1) {
-    shoppingCart.splice(index, 1);
-  }
+    if (index !== -1) {
+        shoppingCart.splice(index, 1);
+    }
 
-  // Clear the cartPopup and show the updated items
-  const cartPopup = document.getElementById('cart-popup');
-  cartPopup.innerHTML = '';
-  saveShoppingCart(shoppingCart);
-  showCartItems();
+    // Clear the cartPopup and show the updated items
+    const cartPopup = document.getElementById('cart-popup');
+    cartPopup.innerHTML = '';
+    // saveShoppingCart(shoppingCart);
+    saveShoppingCartToCookie();
+    showCartItems();
 }
 
 function updateQuantity(itemId, newQuantity) {
-  const parsedQuantity = parseInt(newQuantity, 10);
-  if (!isNaN(parsedQuantity) && parsedQuantity >= 1) {
-    const item = shoppingCart.find(item => item.id === itemId);
-    if (item) {
-      item.quantity = parsedQuantity;
-    }
-  }
+    // console.log(itemId);
+    // console.log(typeof(itemId));
+    // console.log(shoppingCart);
+    console.log(`Updating quantity for item ${itemId} to ${newQuantity}`);
+    const itemToUpdate = shoppingCart.find(item => item.id === itemId);
+    const parsedQuantity = parseInt(newQuantity, 10);
 
-  // Clear the cartPopup and show the updated items
-  const cartPopup = document.getElementById('cart-popup');
-  cartPopup.innerHTML = '';
-  saveShoppingCart(shoppingCart);
-  showCartItems();
+    if (itemToUpdate && parsedQuantity >= 1) {
+        itemToUpdate.quantity = parsedQuantity;
+        // saveShoppingCart(shoppingCart);
+        saveShoppingCartToCookie();
+    } else {
+        console.error(`Item with ID ${itemId} not found in the shopping cart.`);
+    }
+
+    // Clear the cartPopup and show the updated items
+    const cartPopup = document.getElementById('cart-popup');
+    cartPopup.innerHTML = '';
+    // saveShoppingCart(shoppingCart);
+    saveShoppingCartToCookie();
+    showCartItems();
 }
 
 function testAddItem() {
-    const item = {id: 1, name: 'Item 1', price: 50};
+    const item = {id: "1", name: 'Item 1', price: 50};
     addItemToCart(item);
 }
 
 // Example items
-const item1 = { id: 5, name: 'Item 1', price: 20 };
-const item2 = { id: 2, name: 'Item 2', price: 30 };
+// const item1 = { id: "5", name: 'Item 1', price: 20 };
+// const item2 = { id: "2", name: 'Item 2', price: 30 };
 
-addItemToCart(item1);
-addItemToCart(item2);
+// addItemToCart(item1);
+// addItemToCart(item2);
