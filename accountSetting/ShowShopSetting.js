@@ -230,23 +230,12 @@ async function loadBannerImage() {
     const shopUuid = getCookie('shop_uuid');
     console.log(shopUuid);
     // 添加時間戳和隨機數以產生唯一的 URL
-    // const timestamp = new Date().getTime();
-    // const randomNum = Math.random();
-    imageUrl = `http://localhost:8000/api/image/${shopUuid}?img_type=banner`;
+    const timestamp = new Date().getTime();
+    const randomNum = Math.random();
+    imageUrl = `http://localhost:8000/api/image/${shopUuid}?img_type=banner&_=${timestamp}&rand=${randomNum}`;
     console.log(imageUrl);
     document.getElementById('Banner').style.backgroundImage = `url(${imageUrl})`;
-    // try {
-    //     const response = await fetch(imageUrl);
-    //     if (response.ok) {
-            
-    //         console.log(imageUrl);
-    //         document.getElementById('Banner').textContent = "Banner";
-    //     } else if (response.status === 404) {
-    //         console.log('Image not found, not changing the banner.');
-    //     }
-    // } catch (error) {
-    //     console.error('Error fetching image:', error);
-    // }
+    document.getElementById('Banner').textContent = "Banner";
 }
 
 function setCookie(name, value, days) {
