@@ -8,8 +8,12 @@
     <script src="https://unpkg.com/htmx.org@1.7.0/dist/htmx.js"></script>
     <link href="../shopManager/Shop_Style.css" rel="stylesheet">
     <script defer src="../shopManager/Banner.js"></script>
+    <link href="../shoppingCart/ShoppingCart_Style.css" rel="stylesheet">
+    <script defer src="../shoppingCart/ShoppingCart.js"></script>
 </head>
 <body>
+<div id="cart" onclick="toggleCart()">🛒</div>
+<div id="cart-popup"></div>
 <ul class="" id="navbar">
     <li><a href="../home/Index.html">Home</a></li>
     <li><a href="javascript:void(0);">News</a></li>
@@ -18,7 +22,7 @@
         <a class="dropbtn" href="../login/Login.html">Login</a>
         <div class="dropdown-content">
             <a href="../accountSetting/AccountSetting.html">Account</a>
-            <a href="javascript:void(0);">Shopping Cart</a>
+            <!-- <a href="javascript:void(0);">Shopping Cart</a> -->
             <a href="javascript:void(0);">More</a>
         </div>
     </li>
@@ -26,10 +30,17 @@
 <div id="banner"></div>
 <div id="business-management"></div>
 <script>
-    // 假設這裡獲取用戶類型的邏輯，可以是後端返回的值或其他方式
-    const userType = "seller"; // 或 "seller"
+    function getUserType() {
+        // Get the query parameter from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const userType = urlParams.get('userType');
 
-    // 根據用戶類型引入相應的功能文件
+        // Set the user type to "buyer" if not specified
+        return userType || 'buyer';
+    }
+
+    // Dynamically load functions based on user type
+    const userType = getUserType();
     if (userType === "seller") {
         document.write('<script src="SellerFunctions.js"><\/script>');
     } else {

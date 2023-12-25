@@ -1,9 +1,12 @@
 class ItemCardComponent {
-    constructor(productType, productName, productPrice, productDescription, imageUrl) {
+    constructor(productId, productType, productName, productPrice, productDescription, imageUrl) {
+        this.productId = productId;
         this.productName = productName;
         this.productPrice = productPrice;
         this.productDescription = productDescription;
         this.imageUrl = imageUrl;
+        let priceInt = parseInt(this.productPrice.replace(/\D/g, ''), 10);
+        this.item = {id: productId, name: productName, price: priceInt}
         this.container = this.render(); // Save the container element
     }
 
@@ -51,11 +54,16 @@ class ItemCardComponent {
             <h2>${this.productPrice}</h2>
             <p class="desc">${this.productDescription}</p>
             <div class="buttons">
-                <button class="add">Add to Cart</button>
+                <button class="add" id="addToCart">Add to Cart</button>
                 <button class="like"><span>♥</span></button>
             </div>
         `;
 
+        productElement.querySelector("#addToCart").addEventListener('click', (event) => {
+            event.stopPropagation();
+            addItemToCart(this.item);
+        });
+        
         // Append elements to the container
         container.appendChild(imageElement);
         container.appendChild(slideshowButtons);
@@ -71,6 +79,25 @@ class ItemCardComponent {
 // 假設有一組商品數據
 const products = [
     {
+        productId: "1",
+        productType: "Furniture",
+        productName: "Comfortable Sofa 1",
+        productPrice: "$500",
+        productDescription: "A cozy sofa for your living room.",
+        imageUrl: "../Resources/sofa.jpg"
+    },
+
+    {
+        productId: "2",
+        productType: "Furniture",
+        productName: "Comfortable Bed",
+        productPrice: "$700",
+        productDescription: "A cozy Bed for your living room.",
+        imageUrl: "../Resources/bed.png"
+    },
+
+    {
+        productId: "3",
         productType: "Furniture",
         productName: "Comfortable Sofa",
         productPrice: "$500",
@@ -79,30 +106,18 @@ const products = [
     },
 
     {
+        productId: "4",
         productType: "Furniture",
-        productName: "Comfortable Bed",
-        productPrice: "$700",
+        productName: "Comfortable Bed 2",
+        productPrice: "$500",
         productDescription: "A cozy Bed for your living room.",
         imageUrl: "../Resources/bed.png"
-    },
-    {
-        productType: "Furniture",
-        productName: "Comfortable Sofa",
-        productPrice: "$500",
-        productDescription: "A cozy sofa for your living room.",
-        imageUrl: "../Resources/sofa.jpg"
     },
 
     {
+        productId: "5",
         productType: "Furniture",
-        productName: "Comfortable Bed",
-        productPrice: "$700",
-        productDescription: "A cozy Bed for your living room.",
-        imageUrl: "../Resources/bed.png"
-    },
-    {
-        productType: "Furniture",
-        productName: "Comfortable Bed",
+        productName: "Comfortable Bed 3",
         productPrice: "$700",
         productDescription: "A cozy Bed for your living room.",
         imageUrl: "../Resources/bed.png"
@@ -118,6 +133,7 @@ function generateItemCard() {
 // 使用迴圈創建並添加多個 ItemCardComponent 實例
     for (const product of products) {
         const itemCardInstance = new ItemCardComponent(
+            product.productId,
             product.productType,
             product.productName,
             product.productPrice,
