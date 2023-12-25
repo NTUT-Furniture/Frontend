@@ -8,6 +8,7 @@ class ItemCardComponent {
         let priceInt = parseInt(this.productPrice.replace(/\D/g, ''), 10);
         this.item = {id: productId, name: productName, price: priceInt}
         this.container = this.render(); // Save the container element
+        this.container.dataset.productId = productId;
     }
 
     render() {

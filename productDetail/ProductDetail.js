@@ -1,5 +1,10 @@
-function generateProductHTML(productName, productURL, productDetail, price, reviews) {
+function generateProductHTML(productId, productName, productURL, productDetail, price, reviews) {
     const container = document.getElementById('product-container');
+    // console.log(productId);
+    // console.log(productName);
+    // console.log(productURL);
+    // console.log(productDetail);
+    // console.log(price);
 
     let htmlContent = `
         <div class="product-upper">
@@ -10,6 +15,10 @@ function generateProductHTML(productName, productURL, productDetail, price, revi
                 <h2>${productName}</h2>
                 <p>${productDetail}</p>
                 <p class="price">價格: ${price}</p>
+                <div class="buttons">
+                    <button class="add" id="addToCart">Add to Cart</button>
+                    <button class="like"><span>♥</span></button>
+                </div>
             </div>
         </div>
         <div class="product-lower">
@@ -27,10 +36,18 @@ function generateProductHTML(productName, productURL, productDetail, price, revi
 
     htmlContent += `</div>`;
     container.innerHTML = htmlContent;
+    
+    let priceInt = parseInt(price.replace(/\D/g, ''), 10);
+    // console.log(priceInt);
+    let item = {id: productId, name: productName, price: priceInt};
+    container.querySelector("#addToCart").addEventListener('click', (event) => {
+        addItemToCart(item);
+    });
 }
 
 // 示例數據
 var urlParams = new URLSearchParams(window.location.search);
+const productId = urlParams.get('productId');
 const productName = urlParams.get('productName');
 const productDetail = urlParams.get('productDetail');
 const productURL = urlParams.get('productSrc');
@@ -42,5 +59,5 @@ const reviews = [
 
 
 window.onload = function() {
-    generateProductHTML(productName, productURL, productDetail, price, reviews);
+    generateProductHTML(productId, productName, productURL, productDetail, price, reviews);
 };

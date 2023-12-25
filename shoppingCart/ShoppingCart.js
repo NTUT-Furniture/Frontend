@@ -61,7 +61,7 @@ function getCookie(cookieName) {
 }
 
 // Check if the page is one of the shared pages
-const sharedPages = ['/home/Index.html', '/shopManager/Shop.html', '/checkout/Checkout.html', /* Add other shared pages here */];
+const sharedPages = ['/home/Index.html', '/shopManager/Shop.html', '/checkout/Checkout.html', '/productDetail/ProductDetail.html', /* Add other shared pages here */];
 const currentPage = window.location.pathname;
 
 if (sharedPages.includes(currentPage)) {
