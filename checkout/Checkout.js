@@ -1,52 +1,76 @@
-// 假設你有一個全域變數來存儲購物車內容
-var shoppingCart = [];
+let shopping = [];
 
-// 初始化購物車內容（這只是一個範例）
-shoppingCart.push({ product: '商品1', price: 20 });
-shoppingCart.push({ product: '商品2', price: 30 });
+// Display shopping cart content
+function displayShopping(coupon = 1) {
+    // Retrieve the shopping cart data from the query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const cartParam = urlParams.get('cart');
+    if (cartParam) {
+        try {
+            // Parse the JSON string to get the shopping cart array
+            shopping = JSON.parse(decodeURIComponent(cartParam));
+        } catch (error) {
+            console.error('Error parsing shopping cart data:', error);
+        }
+    }
 
-// 顯示購物車內容
-function displayCart() {
-    var cartBody = document.getElementById('cartBody');
-    cartBody.innerHTML = '';
-
-    for (var i = 0; i < shoppingCart.length; i++) {
-        var row = cartBody.insertRow(i);
+    // Perform checkout logic with the shopping cart data
+    console.log('Checkout successful! Items purchased:', shopping);
+    
+    var cartItem = document.getElementById('cartItem'); // Corrected ID here
+    cartItem.innerHTML = '';
+    // Add table headers
+    var headerRow = cartItem.insertRow(0);
+    var headerCell1 = headerRow.insertCell(0);
+    var headerCell2 = headerRow.insertCell(1);
+    var headerCell3 = headerRow.insertCell(2);
+    headerCell1.textContent = 'Item Name';
+    headerCell2.textContent = 'Quantity';
+    headerCell3.textContent = 'Price';
+    
+    var cost = 0;
+    // Add table content
+    shopping.forEach(function (item, index) {
+        var row = cartItem.insertRow(index + 1); // Index + 1 to skip the header row
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
-        cell1.innerHTML = shoppingCart[i].product;
-        cell2.innerHTML = shoppingCart[i].price;
-    }
+        var cell3 = row.insertCell(2);
+        cell1.textContent = item.name;
+        cell2.textContent = item.quantity;
+        cell3.textContent = item.quantity * item.price;
+        cost += item.quantity * item.price;
+    });
+    console.log(cost);
+    console.log(coupon);
+    console.log(cost * coupon);
+    const totalCost = document.getElementById('totalCost');
+    totalCost.innerHTML = `<h2>total cost: ${cost * coupon}</h2>`;
 }
 
-// 套用優惠碼的函數
+// Apply coupon function
 function applyCoupon() {
     var couponInput = document.getElementById('coupon');
     var message = document.getElementById('message');
 
-    // 在這裡實現你的優惠碼邏輯，這裡只是一個範例
-    if (couponInput.value === 'SAVE10') {
-        message.textContent = '優惠碼套用成功！';
+    if (couponInput.value.trim() === 'SAVE10') {
+        message.textContent = 'Coupon applied successfully!';
+        displayShopping(0.1);
     } else {
-        message.textContent = '優惠碼無效。';
+        message.textContent = 'Invalid coupon code.';
     }
 }
 
-// 結帳的函數
+// Checkout function
 function checkout() {
-    // 在這裡實現結帳邏輯，可以將購物車內容存儲在本地存儲中或通過API發送到後端等
-    // 這裡只是一個簡單的範例，將購物車內容顯示在控制台並清空購物車
-    console.log('結帳成功！購買的內容：', shoppingCart);
-    shoppingCart = [];
-    displayCart();
-    alert('結帳成功！');
+    console.log('Checkout successful! Items purchased:', shopping);
+    alert('Checkout successful!');
+    clearShoppingCartCookie();
+    window.location.href = '../home/Index.html';
 }
 
-// 繼續購買的函數
+// Continue shopping function
 function continueShopping() {
-    // 這裡可以導向到你的首頁（Index.html）
-    window.location.href = 'Index.html';
+    window.location.href = '../home/Index.html';
 }
 
-// 初始化時顯示購物車內容
-displayCart();
+displayShopping();
