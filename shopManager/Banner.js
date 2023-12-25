@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const shopData = await getShop();
             const bannerImage = await fetchImage(shopData.shop_uuid, "banner");
-            const shopAvatar = await fetchImage(shopData.shop_uuid, "avatar");
+            const shopAvatar = await fetchImage(getCookie("account_uuid"), "avatar");
             const Data = {
                 shop_uuid: shopData.shop_uuid,
                 shopname: shopData.name,
