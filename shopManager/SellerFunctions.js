@@ -14,7 +14,9 @@ document.addEventListener('DOMContentLoaded', function () {
             <p class="description">${business.description}</p>
             <p class="quantity">Quantity: ${business.quantity}</p>
             <p class="price">Price: ${business.price}</p>
-            <img class="image" src="${business.image_url}" alt="${business.name}">
+            <p class="tag">Tag: ${business.tag}</p>
+            <p class="is_active">Is_active: ${business.is_active}</p>
+            <img class="image" src="${business.image}" alt="${business.name}">
             <button class="detail-button">Detail</button>
             <button class="delete-button">Delete</button>
         `;
@@ -149,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
         form.style.margin = "20px"; // 設定 form 的 margin
         form.style.maxWidth = "300px"; // 設定 form 的最大寬度
 
-        ['name', 'description', 'quantity', 'price', 'image_url'].forEach((field) => {
+        ['name', 'description', 'quantity', 'price', 'image', 'tag', 'is_active'].forEach((field) => {
             const input = document.createElement('input');
             input.type = field === 'quantity' || field === 'price' ? 'number' : 'text';
             input.value = business[field];
@@ -168,10 +170,10 @@ document.addEventListener('DOMContentLoaded', function () {
         submitButton.textContent = 'Save';
         submitButton.addEventListener('click', () => {
             // 直接更新卡片內容
-            ['name', 'description', 'quantity', 'price', 'image_url'].forEach((field) => {
+            ['name', 'description', 'quantity', 'price', 'image', 'tag', 'is_active'].forEach((field) => {
                 const inputValue = form.querySelector(`input[name="${field}"]`).value;
                 business[field] = inputValue;
-                if (field === 'image_url') {
+                if (field === 'image') {
                     const imageElement = card.querySelector('.image');
                     if (imageElement) {
                         imageElement.src = inputValue;
@@ -437,31 +439,90 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    function fetchMockBusinessData() {
-        const mockData = [
-            {
-                id: 1,
-                name: 'Business A',
-                description: 'Description A',
-                quantity: 10,
-                price: 50,
-                image_url: '../Resources/bed.png',
-            },
-            {
-                id: 2,
-                name: 'Business B',
-                description: 'Description B',
-                quantity: 5,
-                price: 30,
-                image_url: '../Resources/chair.jpg',
-            },
-            // Add more mock data as needed
-        ];
-        mockData.forEach(renderBusinessCard);
+    async function fetchBusinessCardData() {
+        try {
+            const baseURL = 'http://localhost:8000/api/product/all?';
+            const url = new URL(baseURL);
+            const self_shop_uuid = getCookie("shop_uuid");
+            url.searchParams.append('order', "shop_uuid");
+            url.searchParams.append('shop_uuid', self_shop_uuid);
+            const response = await fetch(url.toString());
+            const data = await response.json();
+            console.log("return data", data);
+            return data;
+        } catch (error) {
+            throw new Error('Error fetching businessCard data: ' + error.message);
+        }
+    }
+    
+    async function fetchImage(UUID, imgType) {
+        return `http://localhost:8000/api/image/${UUID}?img_type=${imgType}`;
     }
 
-    fetchMockBusinessData();
+    async function renderBusinessCards() {
+        try {
+            // Assuming fetchBusinessCardData returns an object with 'products' property
+            const products = await fetchBusinessCardData();
+            const productsData = products.products;
+    
+            const mappedData = [];
+    
+            for (const product of productsData) {
+                try {
+                    const productImage = await fetchImage(product.product_uuid, "avatar");
+                    console.log("is_active", product.is_active);
+                    mappedData.push({
+                        id: product.product_uuid,
+                        name: product.name,
+                        description: product.description,
+                        quantity: product.stock,
+                        price: product.price,
+                        tag: product.tags,
+                        is_active: product.is_active,
+                        image: productImage || "../Resources/default_banner.webp", // Use fetched image or default if not available
+                    });
+                } catch (imageError) {
+                    console.error(`Error fetching image for product ${product.product_uuid}: ${imageError.message}`);
+                }
+            }
+    
+            console.log("mappedData:", mappedData);
+            mappedData.forEach(renderBusinessCard);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
 
+    renderBusinessCards();
+
+    async function createProduct(newBusinessCardData){
+        try {
+            // Replace baseURL with the actual API base URL for fetching images
+            const baseURL = `http://localhost:8000/api/product/?`;
+            const url = new URL(baseURL);
+            url.searchParams.append('name', newBusinessCardData.name);
+            url.searchParams.append('stock', newBusinessCardData.quantity);
+            url.searchParams.append('price', newBusinessCardData.price);
+            url.searchParams.append('tags', newBusinessCardData.tag);
+            url.searchParams.append('is_avtive', newBusinessCardData.is_active);
+            const response = await fetch(url.toString(), {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': "Bearer " + getCookie("token"),
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create a product from the API');
+            }
+            console.log("Create Product response", response);
+            location.reload();
+        } catch (error) {
+            console.error('Error Create Product response:', error);
+            throw error;
+        }
+    }
 
     addButton.addEventListener('click', () => {
         // Create a new business object with default values
@@ -471,11 +532,11 @@ document.addEventListener('DOMContentLoaded', function () {
             description: 'Description',
             quantity: 0,
             price: 0,
-            image_url: 'https://example.com/defaultImage.jpg', // Provide a default image URL
+            tag: 'None',
+            is_active: 1,
+            image: '../Resources/default_banner.webp', // Provide a default image URL
         };
-
-        // Render the new business card
-        renderBusinessCard(newBusiness);
+        createProduct(newBusiness);
     });
 
     function generateUniqueId() {

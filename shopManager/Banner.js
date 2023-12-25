@@ -93,7 +93,6 @@ document.addEventListener('DOMContentLoaded', function () {
     
     async function getShop() {
         try {
-            // 替換 baseURL 為實際的 API 基礎 URL
             const baseURL = 'http://localhost:8000/api/shop/';
             const url = new URL(baseURL);
 
