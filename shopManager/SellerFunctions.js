@@ -223,11 +223,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         if (imageElement) {
                             updateProductImg(business, formData['image'])
                             .then(() => {
-                                console.log('1');
-                                return fetchImage(business.id, 'avatar');
+                                console.log('get uploaded image');
+                                return fetchImage(business.id, 'avatar');  // Return the promise
                             })
                             .then((imageSrc) => {
-                                console.log('2', imageSrc);
+                                console.log('new image', imageSrc);
+                                imageSrc += '&t=' + new Date().getTime().toString();
                                 imageElement.src = imageSrc;
                                 imageElement.alt = business.name;
                             })
@@ -249,12 +250,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 });
             } else {
-                console.error('Error Upload Product');
+                console.error('Error Upload Product Image');
             }
         } catch (error) {
             console.error('Update Product to API Error', error);
         }
-
+        console.log("updated product in", business);
     }
 
     async function updateProductImg(business, file){
@@ -264,7 +265,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const formData = new FormData();
             formData.append('file', file);
-
+            console.log("file", file);
             try {
                 const response = await fetch(`http://localhost:8000/api/image/?shop_uuid=${getCookie("shop_uuid")}&product_uuid=${business.id}&img_type=avatar`, {
                     method: 'POST',
@@ -538,11 +539,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const baseURL = 'http://localhost:8000/api/product/all?';
             const url = new URL(baseURL);
             const self_shop_uuid = getCookie("shop_uuid");
+            console.log("self_shop_uuid", self_shop_uuid);
             url.searchParams.append('order', "shop_uuid");
             url.searchParams.append('shop_uuid', self_shop_uuid);
             const response = await fetch(url.toString());
             const data = await response.json();
-            console.log("return data", data);
             return data;
         } catch (error) {
             throw new Error('Error fetching businessCard data: ' + error.message);
@@ -550,7 +551,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     
     async function fetchImage(UUID, imgType) {
-        return `http://localhost:8000/api/image/${UUID}?img_type=${imgType}`;
+        const imageUrl = `http://localhost:8000/api/image/${UUID}?img_type=${imgType}`;
+        console.log(`in fetch Image,UUID = ${UUID}, imgType = ${imgType}`);
+        console.log(imageUrl);
+        try {
+            const response = await fetch(imageUrl.toString(), { mode: 'no-cors' });
+    
+            // Check if the request was successful (status 200) since no response body can be accessed
+            return imageUrl;
+        } catch (error) {
+            console.error(`Error fetching image: ${error.message}`);
+            return null;
+        }
     }
 
     async function renderBusinessCards() {
@@ -563,8 +575,18 @@ document.addEventListener('DOMContentLoaded', function () {
     
             for (const product of productsData) {
                 try {
-                    const productImage = await fetchImage(product.product_uuid, "avatar");
-                    console.log("is_active", product.is_active);
+                    let productImage = await fetchImage(product.product_uuid, "avatar");
+                    //console.log("is_active", product.is_active);
+                    
+                    if (productImage) {
+                        console.log("productImage", productImage);
+                        productImage += '&t=' + new Date().getTime().toString();
+                    } else {
+                        console.log("no picture, now product Image", productImage);
+                        productImage = "../Resources/default_banner.webp";
+                    }
+                    
+                    //console.log("productImage", productImage);
                     mappedData.push({
                         id: product.product_uuid,
                         name: product.name,
@@ -573,14 +595,13 @@ document.addEventListener('DOMContentLoaded', function () {
                         price: product.price,
                         tags: product.tags,
                         is_active: product.is_active,
-                        image: productImage || "../Resources/default_banner.webp", // Use fetched image or default if not available
+                        image: productImage // Use fetched image or default if not available
                     });
                 } catch (imageError) {
                     console.error(`Error fetching image for product ${product.product_uuid}: ${imageError.message}`);
                 }
             }
-    
-            console.log("mappedData:", mappedData);
+            console.log(mappedData);
             mappedData.forEach(renderBusinessCard);
         } catch (error) {
             console.error(error.message);
