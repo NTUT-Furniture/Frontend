@@ -61,7 +61,7 @@ function getCookie(cookieName) {
 }
 
 // Check if the page is one of the shared pages
-const sharedPages = ['/home/Index.html', '/shopManager/Shop.html', /* Add other shared pages here */];
+const sharedPages = ['/home/Index.html', '/shopManager/Shop.html', '/checkout/Checkout.html', '/productDetail/ProductDetail.html', /* Add other shared pages here */];
 const currentPage = window.location.pathname;
 
 if (sharedPages.includes(currentPage)) {
@@ -91,10 +91,42 @@ function toggleCart() {
     }
 }
 
+// Function to check if the user has an account token in the cookie
+function hasAccountToken() {
+    var token = getCookie("token");
+    return token !== null && token !== "";
+}
+
+// Function to get the value of a cookie by name
+function getCookie(name) {
+    var cookies = document.cookie.split("; ");
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].split("=");
+        if (cookie[0] === name) {
+            return cookie[1];
+        }
+    }
+    return null;
+}
+
 // Function to redirect to checkout page
 function redirectToCheckout() {
-    // Implement the logic to navigate to the checkout page
-    console.log('Redirecting to checkout page');
+    if (hasAccountToken()){
+        // Implement the logic to navigate to the checkout page
+        console.log('Redirecting to checkout page');
+
+        // Implement the logic to navigate to the checkout page
+        // Pass the shopping cart data to the checkout page using query parameters
+        const queryString = `?cart=${encodeURIComponent(JSON.stringify(shoppingCart))}`;
+        const checkoutPageUrl = '../checkout/Checkout.html' + queryString; // Replace 'Checkout.html' with your actual checkout page URL
+        window.location.href = checkoutPageUrl;
+    }
+    else {
+        // Redirect to the login page if there is no account token
+        console.log('Redirecting to login page');
+        alert('please login your account\nor create an new account to login')
+        window.location.href = '../login/Login.html'; // Replace with your actual login page URL
+    }
 }
 
 function showCartItems() {

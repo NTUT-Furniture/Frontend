@@ -1,5 +1,10 @@
 function generateProductHTML(shopName, productName, productURL, productDetail, price, reviews, productId ,shopId) {
     const container = document.getElementById('product-container');
+    // console.log(productId);
+    // console.log(productName);
+    // console.log(productURL);
+    // console.log(productDetail);
+    // console.log(price);
 
     let htmlContent = `
         <div class="product-upper">
@@ -11,6 +16,10 @@ function generateProductHTML(shopName, productName, productURL, productDetail, p
                 <h2>${productName}</h2>
                 <p>${productDetail}</p>
                 <p class="price">價格: ${price}</p>
+                <div class="buttons">
+                    <button class="add" id="addToCart">Add to Cart</button>
+                    <button class="like"><span>♥</span></button>
+                </div>
             </div>
         </div>
         <div class="product-lower">
@@ -28,6 +37,13 @@ function generateProductHTML(shopName, productName, productURL, productDetail, p
 
     htmlContent += `</div>`;
     container.innerHTML = htmlContent;
+    
+    let priceInt = parseInt(price.replace(/\D/g, ''), 10);
+    // console.log(priceInt);
+    let item = {id: productId, name: productName, price: priceInt};
+    container.querySelector("#addToCart").addEventListener('click', (event) => {
+        addItemToCart(item);
+    });
 }
 
 // 示例數據
