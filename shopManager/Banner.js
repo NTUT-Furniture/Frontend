@@ -35,6 +35,10 @@ document.addEventListener('DOMContentLoaded', function () {
         // do sth...
     }
 
+    async function subscribe() {
+
+    }
+
     function fetchImage(UUID, imgType) {
         return `http://localhost:8000/api/image/${UUID}?img_type=${imgType}`;
     }
@@ -92,6 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     async function getShop() {
         try {
+            // 替換 baseURL 為實際的 API 基礎 URL
             const baseURL = 'http://localhost:8000/api/shop/';
             const url = new URL(baseURL);
 
@@ -114,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const shopData = await getShop();
             const bannerImage = await fetchImage(shopData.shop_uuid, "banner");
-            const shopAvatar = await fetchImage(getCookie("account_uuid"), "avatar");
+            const shopAvatar = await fetchImage(shopData.shop_uuid, "avatar");
             const Data = {
                 shop_uuid: shopData.shop_uuid,
                 shopname: shopData.name,
