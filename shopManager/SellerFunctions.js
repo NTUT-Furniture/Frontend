@@ -12,9 +12,10 @@ document.addEventListener('DOMContentLoaded', function () {
         card.innerHTML = `
             <h2 class="name">${business.name}</h2>
             <p class="description">${business.description}</p>
-            <p class="quantity">Quantity: ${business.quantity}</p>
+            <p class="stock">Stock: ${business.stock}</p>
             <p class="price">Price: ${business.price}</p>
-            <img class="image" src="${business.image_url}" alt="${business.name}">
+            <p class="tags">Tag: ${business.tags}</p>
+            <img class="image" src="${business.image}" alt="${business.name}">
             <button class="detail-button">Detail</button>
             <button class="delete-button">Delete</button>
         `;
@@ -142,23 +143,30 @@ document.addEventListener('DOMContentLoaded', function () {
     function showEditForm(business, card, popup) {
         const formExists = popup.querySelector('.edit-form');
         if (formExists) return formExists.querySelector('input[name="name"]').focus();
-
         const form = document.createElement('form');
         form.classList.add('edit-form');
-
         form.style.margin = "20px"; // 設定 form 的 margin
         form.style.maxWidth = "300px"; // 設定 form 的最大寬度
 
-        ['name', 'description', 'quantity', 'price', 'image_url'].forEach((field) => {
+        ['name', 'description', 'stock', 'price', 'image', 'tags'].forEach((field) => {
             const input = document.createElement('input');
-            input.type = field === 'quantity' || field === 'price' ? 'number' : 'text';
-            input.value = business[field];
             input.name = field;
             input.placeholder = field.charAt(0).toUpperCase() + field.slice(1);
             input.style.display = "block";
-
-            // 在 JavaScript 中添加額外的樣式
             input.style.marginBottom = "10px"; // 設定 input 之間的距離
+
+            if (field === 'stock' || field === 'price') {
+                input.type = 'number';
+                input.value = business[field];
+            } else if (field === 'image') {
+                input.type = 'file';
+                input.name = field;
+                input.style.display = "block";
+                input.style.marginBottom = "10px"; // 設定 input 之間的距離
+            } else {
+                input.type = 'text';
+                input.value = business[field];
+            }
 
             form.appendChild(input);
         });
@@ -167,28 +175,117 @@ document.addEventListener('DOMContentLoaded', function () {
         submitButton.type = 'button';
         submitButton.textContent = 'Save';
         submitButton.addEventListener('click', () => {
-            // 直接更新卡片內容
-            ['name', 'description', 'quantity', 'price', 'image_url'].forEach((field) => {
-                const inputValue = form.querySelector(`input[name="${field}"]`).value;
-                business[field] = inputValue;
-                if (field === 'image_url') {
-                    const imageElement = card.querySelector('.image');
-                    if (imageElement) {
-                        imageElement.src = inputValue;
-                        imageElement.alt = business.name;
-                    }
+            const formData = {};
+            const formInputs = form.querySelectorAll('input');
+            formInputs.forEach(input => {
+                if (input.type === 'file') {
+                    // Handle file input separately (e.g., you might want to upload the file)
+                    formData[input.name] = input.files[0]; // This assumes you only allow one file
                 } else {
-                    const element = card.querySelector(`.${field}`);
-                    if (element) {
-                        element.innerText = field === 'quantity' || field === 'price' ? `${field.charAt(0).toUpperCase() + field.slice(1)}: ${inputValue}` : inputValue;
-                    }
+                    formData[input.name] = input.value;
                 }
             });
+    
+            console.log("new product data",formData);
+            console.log("old data", business);
+            updateProduct(business, card, formData);
+            
             form.remove();
         });
-        console.log(business);
         form.append(submitButton);
         popup.appendChild(form);
+    }
+
+    async function updateProduct(business, card, formData){
+        try {
+            const baseURL = `http://localhost:8000/api/product/?`;
+            const url = new URL(baseURL);
+            url.searchParams.append("product_uuid",business.id);
+            url.searchParams.append('name', formData.name);
+            url.searchParams.append('stock', formData.stock);
+            url.searchParams.append('price', formData.price);
+            url.searchParams.append('tags', formData.tags);
+            url.searchParams.append('description', formData.description);
+            const response = await fetch(url.toString(), {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + getCookie("token"),
+                },
+            });
+
+            if (response.ok) {
+                const responseData = await response.json();
+                console.log('Success Update Product');
+                // 直接更新卡片內容
+                ['name', 'description', 'stock', 'price', 'image', 'tags', 'is_active'].forEach((field) => {
+                    if (field === 'image') {
+                        const imageElement = card.querySelector('.image');
+                        if (imageElement) {
+                            updateProductImg(business, formData['image'])
+                            .then(() => {
+                                console.log('get uploaded image');
+                                return fetchImage(business.id, 'avatar');  // Return the promise
+                            })
+                            .then((imageSrc) => {
+                                console.log('new image', imageSrc);
+                                imageSrc += '&t=' + new Date().getTime().toString();
+                                imageElement.src = imageSrc;
+                                imageElement.alt = business.name;
+                            })
+                            .catch((error) => {
+                                console.error('Error updating image:', error);
+                            });
+                        }
+                    } else {
+                        const element = card.querySelector(`.${field}`);
+                        if (element) {
+                            console.log(element.innerText);
+                            if(field == "name" || field == "description"){
+                                element.innerText = responseData[field];
+                            }
+                            else{
+                                element.innerText = `${field.charAt(0).toUpperCase() + field.slice(1)}: ${responseData[field]}`;    
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.error('Error Upload Product Image');
+            }
+        } catch (error) {
+            console.error('Update Product to API Error', error);
+        }
+        console.log("updated product in", business);
+    }
+
+    async function updateProductImg(business, file){
+        if (file) {
+            //const reader = new FileReader();
+            //reader.readAsDataURL(file);
+
+            const formData = new FormData();
+            formData.append('file', file);
+            console.log("file", file);
+            try {
+                const response = await fetch(`http://localhost:8000/api/image/?shop_uuid=${getCookie("shop_uuid")}&product_uuid=${business.id}&img_type=avatar`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': 'Bearer ' + getCookie('token'),
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Success Upload product avatar');
+                    console.log(data);
+                } else {
+                    console.error('Error Upload product avatar');
+                }
+            } catch (error) {
+                console.error('Upload to API Error', error);
+            }
+        }
     }
 
     function showStatusTable(popup) {
@@ -437,31 +534,110 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    function fetchMockBusinessData() {
-        const mockData = [
-            {
-                id: 1,
-                name: 'Business A',
-                description: 'Description A',
-                quantity: 10,
-                price: 50,
-                image_url: '../Resources/bed.png',
-            },
-            {
-                id: 2,
-                name: 'Business B',
-                description: 'Description B',
-                quantity: 5,
-                price: 30,
-                image_url: '../Resources/chair.jpg',
-            },
-            // Add more mock data as needed
-        ];
-        mockData.forEach(renderBusinessCard);
+    async function fetchBusinessCardData() {
+        try {
+            const baseURL = 'http://localhost:8000/api/product/all?';
+            const url = new URL(baseURL);
+            const self_shop_uuid = getCookie("shop_uuid");
+            console.log("self_shop_uuid", self_shop_uuid);
+            url.searchParams.append('order', "shop_uuid");
+            url.searchParams.append('shop_uuid', self_shop_uuid);
+            const response = await fetch(url.toString());
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            throw new Error('Error fetching businessCard data: ' + error.message);
+        }
+    }
+    
+    async function fetchImage(UUID, imgType) {
+        const imageUrl = `http://localhost:8000/api/image/${UUID}?img_type=${imgType}`;
+        console.log(`in fetch Image,UUID = ${UUID}, imgType = ${imgType}`);
+        console.log(imageUrl);
+        try {
+            const response = await fetch(imageUrl.toString(), { mode: 'no-cors' });
+    
+            // Check if the request was successful (status 200) since no response body can be accessed
+            return imageUrl;
+        } catch (error) {
+            console.error(`Error fetching image: ${error.message}`);
+            return null;
+        }
     }
 
-    fetchMockBusinessData();
+    async function renderBusinessCards() {
+        try {
+            // Assuming fetchBusinessCardData returns an object with 'products' property
+            const products = await fetchBusinessCardData();
+            const productsData = products.products;
+    
+            const mappedData = [];
+    
+            for (const product of productsData) {
+                try {
+                    let productImage = await fetchImage(product.product_uuid, "avatar");
+                    //console.log("is_active", product.is_active);
+                    
+                    if (productImage) {
+                        console.log("productImage", productImage);
+                        productImage += '&t=' + new Date().getTime().toString();
+                    } else {
+                        console.log("no picture, now product Image", productImage);
+                        productImage = "../Resources/default_banner.webp";
+                    }
+                    
+                    //console.log("productImage", productImage);
+                    mappedData.push({
+                        id: product.product_uuid,
+                        name: product.name,
+                        description: product.description,
+                        stock: product.stock,
+                        price: product.price,
+                        tags: product.tags,
+                        is_active: product.is_active,
+                        image: productImage // Use fetched image or default if not available
+                    });
+                } catch (imageError) {
+                    console.error(`Error fetching image for product ${product.product_uuid}: ${imageError.message}`);
+                }
+            }
+            console.log(mappedData);
+            mappedData.forEach(renderBusinessCard);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
 
+    renderBusinessCards();
+
+    async function createProduct(newBusinessCardData){
+        try {
+            // Replace baseURL with the actual API base URL for fetching images
+            const baseURL = `http://localhost:8000/api/product/?`;
+            const url = new URL(baseURL);
+            url.searchParams.append('name', newBusinessCardData.name);
+            url.searchParams.append('stock', newBusinessCardData.stock);
+            url.searchParams.append('price', newBusinessCardData.price);
+            url.searchParams.append('tags', newBusinessCardData.tags);
+            url.searchParams.append('is_avtive', newBusinessCardData.is_active);
+            const response = await fetch(url.toString(), {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': "Bearer " + getCookie("token"),
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create a product from the API');
+            }
+            console.log("Create Product response", response);
+            location.reload();
+        } catch (error) {
+            console.error('Error Create Product response:', error);
+            throw error;
+        }
+    }
 
     addButton.addEventListener('click', () => {
         // Create a new business object with default values
@@ -469,13 +645,13 @@ document.addEventListener('DOMContentLoaded', function () {
             id: generateUniqueId(),
             name: 'New Business',
             description: 'Description',
-            quantity: 0,
+            stock: 0,
             price: 0,
-            image_url: 'https://example.com/defaultImage.jpg', // Provide a default image URL
+            tags: '',
+            is_active: 1,
+            image: '../Resources/default_banner.webp', // Provide a default image URL
         };
-
-        // Render the new business card
-        renderBusinessCard(newBusiness);
+        createProduct(newBusiness);
     });
 
     function generateUniqueId() {
