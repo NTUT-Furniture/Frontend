@@ -53,9 +53,8 @@ document.addEventListener('DOMContentLoaded', function () {
             if (response.ok) {
                 const jsonResponse = await response.json();
                 console.log('Success Subscribe');
-                
             } else {
-                console.error(' can not subscribe same shop');
+                alert('cannot subscribe same shop');
             }
         } catch (error) {
             console.error('Subscribe API Error', error);

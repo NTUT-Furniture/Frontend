@@ -1,0 +1,73 @@
+#sub {
+    position: fixed;
+    top: 200px; /* Adjust the top position as needed */
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 2000;
+    margin-right: 2px; /* Add margin to the right side */
+    background-color: #ffb45f; /* Set the background color to gray */
+    width: 30px; /* Set the width and height to create a perfect circle */
+    height: 30px;
+    line-height: 30px; /* Center the content vertically */
+    text-align: center; /* Center the content horizontally */
+    border-radius: 50%; /* Make it a circle */
+}
+
+#sub-popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 50px; /* Adjust the padding to increase the background size */
+    border: 1px solid #ccc;
+    background-color: #fff;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    z-index: 2000;
+}
+
+#sub-popup h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+#sub-popup .item {
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+    display: flex;
+    flex-wrap: nowrap; /* Display items on the same line */
+    justify-content: space-between;
+    align-items: center;
+}
+
+#sub-popup .item span {
+    margin-right: 10px;
+}
+
+#sub-popup .item input {
+    width: 30px;
+    text-align: center;
+    margin-right: 10px;
+    margin-top: 2px; /* Add margin-top to ensure top border is visible */
+}
+
+#sub-popup .item div {
+    flex-grow: 1; /* Allow the details to take up the remaining space */
+}
+
+#sub-popup button {
+    background-color: #ff5c5c;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 5px; /* Add space above the button */
+}
+
+#sub-popup button:hover {
+    background-color: #ff0000;
+}
