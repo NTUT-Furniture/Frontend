@@ -20,8 +20,9 @@ body {
 }
 
 .product-image {
+    max-width: 100%;
     flex: 1; /* 讓圖片區塊具有彈性 */
-    min-width: 300px; /* 設置最小寬度 */
+    min-width: 150px; /* 設置最小寬度 */
 }
 
 .product-image img {
