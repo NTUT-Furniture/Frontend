@@ -12,7 +12,7 @@ function generateProductHTML(shopName, productName, productURL, productDetail, p
                 <img src="${productURL}" alt="商品圖片">
             </div>
             <div class="product-info">
-                <a class="shop-name" id="${shopId}">${shopName}</a>
+                <a class="shop-name" id="${shopId}" href="../shopManager/Shop.html?userType=buyer&shop_uuid=${getCookie("shop_uuid")}">${shopName}</a>
                 <h2>${productName}</h2>
                 <p>${productDetail}</p>
                 <p class="price">價格: ${price}</p>
@@ -46,9 +46,17 @@ function generateProductHTML(shopName, productName, productURL, productDetail, p
     });
 }
 
+
+function getCookie(cookieName) {
+    const cookies = document.cookie;
+    const cookieArray = cookies.split('; ');
+    const tokenCookie = cookieArray.find(row => row.startsWith(cookieName + '='));
+    return tokenCookie ? tokenCookie.split('=')[1] : null;
+}
+
 // 示例數據
 var urlParams = new URLSearchParams(window.location.search);
-const shopName = "Shop";
+const shopName = "Go To Shop";
 const productName = urlParams.get('productName');
 const productDetail = urlParams.get('productDetail');
 const productURL = urlParams.get('productSrc');
@@ -59,7 +67,6 @@ const reviews = [
 ];
 const productId = urlParams.get('productId');
 const shopId = urlParams.get('shopId');
-
 
 window.onload = function() {
     generateProductHTML(shopName, productName, productURL, productDetail, price, reviews, productId ,shopId);
