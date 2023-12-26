@@ -56,10 +56,8 @@ class ItemCardComponent {
             <p class="desc">${this.productDescription}</p>
             <div class="buttons">
                 <button class="add" id="addToCart">Add to Cart</button>
-                <button class="like"><span>♥</span></button>
             </div>
         `;
-
         productElement.querySelector("#addToCart").addEventListener('click', (event) => {
             event.stopPropagation();
             addItemToCart(this.item);
@@ -72,7 +70,7 @@ class ItemCardComponent {
         container.appendChild(sizesElement);
         container.appendChild(productElement);
 
-        return container;
+        return container;        
     }
 }
 

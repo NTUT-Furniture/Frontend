@@ -28,15 +28,39 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    async function handleLikeButtonClick(shopUuid) {
+    async function handleLikeButtonClick(shopUUID) {
         // handle event
-        console.log('Sub button clicked for shop:', shopUuid);
-
+        console.log('Sub button clicked for shop:', shopUUID);
+        subscribe(shopUUID);
         // do sth...
     }
 
-    async function subscribe() {
+    async function subscribe(shopUUID) {
+        try {
+            console.log('shopUUID' + shopUUID);
+            const baseURL = `http://localhost:8000/api/subscription/?`;
+            const url = new URL(baseURL);
+            url.searchParams.append("shop_uuid", shopUUID);
+            url.searchParams.append('account_uuid', getCookie('token'));
+            const response = await fetch(url.toString(), {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': 'Bearer ' + getCookie('token'),
+                },
+            });
 
+            if (response.ok) {
+                const jsonResponse = await response.json();
+                console.log('Success Subscribe');
+                
+            } else {
+                console.error(' can not subscribe same shop');
+            }
+        } catch (error) {
+            console.error('Subscribe API Error', error);
+        }
+        console.log('subscribe');
     }
 
     function fetchImage(UUID, imgType) {

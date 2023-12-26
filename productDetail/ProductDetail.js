@@ -17,7 +17,6 @@ function generateProductHTML(productId, productName, productURL, productDetail, 
                 <p class="price">價格: ${price}</p>
                 <div class="buttons">
                     <button class="add" id="addToCart">Add to Cart</button>
-                    <button class="like"><span>♥</span></button>
                 </div>
             </div>
         </div>
