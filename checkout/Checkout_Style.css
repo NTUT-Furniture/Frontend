@@ -1,0 +1,25 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #E0C9CB;
+}
+
+#cartItem {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#cartItem th, #cartItem td {
+    border: 3px solid #000000;
+    padding: 8px;
+    text-align: left;
+}
+
+#couponInput {
+    margin-bottom: 10px;
+}
+
+#message {
+    color: red;
+    margin-bottom: 10px;
+}
