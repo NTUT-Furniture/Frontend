@@ -25,49 +25,26 @@
     background-color: #fff;
     max-width: 500px;
     width: 100%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2 10px rgba(0, 0, 0, 0.1);
     text-align: center;
     z-index: 2000;
 }
 
-#sub-popup h2 {
+.subscription-item {
     margin-bottom: 10px;
-    color: #333;
-}
-
-#sub-popup .item {
-    border-bottom: 1px solid #ccc;
-    padding: 10px;
     display: flex;
-    flex-wrap: nowrap; /* Display items on the same line */
     justify-content: space-between;
     align-items: center;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
-#sub-popup .item span {
-    margin-right: 10px;
-}
-
-#sub-popup .item input {
-    width: 30px;
-    text-align: center;
-    margin-right: 10px;
-    margin-top: 2px; /* Add margin-top to ensure top border is visible */
-}
-
-#sub-popup .item div {
-    flex-grow: 1; /* Allow the details to take up the remaining space */
-}
-
-#sub-popup button {
-    background-color: #ff5c5c;
+.subscription-item button {
+    background-color: #e74c3c;
     color: #fff;
     border: none;
     padding: 5px 10px;
     cursor: pointer;
-    margin-top: 5px; /* Add space above the button */
-}
-
-#sub-popup button:hover {
-    background-color: #ff0000;
+    border-radius: 4px;
 }

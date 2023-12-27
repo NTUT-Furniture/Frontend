@@ -13,6 +13,31 @@ async function toggleSub() {
         }
         // console.log('Subscriptions details:', result.subscriptions);
         // console.log('Subscriptions details:', result.subscriptions[0].shop_uuid);
+        subPopup.innerHTML = "";
+
+        for (var i = 0; i < result.subscriptions.length; i++) {
+            // Create a div for each subscription item
+            var subscriptionItem = document.createElement("div");
+            subscriptionItem.className = "subscription-item";
+
+            // Display shop_uuid
+            var shopUuidText = document.createTextNode(result.subscriptions[i].shop_uuid);
+            subscriptionItem.appendChild(shopUuidText);
+
+            // Create remove button
+            var removeButton = document.createElement("button");
+            removeButton.textContent = "Remove";
+            removeButton.onclick = function () {
+                // Handle remove button click event
+                console.log("Remove button clicked for shop_uuid: " + result.subscriptions[i].shop_uuid);
+                // Add your logic to remove the subscription
+            };
+
+            subscriptionItem.appendChild(removeButton);
+
+            // Append the subscription item to the popup
+            subPopup.appendChild(subscriptionItem);
+        }
     } else {
         console.log('No subscriptions found.');
     }
