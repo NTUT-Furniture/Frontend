@@ -152,7 +152,7 @@ function showCartItems() {
         itemDiv.classList.add('item');
         itemDiv.innerHTML = `
             <span>${item.name} (Qty: </span>
-            <input type="number" min="1" value="${item.quantity}" onchange="updateQuantity('${item.id}', this.value)">
+            <input type="number" min="1" max="${item.stock}" value="${item.quantity}" onchange="updateQuantity('${item.id}', this.value)">
             <span>)</span>
             <div>$${item.price * item.quantity}</div>
             <button onclick="removeItem('${item.id}')">Remove</button>
@@ -179,7 +179,12 @@ function addItemToCart(item) {
     const existingItem = shoppingCart.find(cartItem => cartItem.id === item.id);
 
     if (existingItem) {
-        existingItem.quantity += 1;
+        if (existingItem.quantity + 1 > existingItem.stock) {
+            existingItem.quantity = existingItem.stock;
+        }
+        else {
+            existingItem.quantity += 1;
+        }
     } else {
         shoppingCart.push({ ...item, quantity: 1 });
     }
@@ -195,7 +200,12 @@ function addItemToCartWithQuantity(item, num) {
     const existingItem = shoppingCart.find(cartItem => cartItem.id === item.id);
 
     if (existingItem) {
-        existingItem.quantity += num;
+        if (existingItem.quantity + num > existingItem.stock) {
+            existingItem.quantity = existingItem.stock;
+        }
+        else {
+            existingItem.quantity += num;
+        }
     } else {
         shoppingCart.push({ ...item, quantity: num });
     }
@@ -251,8 +261,8 @@ function testAddItem() {
 }
 
 // Example items
-// const item1 = { id: "5", name: 'Item 1', price: 20 };
-// const item2 = { id: "2", name: 'Item 2', price: 30 };
+// const item1 = { id: "5", name: 'Item 1', price: 20, stock: 5 };
+// const item2 = { id: "2", name: 'Item 2', price: 30, stock: 5 };
 
 // addItemToCart(item1);
 // addItemToCart(item2);

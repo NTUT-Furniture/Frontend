@@ -1,4 +1,4 @@
-function generateProductHTML(shopName, productName, productURL, productDetail, price, reviews, productId ,shopId) {
+function generateProductHTML(shopName, productName, productURL, productDetail, price, reviews, productId ,shopId, productStock) {
     const container = document.getElementById('product-container');
     // console.log(productId);
     // console.log(productName);
@@ -39,7 +39,7 @@ function generateProductHTML(shopName, productName, productURL, productDetail, p
     
     let priceInt = parseInt(price.replace(/\D/g, ''), 10);
     // console.log(priceInt);
-    let item = {id: productId, name: productName, price: priceInt};
+    let item = {id: productId, name: productName, price: priceInt, stock: productStock};
     container.querySelector("#addToCart").addEventListener('click', (event) => {
         addItemToCart(item);
     });
@@ -60,6 +60,7 @@ const productName = urlParams.get('productName');
 const productDetail = urlParams.get('productDetail');
 const productURL = urlParams.get('productSrc');
 const price = urlParams.get('productPrice');
+const stock = urlParams.get('productStock');
 const reviews = [
     {text: "Great sofa, very comfortable!", author: "John Doe"},
     {text: "Loved it, perfect for my living room.", author: "Jane Smith"}
@@ -68,5 +69,5 @@ const productId = urlParams.get('productId');
 const shopId = urlParams.get('shopId');
 
 window.onload = function() {
-    generateProductHTML(shopName, productName, productURL, productDetail, price, reviews, productId ,shopId);
+    generateProductHTML(shopName, productName, productURL, productDetail, price, reviews, productId ,shopId, stock);
 };

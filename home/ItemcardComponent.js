@@ -8,7 +8,7 @@ class ItemCardComponent {
         this.productTags = product.tags;
         this.productDescription = product.description || 'No description available';
         this.imageUrl = product.imageUrl || '../Resources/defaultProduct.png'; // 假設 imageUrl 是產品數據的一部分
-        this.item = { id: this.productId, name: this.productName, price: product.price };
+        this.item = { id: this.productId, name: this.productName, price: product.price, stock: this.productStock };
         this.container = this.render(); // Save the container element
         this.container.dataset.productId = this.productId;
         this.container.dataset.shopId = this.shopId;
