@@ -20,8 +20,9 @@ body {
 }
 
 .product-image {
+    max-width: 100%;
     flex: 1; /* 讓圖片區塊具有彈性 */
-    min-width: 300px; /* 設置最小寬度 */
+    min-width: 150px; /* 設置最小寬度 */
 }
 
 .product-image img {
@@ -63,4 +64,43 @@ body {
     color: #B87333;
     font-weight: bold;
     font-size: xx-large;
+}
+
+button {
+    background: #D9AAB7;
+    padding: 10px;
+    display: inline-block;
+    outline: 0;
+    border: 0;
+    margin: -1px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #F5F5F5;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #BA7E7E;
+    transition: all 0.4s ease-in-out;
+}
+
+.add {
+    width: 67%;
+}
+
+.like {
+    width: 22%;
+}
+
+.shop-name {
+    font-size: 48px;
+    color: #333333; /* 深灰色 */
+    text-decoration: none; /* 取消下劃線 */
+    transition: transform 0.3s ease; /* 平滑過渡效果 */
+}
+
+.shop-name:hover {
+    transform: scale(2); /* 鼠標懸停時放大 */
+    /*font-size: 2em; /* 鼠標懸停時放大字體大小 */
 }
