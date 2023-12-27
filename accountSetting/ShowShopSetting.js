@@ -114,7 +114,7 @@ async function showShopSetting() {
         modifyShopSetting("Bearer",token);
         try {
             await modifyShopSetting("Bearer", token);
-            window.location.reload();
+            //window.location.reload();
         } catch (error) {
             console.error('Error during shop modification:', error);
         }
