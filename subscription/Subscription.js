@@ -1,7 +1,7 @@
 async function toggleSub() {
     var subPopup = document.getElementById("sub-popup");
     subPopup.style.display = (subPopup.style.display === "block") ? "none" : "block";
-    let resultPromise = getSubscription();
+    let resultPromise = getAccountSubscription();
     let result = await resultPromise; // Wait for the promise to resolve
     console.log('hihi');
     console.log(result);
@@ -18,10 +18,9 @@ async function toggleSub() {
     }
 }
 
-async function getSubscription() {
+async function getAccountSubscription() {
     console.log('Get Subscription');
     try {
-        sub = [];
         accID = getCookie('account_uuid');
         console.log('subscription account_uuid: ' + accID);
         const baseURL = `http://localhost:8000/api/subscription/account?`;
