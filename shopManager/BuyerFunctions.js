@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <p class="price">Price: ${business.price}</p>
             <img class="image" src="${business.image_url}" alt="${business.name}">
             <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" value="1" min="1">
+            <input type="number" id="quantity" name="quantity" value="1" min="1" max="${business.quantity}">
             <button class="buy-button">Buy</button>
         `;
         card.querySelector('.buy-button').addEventListener('click', () => handleBuyButtonClick(business, card));
