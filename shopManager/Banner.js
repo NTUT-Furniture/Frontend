@@ -10,9 +10,9 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="image-wrapper">
                 <img src=${data.bannerImage} alt="" class="image" onerror="this.src='../Resources/default_banner.webp'"/>
                 <div class="image-overlay">
-                    <div class="avatar-container">
+                    <!--<div class="avatar-container">
                         <img src=${data.avatar} alt="Avatar" class="avatar" onerror="this.src='../Resources/default_avatar.webp'"/>
-                    </div>
+                    </div> -->
                     <div class="text-content">
                         <div class="shop-name">${data.shopname}</div>
                         <div class="description">${data.description}</div>
@@ -93,7 +93,6 @@ document.addEventListener('DOMContentLoaded', function () {
     
     async function getShop() {
         try {
-            // 替換 baseURL 為實際的 API 基礎 URL
             const baseURL = 'http://localhost:8000/api/shop/';
             const url = new URL(baseURL);
 
@@ -116,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const shopData = await getShop();
             const bannerImage = await fetchImage(shopData.shop_uuid, "banner");
-            const shopAvatar = await fetchImage(shopData.shop_uuid, "avatar");
+            const shopAvatar = await fetchImage(getCookie("account_uuid"), "avatar");
             const Data = {
                 shop_uuid: shopData.shop_uuid,
                 shopname: shopData.name,
