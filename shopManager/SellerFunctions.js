@@ -533,12 +533,33 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    async function getShopUUID(){
+        const urlParams = new URLSearchParams(window.location.search);
+        console.log("get self shop_uuid");
+        const response = await fetch("http://localhost:8000/api/shop/mine", {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + getCookie('token'),
+            },
+        });
+        
+        if (response.ok) {
+            //get a self shop_uuid
+            const jsonResponse = await response.json();
+            console.log("success to get self shop")
+            setCookie("shop_uuid", jsonResponse.shop_uuid);
+            return jsonResponse.shop_uuid;
+        } 
+    
+    }
 
     async function fetchBusinessCardData() {
         try {
             const baseURL = 'http://localhost:8000/api/product/all?';
             const url = new URL(baseURL);
-            const self_shop_uuid = getCookie("shop_uuid");
+            const self_shop_uuid = await getShopUUID();
+            
             console.log("self_shop_uuid", self_shop_uuid);
             url.searchParams.append('order', "shop_uuid");
             url.searchParams.append('shop_uuid', self_shop_uuid);
