@@ -34,7 +34,7 @@ async function showSubscription(subPopup) {
             // Create remove button with IIFE to capture the current shopID
             var removeButton = (function (shopID) {
                 var button = document.createElement("button");
-                button.textContent = "Remove";
+                button.textContent = "Unsubscribe";
                 button.onclick = async function () {
                     // Handle remove button click event
                     console.log("Remove button clicked for shop_uuid: " + shopID);
