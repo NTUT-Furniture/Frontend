@@ -1,14 +1,17 @@
 class ItemCardComponent {
-    constructor(productId, productType, productName, productPrice, productDescription, imageUrl) {
-        this.productId = productId;
-        this.productName = productName;
-        this.productPrice = productPrice;
-        this.productDescription = productDescription;
-        this.imageUrl = imageUrl;
-        let priceInt = parseInt(this.productPrice.replace(/\D/g, ''), 10);
-        this.item = {id: productId, name: productName, price: priceInt}
+    constructor(product) {
+        this.productId = product.product_uuid;
+        this.shopId = product.shop_uuid;
+        this.productName = product.name;
+        this.productStock = product.stock;
+        this.productPrice = `$${product.price}`; // 假設價格是以美元為單位
+        this.productTags = product.tags;
+        this.productDescription = product.description || 'No description available';
+        this.imageUrl = product.imageUrl || '../Resources/defaultProduct.png'; // 假設 imageUrl 是產品數據的一部分
+        this.item = { id: this.productId, name: this.productName, price: product.price };
         this.container = this.render(); // Save the container element
-        this.container.dataset.productId = productId;
+        this.container.dataset.productId = this.productId;
+        this.container.dataset.shopId = this.shopId;
     }
 
     render() {
@@ -74,75 +77,35 @@ class ItemCardComponent {
     }
 }
 
+async function fetchProducts() {
+    try {
+        const response = await fetch('http://localhost:8000/api/product/all?order=product_uuid', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
 
-// 假設有一組商品數據
-const products = [
-    {
-        productId: "1",
-        productType: "Furniture",
-        productName: "Comfortable Sofa 1",
-        productPrice: "$500",
-        productDescription: "A cozy sofa for your living room.",
-        imageUrl: "../Resources/sofa.jpg"
-    },
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-    {
-        productId: "2",
-        productType: "Furniture",
-        productName: "Comfortable Bed",
-        productPrice: "$700",
-        productDescription: "A cozy Bed for your living room.",
-        imageUrl: "../Resources/bed.png"
-    },
-
-    {
-        productId: "3",
-        productType: "Furniture",
-        productName: "Comfortable Sofa",
-        productPrice: "$500",
-        productDescription: "A cozy sofa for your living room.",
-        imageUrl: "../Resources/sofa.jpg"
-    },
-
-    {
-        productId: "4",
-        productType: "Furniture",
-        productName: "Comfortable Bed 2",
-        productPrice: "$500",
-        productDescription: "A cozy Bed for your living room.",
-        imageUrl: "../Resources/bed.png"
-    },
-
-    {
-        productId: "5",
-        productType: "Furniture",
-        productName: "Comfortable Bed 3",
-        productPrice: "$700",
-        productDescription: "A cozy Bed for your living room.",
-        imageUrl: "../Resources/bed.png"
-    },
-    // Add more product data as needed
-];
-
-function generateItemCard() {
-
-// 獲取 #itemList 容器
-    const itemListContainer = document.getElementById("itemList");
-
-// 使用迴圈創建並添加多個 ItemCardComponent 實例
-    for (const product of products) {
-        const itemCardInstance = new ItemCardComponent(
-            product.productId,
-            product.productType,
-            product.productName,
-            product.productPrice,
-            product.productDescription,
-            product.imageUrl
-        );
-
-        itemListContainer.appendChild(itemCardInstance.container);
+        const products = await response.json();
+        generateItemCard(products.products);
+        addEventListenersToCards();
+    } catch (error) {
+        console.error('Error fetching products:', error);
     }
-
 }
 
-generateItemCard()
+function generateItemCard(products) {
+    const itemListContainer = document.getElementById("itemList");
+    itemListContainer.innerHTML = '';
+
+    for (const product of products) {
+        const itemCardInstance = new ItemCardComponent(product);
+        itemListContainer.appendChild(itemCardInstance.container);
+    }
+}
+
+document.addEventListener('DOMContentLoaded', fetchProducts);

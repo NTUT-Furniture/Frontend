@@ -6,13 +6,30 @@
     <title>商品頁面</title>
     <link rel="stylesheet" href="../productDetail/ProductDetail_Style.css">
     <link rel="stylesheet" href="../shoppingCart/ShoppingCart_Style.css">
+    <link rel="stylesheet" href="../navbar/Navbar.css">
     <script defer src="../shoppingCart/ShoppingCart.js"></script>
 </head>
 <body>
     <div id="cart" onclick="toggleCart()">🛒</div>
     <div id="cart-popup"></div>
+    <ul class="" id="navbar">
+        <li><a href="../home/Index.html">Home</a></li>
+        <li><a href="javascript:void(0);">News</a></li>
+        <li><a href="javascript:void(0);">Contact</a></li>
+        <li class="dropdown">
+            <a class="dropbtn" href="../login/Login.html">Login</a>
+            <div class="dropdown-content">
+                <a href="../accountSetting/AccountSetting.html">Account</a>
+    
+                <!-- <a href="javascript:void(0);">Shopping Cart</a> -->
+                <a href="../shopManager/Shop.html?userType=seller">Shop</a>
+    
+            </div>
+        </li>
+    </ul>
     <div id="product-container">
     </div>
     <script src="../productDetail/ProductDetail.js"></script>
+    <script src="../navbar/Sticky_Navbar.js"></script>
 </body>
 </html>
