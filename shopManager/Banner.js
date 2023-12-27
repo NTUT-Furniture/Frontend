@@ -10,9 +10,9 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="image-wrapper">
                 <img src=${data.bannerImage} alt="" class="image" onerror="this.src='../Resources/default_banner.webp'"/>
                 <div class="image-overlay">
-                    <div class="avatar-container">
+                    <!--<div class="avatar-container">
                         <img src=${data.avatar} alt="Avatar" class="avatar" onerror="this.src='../Resources/default_avatar.webp'"/>
-                    </div>
+                    </div> -->
                     <div class="text-content">
                         <div class="shop-name">${data.shopname}</div>
                         <div class="description">${data.description}</div>

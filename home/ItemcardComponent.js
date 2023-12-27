@@ -7,7 +7,7 @@ class ItemCardComponent {
         this.productPrice = `$${product.price}`; // 假設價格是以美元為單位
         this.productTags = product.tags;
         this.productDescription = product.description || 'No description available';
-        this.imageUrl = product.imageUrl || '../Resources/defaultProduct.png'; // 假設 imageUrl 是產品數據的一部分
+        this.imageUrl = '';
         this.item = { id: this.productId, name: this.productName, price: product.price };
         this.container = this.render(); // Save the container element
         this.container.dataset.productId = this.productId;
@@ -20,7 +20,15 @@ class ItemCardComponent {
 
         // Create image element
         const imageElement = document.createElement('img');
-        imageElement.src = this.imageUrl;
+        fetchImage(this.productId, "avatar")
+        .then(imageUrl => {
+            // console.log('Image URL:', imageUrl);
+            imageElement.src = imageUrl; // 在这里将 imageUrl 赋值给 this.imageUrl
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            imageElement.src = '../Resources/defaultProduct.png';
+        });
         imageElement.alt = this.productName;
         imageElement.classList.add('product-image');
 
@@ -81,7 +89,7 @@ class ItemCardComponent {
 
 async function fetchProducts() {
     try {
-        const response = await fetch('http://localhost:8000/api/product/all?order=product_uuid', {
+        const response = await fetch('http://localhost:8000/api/product/all?order=product_uuid&limit=2147483647', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'
@@ -97,6 +105,19 @@ async function fetchProducts() {
         addEventListenersToCards();
     } catch (error) {
         console.error('Error fetching products:', error);
+    }
+}
+
+async function fetchImage(UUID, imgType) {
+    const imageUrl = `http://localhost:8000/api/image/${UUID}?img_type=${imgType}`;
+    // console.log(`in fetch Image,UUID = ${UUID}, imgType = ${imgType}`);
+    // console.log(imageUrl);
+    try {
+        const response = await fetch(imageUrl.toString(), { mode: 'no-cors' });
+        return imageUrl;
+    } catch (error) {
+        console.error(`Error fetching image: ${error.message}`);
+        return null;
     }
 }
 
