@@ -8,8 +8,11 @@ async function toggleSub() {
 
     // Assuming the result is an object with a 'subscriptions' property
     if (result && result.subscriptions) {
-        console.log('Subscriptions details:', result.subscriptions);
-        console.log('Subscriptions details:', result.subscriptions[0].shop_uuid);
+        for (var i=0; i<result.subscriptions.length; i++) {
+            console.log('Subscriptions details:', result.subscriptions[i].shop_uuid);
+        }
+        // console.log('Subscriptions details:', result.subscriptions);
+        // console.log('Subscriptions details:', result.subscriptions[0].shop_uuid);
     } else {
         console.log('No subscriptions found.');
     }
