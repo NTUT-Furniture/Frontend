@@ -180,7 +180,7 @@ function updateFormGroups(jsonData) {
     return formGroups;
 }
 
-  function getCookie(cookieName) {
+function getCookie(cookieName) {
     const cookies = document.cookie;
     const cookieArray = cookies.split('; ');
     const tokenCookie = cookieArray.find(row => row.startsWith(cookieName + '='));

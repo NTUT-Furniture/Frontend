@@ -1,4 +1,4 @@
-function generateProductHTML(productId, productName, productURL, productDetail, price, reviews) {
+function generateProductHTML(shopName, productName, productURL, productDetail, price, reviews, productId ,shopId) {
     const container = document.getElementById('product-container');
     // console.log(productId);
     // console.log(productName);
@@ -8,10 +8,11 @@ function generateProductHTML(productId, productName, productURL, productDetail, 
 
     let htmlContent = `
         <div class="product-upper">
-            <div class="product-image">
+            <div class="product-image" id="${productId}">
                 <img src="${productURL}" alt="商品圖片">
             </div>
             <div class="product-info">
+                <a class="shop-name" id="${shopId}" href="../shopManager/Shop.html?userType=buyer&shop_uuid=${getCookie("shop_uuid")}">${shopName}</a>
                 <h2>${productName}</h2>
                 <p>${productDetail}</p>
                 <p class="price">價格: ${price}</p>
@@ -45,9 +46,17 @@ function generateProductHTML(productId, productName, productURL, productDetail, 
     });
 }
 
+
+function getCookie(cookieName) {
+    const cookies = document.cookie;
+    const cookieArray = cookies.split('; ');
+    const tokenCookie = cookieArray.find(row => row.startsWith(cookieName + '='));
+    return tokenCookie ? tokenCookie.split('=')[1] : null;
+}
+
 // 示例數據
 var urlParams = new URLSearchParams(window.location.search);
-const productId = urlParams.get('productId');
+const shopName = "Go To Shop";
 const productName = urlParams.get('productName');
 const productDetail = urlParams.get('productDetail');
 const productURL = urlParams.get('productSrc');
@@ -56,8 +65,9 @@ const reviews = [
     {text: "Great sofa, very comfortable!", author: "John Doe"},
     {text: "Loved it, perfect for my living room.", author: "Jane Smith"}
 ];
-
+const productId = urlParams.get('productId');
+const shopId = urlParams.get('shopId');
 
 window.onload = function() {
-    generateProductHTML(productId, productName, productURL, productDetail, price, reviews);
+    generateProductHTML(shopName, productName, productURL, productDetail, price, reviews, productId ,shopId);
 };

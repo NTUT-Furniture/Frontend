@@ -29,7 +29,7 @@ function checkToken() {
 // 根據帳戶 token 的存在與否更新 Login 按鈕的文字
 function updateLoginButtonText(hasToken) {
     var loginButton = document.querySelector(".dropbtn");
-
+    console.log("have token")
     if (hasToken) {
         loginButton.textContent = "Logout";
     } else {
