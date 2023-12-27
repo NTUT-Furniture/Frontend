@@ -225,3 +225,11 @@ tr {
     background-color: #D9D9D9;
     color: #000;
 }
+
+.delete-button {
+    background-color: red;
+    color: white;
+    padding: 10px 20px;
+    font-size: larger;
+    cursor: pointer; /* Makes it clear the button is clickable */
+}
