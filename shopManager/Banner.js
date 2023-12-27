@@ -29,11 +29,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function handleLikeButtonClick(shopUuid) {
-        // 处理按钮点击事件
         console.log('Sub button clicked for shop:', shopUuid);
-
-        // 调用订阅函数或其他逻辑
-        // 例如： subscribe(shopUuid);
+        SubscribeShop(shopUuid);
     }
 
     function fetchImage(UUID, imgType) {
