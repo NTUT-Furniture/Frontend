@@ -190,6 +190,22 @@ function addItemToCart(item) {
     // toggleCart();
 }
 
+function addItemToCartWithQuantity(item, num) {
+    // console.log(item.id);
+    const existingItem = shoppingCart.find(cartItem => cartItem.id === item.id);
+
+    if (existingItem) {
+        existingItem.quantity += num;
+    } else {
+        shoppingCart.push({ ...item, quantity: num });
+    }
+
+    // saveShoppingCart(shoppingCart);
+    saveShoppingCartToCookie();
+    // console.log(shoppingCart);
+    // toggleCart();
+}
+
 function removeItem(itemId) {
     const index = shoppingCart.findIndex(item => item.id === itemId);
 
