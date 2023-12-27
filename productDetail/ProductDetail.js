@@ -12,7 +12,7 @@ function generateProductHTML(shopName, productName, productURL, productDetail, p
                 <img src="${productURL}" alt="商品圖片">
             </div>
             <div class="product-info">
-                <a class="shop-name" id="${shopId}" href="../shopManager/Shop.html?userType=buyer&shop_uuid=${getCookie("shop_uuid")}">${shopName}</a>
+                <a class="shop-name" id="${shopId}" href="../shopManager/Shop.html?userType=buyer&shop_uuid=${shopId}">${shopName}</a>
                 <h2>${productName}</h2>
                 <p>${productDetail}</p>
                 <p class="price">價格: ${price}</p>
