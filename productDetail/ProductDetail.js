@@ -12,12 +12,13 @@ function generateProductHTML(shopName, productName, productURL, productDetail, p
                 <img src="${productURL}" alt="商品圖片">
             </div>
             <div class="product-info">
-                <a class="shop-name" id="${shopId}" href="../shopManager/Shop.html?userType=buyer&shop_uuid=${getCookie("shop_uuid")}">${shopName}</a>
+                <a class="shop-name" id="${shopId}" href="../shopManager/Shop.html?userType=buyer&shop_uuid=${shopId}">${shopName}</a>
                 <h2>${productName}</h2>
                 <p>${productDetail}</p>
                 <p class="price">價格: ${price}</p>
                 <div class="buttons">
                     <button class="add" id="addToCart">Add to Cart</button>
+                    <button class="like" id="subscribe"><span>♥</span></button>
                 </div>
             </div>
         </div>
@@ -43,6 +44,9 @@ function generateProductHTML(shopName, productName, productURL, productDetail, p
     container.querySelector("#addToCart").addEventListener('click', (event) => {
         addItemToCart(item);
     });
+    container.querySelector("#subscribe").addEventListener('click', (event) => {
+        SubscribeShop(shopId);
+    });
 }
 
 
@@ -53,21 +57,58 @@ function getCookie(cookieName) {
     return tokenCookie ? tokenCookie.split('=')[1] : null;
 }
 
-// 示例數據
-var urlParams = new URLSearchParams(window.location.search);
-const shopName = "Go To Shop";
-const productName = urlParams.get('productName');
-const productDetail = urlParams.get('productDetail');
-const productURL = urlParams.get('productSrc');
-const price = urlParams.get('productPrice');
-const stock = urlParams.get('productStock');
-const reviews = [
-    {text: "Great sofa, very comfortable!", author: "John Doe"},
-    {text: "Loved it, perfect for my living room.", author: "Jane Smith"}
-];
-const productId = urlParams.get('productId');
-const shopId = urlParams.get('shopId');
+
+async function main() {
+    // 示例數據
+    var urlParams = new URLSearchParams(window.location.search);
+    const productName = urlParams.get('productName');
+    const productDetail = urlParams.get('productDetail');
+    const productURL = urlParams.get('productSrc');
+    const price = urlParams.get('productPrice');
+    const reviews = [
+        {text: "Great sofa, very comfortable!", author: "John Doe"},
+        {text: "Loved it, perfect for my living room.", author: "Jane Smith"}
+    ];
+    const productId = urlParams.get('productId');
+    const shopId = urlParams.get('shopId');
+    const shopName = await getShopName(shopId)
+                    .then(shopName => {
+                        console.log(`Shop Name: ${shopName}`);
+                        return shopName;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+    
+    generateProductHTML(shopName, productName, productURL, productDetail, price, reviews, productId ,shopId);
+}
+
+async function getShopName(shopUuid) {
+    try {
+        const url = `http://localhost:8000/api/shop/?shop_uuid=${shopUuid}`;
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'accept': 'application/json'
+            }
+        });
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const shopData = await response.json();
+
+        if (shopData && shopData.name) {
+            const shopName = shopData.name;
+            console.log(`Shop Name: ${shopName}`);
+            return shopName;
+        } else {
+            throw new Error('Shop data or name not found');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 
 window.onload = function() {
-    generateProductHTML(shopName, productName, productURL, productDetail, price, reviews, productId ,shopId, stock);
+    main();
 };
