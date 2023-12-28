@@ -22,8 +22,7 @@ class ItemCardComponent {
         const imageElement = document.createElement('img');
         fetchImage(this.productId, "avatar")
         .then(imageUrl => {
-            // console.log('Image URL:', imageUrl);
-            imageElement.src = imageUrl; // 在这里将 imageUrl 赋值给 this.imageUrl
+            imageElement.src = imageUrl; 
         })
         .catch(error => {
             console.error('Error:', error);
@@ -68,13 +67,19 @@ class ItemCardComponent {
             <p class="desc">${this.productDescription}</p>
             <div class="buttons">
                 <button class="add" id="addToCart">Add to Cart</button>
-                <button class="like"><span>♥</span></button>
+                <button class="like" id="subscribe" ><span>♥</span></button>
             </div>
         `;
 
         productElement.querySelector("#addToCart").addEventListener('click', (event) => {
             event.stopPropagation();
             addItemToCart(this.item);
+        });
+
+        productElement.querySelector("#subscribe").addEventListener('click', (event) => {
+            event.stopPropagation();
+            console.log(this.shopId);
+            SubscribeShop(this.shopId);
         });
         
         // Append elements to the container
