@@ -35,7 +35,13 @@ function subscribeSetting() {
     })
     .catch(error => {
         console.error('Error:', error);
-        document.getElementById('content').innerHTML = '<p>Error fetching subscription details.</p>';
+        document.getElementById('content').innerHTML = `
+        <table border="1">
+        <tr><th>Shop Name</th><th>Shop Details</th></tr>
+        <td>Doesn't subscribe any shop yet!</td>
+        <td>Empty</td>
+        </table>
+        `;
     });
 }
 
