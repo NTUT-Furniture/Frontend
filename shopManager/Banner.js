@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     </div>
                 </div>
             </div>
-            <div class="buttons"> <button class="like" id="subscriptionButton"style="width: 50px; height: 50px;"> <span style="display: inline-block; transform: scale(2);">♥</span> </button> </div>
+            <div class="buttons"> <button class="like" id="subscriptionButton"style="width: 50px; height: 50px;"> <span style="display: inline-block; transform: scale(2);">❤️</span> </button> </div>
         </div>
         `;
         const subButton = document.getElementById('subscriptionButton');

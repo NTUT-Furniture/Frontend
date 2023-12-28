@@ -68,18 +68,11 @@ class ItemCardComponent {
             <p class="desc">${this.productDescription}</p>
             <div class="buttons">
                 <button class="add" id="addToCart">Add to Cart</button>
-                <button class="like"><span>♥</span></button>
             </div>
         `;
         productElement.querySelector("#addToCart").addEventListener('click', (event) => {
             event.stopPropagation();
             addItemToCart(this.item);
-        });
-
-        productElement.querySelector("#subscribe").addEventListener('click', (event) => {
-            event.stopPropagation();
-            console.log(this.shopId);
-            SubscribeShop(this.shopId);
         });
         
         // Append elements to the container

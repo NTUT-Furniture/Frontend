@@ -18,7 +18,6 @@ function generateProductHTML(shopName, productName, productURL, productDetail, p
                 <p class="price">價格: ${price}</p>
                 <div class="buttons">
                     <button class="add" id="addToCart">Add to Cart</button>
-                    <button class="like" id="subscribe"><span>♥</span></button>
                 </div>
             </div>
         </div>
@@ -43,9 +42,6 @@ function generateProductHTML(shopName, productName, productURL, productDetail, p
     let item = {id: productId, name: productName, price: priceInt, stock: productStock};
     container.querySelector("#addToCart").addEventListener('click', (event) => {
         addItemToCart(item);
-    });
-    container.querySelector("#subscribe").addEventListener('click', (event) => {
-        SubscribeShop(shopId);
     });
 }
 
