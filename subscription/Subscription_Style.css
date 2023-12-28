@@ -30,6 +30,19 @@
     z-index: 2000;
 }
 
+#sub-popup button {
+    background-color: #ff5c5c;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 5px; /* Add space above the button */
+}
+
+#sub-popup button:hover {
+    background-color: #ff0000;
+}
+
 .subscription-item {
     margin-bottom: 10px;
     display: flex;

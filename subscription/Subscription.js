@@ -56,6 +56,13 @@ async function showSubscription(subPopup) {
         nothing.innerHTML = "<strong>u do not subscribe any shop</strong>"
         subPopup.appendChild(nothing);
     }
+    var closeButton = document.createElement("button");
+    closeButton.innerText = 'Close';
+    closeButton.onclick = toggleSub; // Use your checkout function here
+    closeButton.style.position = 'absolute';
+    closeButton.style.bottom = '10px';  // Adjust the bottom spacing as needed
+    closeButton.style.right = '10px';  // Adjust the right spacing as needed
+    subPopup.appendChild(closeButton);
 }
 
 async function getAccountSubscription() {
