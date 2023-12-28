@@ -27,9 +27,10 @@ class ItemCardComponent {
         })
         .catch(error => {
             console.error('Error:', error);
-            imageElement.src = '../Resources/defaultProduct.png';
+            imageElement.src = "this.src='../Resources/defaultProduct.png'";
         });
         imageElement.alt = this.productName;
+        imageElement.onerror = "this.src='../Resources/defaultProduct.png'";
         imageElement.classList.add('product-image');
 
         const slideshowButtons = document.createElement('div');
