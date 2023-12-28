@@ -26,7 +26,6 @@ class ItemCardComponent {
         })
         .catch(error => {
             console.error('Error:', error);
-            imageElement.src = "this.src='../Resources/defaultProduct.png'";
         });
         imageElement.alt = this.productName;
         imageElement.onerror = "this.src='../Resources/defaultProduct.png'";
