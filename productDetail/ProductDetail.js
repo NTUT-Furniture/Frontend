@@ -65,6 +65,7 @@ async function main() {
     const productDetail = urlParams.get('productDetail');
     const productURL = urlParams.get('productSrc');
     const price = urlParams.get('productPrice');
+    const productStock = urlParams.get('productStock');
     const reviews = [
         {text: "Great sofa, very comfortable!", author: "John Doe"},
         {text: "Loved it, perfect for my living room.", author: "Jane Smith"}
@@ -80,7 +81,7 @@ async function main() {
                         console.error('Error:', error);
                     });
     
-    generateProductHTML(shopName, productName, productURL, productDetail, price, reviews, productId ,shopId);
+    generateProductHTML(shopName, productName, productURL, productDetail, price, reviews, productId ,shopId, productStock);
 }
 
 async function getShopName(shopUuid) {
