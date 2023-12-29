@@ -24,9 +24,25 @@ document.addEventListener('DOMContentLoaded', function () {
         managementContainer.appendChild(card);
     }
 
-    function showDeleteForm(business, card) {
+    async function showDeleteForm(business, card) {
         card.remove(); // Replace with actual delete form implementation 
         alert(`Delete business ${business.id}`);
+        try {
+            const baseURL = `http://localhost:8000/api/product/?`;
+            const url = new URL(baseURL);
+            url.searchParams.append("product_uuid",business.id);
+            url.searchParams.append('is_active', "0");
+            const response = await fetch(url.toString(), {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + getCookie("token"),
+                },
+            });
+
+        }
+        catch(error){
+            throw error;
+        }
     }
 
     function showDetailPopup(business, card) {

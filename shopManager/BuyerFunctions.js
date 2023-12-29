@@ -9,10 +9,10 @@ document.addEventListener('DOMContentLoaded', function () {
         card.innerHTML = `
             <h2 class="name">${business.name}</h2>
             <p class="description">${business.description}</p>
-            <p class="quantity">Quantity: ${business.quantity}</p>
+            <p class="quantity">Stock: ${business.quantity}</p>
             <p class="price">Price: ${business.price}</p>
             <img class="image" src="${business.image_url}" alt="${business.name}">
-            <label for="quantity">Quantity:</label>
+            <label for="quantity" style="margin:1.1rem">Quantity:</label>
             <input type="number" id="quantity" name="quantity" value="1" min="1">
             <button class="buy-button">Buy</button>
         `;
