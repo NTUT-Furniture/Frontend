@@ -1,8 +1,11 @@
-/* style.css */
+@import url('https://fonts.googleapis.com/css?family=Lato:400,700');
+
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    /* font-family: Arial, sans-serif; */
+    font-family: 'Lato', sans-serif;
+    text-transform: uppercase;
     background-color: #E0C9CB; /* 背景顏色 */
 }
 
