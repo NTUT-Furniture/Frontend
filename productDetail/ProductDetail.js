@@ -23,32 +23,16 @@ function generateProductHTML(shopName, productName, productURL, productDetail, p
         </div>
         <div class="product-lower">
             <h3>Product Reviews</h3>
-    `;
-
-    reviews.forEach(review => {
-        htmlContent += `
-        <div class="review">
-            <p class="review-text">${review.text}</p>
-            <div class="review-footer">
-                <div class="review-stats">
-                    <div class="review-like">
-                        <span>❤️: ${review.likes}</span>
-                    </div>
-                    <div class="review-poop">
-                        <span>💩: ${review.dislikes}</span>
-                    </div>
-                </div>
-                <div class="review-author-time">
-                    <p class="review-author">${review.name} - </p>
-                    <p class="review-time">${review.update_time}</p>
-                </div>
+            <div class="add-review">
+                <textarea id="reviewText" placeholder="Enter your review here..."></textarea>
+                <button id="submitReview">Submit Review</button>
             </div>
-        </div>
-        `;
-    });
-
+            <div id="reviewsContainer">
+            </div>
+    `;
     htmlContent += `</div>`;
     container.innerHTML = htmlContent;
+    loadReviews(productId);
     
     let priceInt = parseInt(price.replace(/\D/g, ''), 10);
     // console.log(priceInt);
@@ -56,8 +40,62 @@ function generateProductHTML(shopName, productName, productURL, productDetail, p
     container.querySelector("#addToCart").addEventListener('click', (event) => {
         addItemToCart(item);
     });
+    
+    document.getElementById('submitReview').addEventListener('click', async () => {
+        const reviewText = document.getElementById('reviewText').value;
+        const productUuid = productId;
+        const token = getCookie('token');
+    
+        try {
+            const response = await fetch(`http://localhost:8000/api/comment/?product_uuid=${productUuid}&text=${reviewText}`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+            });
+    
+            if (response.ok) {
+                document.getElementById('reviewText').value = '';
+                loadReviews(productId);
+            } else {
+                console.error('Failed to submit review');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    });
 }
 
+async function loadReviews(productUuid) {
+    const reviews = await getProductReviews(productUuid);
+    let htmlContent = '';
+
+    reviews.forEach(review => {
+        htmlContent += `
+            <div class="review">
+                <p class="review-text">${review.text}</p>
+                <div class="review-footer">
+                    <div class="review-stats">
+                        <div class="review-like">
+                            <span>❤️: ${review.likes}</span>
+                        </div>
+                        <div class="review-poop">
+                            <span>💩: ${review.dislikes}</span>
+                        </div>
+                    </div>
+                    <div class="review-author-time">
+                        <p class="review-author">${review.name} - </p>
+                        <p class="review-time">${review.update_time}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    const reviewsContainer = document.getElementById('reviewsContainer'); // 确保这个元素存在
+    reviewsContainer.innerHTML = htmlContent;
+}
 
 function getCookie(cookieName) {
     const cookies = document.cookie;
@@ -68,17 +106,12 @@ function getCookie(cookieName) {
 
 
 async function main() {
-    // 示例數據
     var urlParams = new URLSearchParams(window.location.search);
     const productName = urlParams.get('productName');
     const productDetail = urlParams.get('productDetail');
     const productURL = urlParams.get('productSrc');
     const price = urlParams.get('productPrice');
     const productStock = urlParams.get('productStock');
-    // const reviews = [
-    //     {text: "Great sofa, very comfortable!", author: "John Doe"},
-    //     {text: "Loved it, perfect for my living room.", author: "Jane Smith"}
-    // ];
     const productId = urlParams.get('productId');
     const shopId = urlParams.get('shopId');
     const shopName = await getShopName(shopId)
