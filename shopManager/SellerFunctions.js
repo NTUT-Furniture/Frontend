@@ -19,9 +19,36 @@ document.addEventListener('DOMContentLoaded', function () {
             <button class="detail-button">Detail</button>
             <button class="delete-button">Delete</button>
         `;
+
+        // 添加點擊事件監聽器
+        card.addEventListener('click', (event) => {
+            // 檢查點擊的目標元素是否為按鈕
+            if (!event.target.matches('.detail-button') && !event.target.matches('.delete-button')) {
+                // 不是按鈕，執行跳轉頁面的操作
+                const businessSrc = event.currentTarget.querySelector('img').src;
+                redirectToSpecificPage(business, businessSrc);
+            }
+        });
+
         card.querySelector('.delete-button').addEventListener('click', () => showDeleteForm(business, card));
         card.querySelector('.detail-button').addEventListener('click', () => showDetailPopup(business, card));
+
         managementContainer.appendChild(card);
+    }
+    
+    // 定義跳轉頁面的函數
+    function redirectToSpecificPage(business, businessImg) {
+        // 在這裡實現跳轉到特定頁面的邏輯
+        console.log(`Redirect to specific page for ${business}`);
+
+        window.location.href = '../productDetail/ProductDetail.html?' + 
+        `shopId=${encodeURIComponent(business.shop)}&`+
+        `productId=${encodeURIComponent(business.id)}&` +
+        `productName=${encodeURIComponent(business.name)}&`+
+        `productDetail=${encodeURIComponent(business.description)}&`+
+        `productSrc=${encodeURIComponent(businessImg)}&`+
+        `productPrice=${encodeURIComponent(business.price)}&`+
+        `productStock=${encodeURIComponent(business.stock)}&`;
     }
 
     async function showDeleteForm(business, card) {
@@ -59,7 +86,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="bottom-buttons" style="display: flex; justify-content: space-around; width: 100%;">
                     <button class="detail-button">Edit</button>
                     <button class="detail-button">Status</button>
-                    <button class="detail-button">Comment</button>
                     <button class="close-button">Close</button>
                 </div>
             </div>
@@ -101,11 +127,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 showStatusTable(popup);
                 currentDetailType = 'status';
                 break;
-            case 3:
-                console.log('Comment button clicked');
-                showCommentSection(business, popup);
-                currentDetailType = 'comment';
-                break;
             default:
                 break;
         }
@@ -143,15 +164,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const statusTable = popup.querySelector('.table');
         if (statusTable) {
             statusTable.remove();
-            TableContainer.remove();
-        }
-    }
-
-    function hideCommentSection(popup) {
-        const TableContainer = popup.querySelector('.table-container');
-        const commentSection = popup.querySelector('.comment-section');
-        if (commentSection) {
-            commentSection.remove();
             TableContainer.remove();
         }
     }
@@ -255,6 +267,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     } else {
                         const element = card.querySelector(`.${field}`);
                         if (element) {
+                            business[field] = responseData[field];
                             console.log(element.innerText);
                             if(field == "name" || field == "description"){
                                 element.innerText = responseData[field];
@@ -411,144 +424,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function showCommentSection(business, popup) {
-        const commentSectionExists = popup.querySelector('.comment-section');
-        if (commentSectionExists) return;
-        const commentSectionContainer = document.createElement('div');
-        commentSectionContainer.classList.add('table-container');
-        commentSectionContainer.style.position = 'absolute';
-        commentSectionContainer.style.top = '0';
-        commentSectionContainer.style.left = '0';
-        commentSectionContainer.style.right = '0';
-        commentSectionContainer.style.bottom = '15%'; // Adjust the bottom value as needed
-        commentSectionContainer.style.overflow = 'auto';
-        const commentSection = document.createElement('div');
-        commentSection.classList.add('comment-section');
-
-        const commentInput = document.createElement('textarea');
-        commentInput.placeholder = 'Type your comment here...';
-        commentInput.classList.add('comment-input');
-
-        const submitButton = document.createElement('button');
-        submitButton.type = 'button';
-        submitButton.textContent = 'Submit';
-        submitButton.addEventListener('click', () => {
-            const commentText = commentInput.value;
-            if (commentText.trim() !== '') {
-                addCommentToPopup(commentText, 'You', popup);
-                commentInput.value = '';
-            }
-        });
-
-        commentSection.appendChild(commentInput);
-        commentSection.appendChild(submitButton);
-        commentSectionContainer.appendChild(commentSection);
-        popup.appendChild(commentSectionContainer);
-
-        // Mock comment to addCommentToPopup
-        const mockData = [
-            {
-                name: 'Kyynk',
-                comment: 'Great work!',
-            },
-            {
-                name: 'GM',
-                comment: 'Nice job!',
-            },
-            {
-                name: 'Vincent',
-                comment: 'Awesome!',
-            },
-            {
-                name: 'Vincent',
-                comment: 'Awesome!',
-            },
-            {
-                name: 'Vincent',
-                comment: 'Awesome!',
-            },
-            {
-                name: 'Vincent',
-                comment: 'Awesome!',
-            },
-            {
-                name: 'Vincent',
-                comment: 'Awesome!',
-            },
-            {
-                name: 'Vincent',
-                comment: 'Awesome!',
-            },
-            {
-                name: 'Vincent',
-                comment: 'Awesome!',
-            },
-            {
-                name: 'Vincent',
-                comment: 'Awesome!',
-            },
-            {
-                name: 'Vincent',
-                comment: 'Awesome!',
-            },
-            {
-                name: 'Vincent',
-                comment: 'Awesome!',
-            },
-            {
-                name: 'Vincent',
-                comment: 'Awesome!',
-            },
-            {
-                name: 'Vincent',
-                comment: 'Awesome!',
-            },
-            {
-                name: 'Vincent',
-                comment: 'Awesome!',
-            },
-            {
-                name: 'Vincent',
-                comment: 'Awesome!',
-            }, {
-                name: 'Vincent',
-                comment: 'Awesome!',
-            },
-            {
-                name: 'Vincent',
-                comment: 'Awesome!',
-            },
-
-
-        ];
-        mockData.forEach(data => {
-            addCommentToPopup(data.comment, data.name, popup);
-        });
-
-    }
-
-    function addCommentToPopup(commentText, name, popup) {
-        //console.log("name", name, "comment Test", commentText);
-        const commentContainer = document.createElement('div');
-        commentContainer.classList.add('comment-container');
-
-        const commentAuthor = document.createElement('span');
-        commentAuthor.textContent = name + ': ';
-
-        const commentTextElement = document.createElement('span');
-        commentTextElement.textContent = commentText;
-
-        commentContainer.appendChild(commentAuthor);
-        commentContainer.appendChild(commentTextElement);
-
-        //console.log(commentContainer.innerHTML);
-        const commentsSection = popup.querySelector('.comment-section');
-        if (commentsSection) {
-            //console.log("success to comment");
-            commentsSection.appendChild(commentContainer);
-        }
-    }
-
     async function getShopUUID(){
         const urlParams = new URLSearchParams(window.location.search);
         console.log("get self shop_uuid");
@@ -606,6 +481,7 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             // Assuming fetchBusinessCardData returns an object with 'products' property
             const products = await fetchBusinessCardData();
+            console.log(products);
             const productsData = products.products;
     
             const mappedData = [];
@@ -625,6 +501,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     
                     //console.log("productImage", productImage);
                     mappedData.push({
+                        shop: product.shop_uuid,
                         id: product.product_uuid,
                         name: product.name,
                         description: product.description,
