@@ -40,7 +40,8 @@ document.getElementById('avatarInput').addEventListener('change', async function
 
 function loadAvatarImage() {
     account_uuid = getCookie('account_uuid');
-    const imageUrl = `http://localhost:8000/api/image/${account_uuid}?img_type=avatar`;
+    const timestamp = new Date().getTime();
+    const imageUrl = `http://localhost:8000/api/image/${account_uuid}?img_type=avatar&t=${timestamp}`;
     document.getElementById('avatarImage').src = imageUrl;
     console.log(imageUrl)
 }

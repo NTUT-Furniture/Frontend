@@ -49,6 +49,7 @@ async function showShopSetting() {
                 throw new Error('Get Shop Error');
             }
             setCookie("shop_uuid", data.shop_uuid);
+            shopUuid = data.shop_uuid;
         } catch (error) {
             console.error('API GET Shop Error:', error);
         }
