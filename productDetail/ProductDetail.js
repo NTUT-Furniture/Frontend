@@ -74,14 +74,14 @@ async function loadReviews(productUuid) {
 
     reviews.forEach(review => {
         htmlContent += `
-            <div class="review">
+            <div class="review" id="${review.comment_uuid}">
                 <p class="review-text">${review.text}</p>
                 <div class="review-footer">
                     <div class="review-stats">
-                        <div class="review-like">
+                        <div class="review-like like-button">
                             <span>❤️: ${review.likes}</span>
                         </div>
-                        <div class="review-poop">
+                        <div class="review-poop dislike-button">
                             <span>💩: ${review.dislikes}</span>
                         </div>
                     </div>
@@ -95,6 +95,46 @@ async function loadReviews(productUuid) {
     });
     const reviewsContainer = document.getElementById('reviewsContainer'); // 确保这个元素存在
     reviewsContainer.innerHTML = htmlContent;
+    setupLikeButtons(productUuid);
+}
+
+function setupLikeButtons(productId) {
+    document.querySelectorAll('.like-button, .dislike-button').forEach(button => {
+        button.addEventListener('click', async (event) => {
+            const reviewId = button.closest('.review').id;
+            let isLikeButton = button.classList.contains('like-button');
+            const token = getCookie('token');
+            let url = `http://localhost:8000/api/comment/addLike?comment_uuid=${reviewId}&if_hates=${isLikeButton ? 0 : 1}`;
+            try {
+                let response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                if (response.status === 500) {
+                    console.log('delete')
+                    url = `http://localhost:8000/api/comment/deleteLike?comment_uuid=${reviewId}`;
+                    response = await fetch(url, {
+                        method: 'DELETE',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        }
+                    });
+                    if (!response.ok) {
+                        console.error('Failed to delete like/dislike after server error');
+                    }
+                } else if (!response.ok) {
+                    console.error('Failed to update like/dislike');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+            loadReviews(productId);
+        });
+    });
 }
 
 function getCookie(cookieName) {

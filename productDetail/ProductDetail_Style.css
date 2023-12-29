@@ -95,6 +95,12 @@ body {
     display: flex;
     align-items: center;
     margin-right: 10px;
+    cursor: pointer; 
+    transition: transform 0.3s ease;
+}
+
+.review-like:hover , .review-poop:hover{
+    transform: scale(1.1); 
 }
 
 .review-author-time {
