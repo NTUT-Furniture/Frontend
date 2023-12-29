@@ -27,10 +27,23 @@ function generateProductHTML(shopName, productName, productURL, productDetail, p
 
     reviews.forEach(review => {
         htmlContent += `
-            <div class="review">
-                <p class="review-text">${review.text}</p>
-                <p class="review-author">- ${review.author}</p>
+        <div class="review">
+            <p class="review-text">${review.text}</p>
+            <div class="review-footer">
+                <div class="review-stats">
+                    <div class="review-like">
+                        <span>❤️: ${review.likes}</span>
+                    </div>
+                    <div class="review-poop">
+                        <span>💩: ${review.dislikes}</span>
+                    </div>
+                </div>
+                <div class="review-author-time">
+                    <p class="review-author">${review.name} - </p>
+                    <p class="review-time">${review.update_time}</p>
+                </div>
             </div>
+        </div>
         `;
     });
 
@@ -62,10 +75,10 @@ async function main() {
     const productURL = urlParams.get('productSrc');
     const price = urlParams.get('productPrice');
     const productStock = urlParams.get('productStock');
-    const reviews = [
-        {text: "Great sofa, very comfortable!", author: "John Doe"},
-        {text: "Loved it, perfect for my living room.", author: "Jane Smith"}
-    ];
+    // const reviews = [
+    //     {text: "Great sofa, very comfortable!", author: "John Doe"},
+    //     {text: "Loved it, perfect for my living room.", author: "Jane Smith"}
+    // ];
     const productId = urlParams.get('productId');
     const shopId = urlParams.get('shopId');
     const shopName = await getShopName(shopId)
@@ -76,8 +89,16 @@ async function main() {
                     .catch(error => {
                         console.error('Error:', error);
                     });
+    const productReviews = await getProductReviews(productId)
+                    .then(reviews => {
+                        console.log(`reviews: ${reviews}`);
+                        return reviews;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
     
-    generateProductHTML(shopName, productName, productURL, productDetail, price, reviews, productId ,shopId, productStock);
+    generateProductHTML(shopName, productName, productURL, productDetail, price, productReviews, productId ,shopId, productStock);
 }
 
 async function getShopName(shopUuid) {
@@ -103,6 +124,28 @@ async function getShopName(shopUuid) {
         }
     } catch (error) {
         console.error('Error:', error);
+    }
+}
+
+async function getProductReviews(productUuid) {
+    try {
+        const url = `http://localhost:8000/api/comment/guest?product_uuid=${productUuid}`;
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'accept': 'application/json'
+            }
+        });
+        if (response.status === 404) {
+            return [];
+        } else if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const result = await response.json();
+        return result.comments || [];
+    } catch (error) {
+        console.error('Error:', error);
+        return [];
     }
 }
 

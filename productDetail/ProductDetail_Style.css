@@ -49,6 +49,8 @@ body {
 }
 
 .review {
+    display: grid;
+    grid-template-rows: auto 1fr; /* 定义两行，第一行内容大小由内容决定，第二行占据剩余空间 */
     margin-bottom: 15px;
     padding: 10px;
     background-color: #f8f8f8;
@@ -56,15 +58,45 @@ body {
 }
 
 .review-text {
-    font-size: 14px;
+    font-size: 28px;
     color: #333;
+    margin-bottom: 10px;
+    text-transform: none;
+}
+
+.review-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.review-stats {
+    display: flex;
+    align-items: center;
+}
+
+.review-like, .review-poop {
+    width: 50px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.review-author-time {
+    display: flex;
+    align-items: center;
 }
 
 .review-author {
     font-style: italic;
     color: #666;
+    margin-right: 10px; /* 为作者和时间添加一些间隔 */
 }
 
+.review-time {
+    color: #666;
+}
 .price {
     color: #B87333;
     font-weight: bold;
