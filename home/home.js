@@ -5,6 +5,7 @@ function addEventListenersToCards() {
                 console.log('Container was clicked!');
                 console.log(container.dataset.productId);
                 console.log(container.dataset.shopId);
+                console.log(container.dataset.productStock);
     
                // Extract data from the clicked container
                 var itemName = this.querySelector('h1').textContent;
@@ -13,6 +14,7 @@ function addEventListenersToCards() {
                 var itemPrice = this.querySelector('h2').textContent;
                 var itemId = container.dataset.productId;
                 var itemShop = container.dataset.shopId;
+                var itemStock = container.dataset.productStock;
 
                 // Redirect to another page with the item name
                 window.location.href = '../productDetail/ProductDetail.html?' + 
@@ -21,7 +23,8 @@ function addEventListenersToCards() {
                 `productName=${encodeURIComponent(itemName)}&`+
                 `productDetail=${encodeURIComponent(itemDescript)}&`+
                 `productSrc=${encodeURIComponent(itemSrc)}&`+
-                `productPrice=${encodeURIComponent(itemPrice)}&`;
+                `productPrice=${encodeURIComponent(itemPrice)}&`+
+                `productStock=${encodeURIComponent(itemStock)}&`;
             }
         });
     });

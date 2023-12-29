@@ -8,7 +8,7 @@ class ItemCardComponent {
         this.productTags = product.tags;
         this.productDescription = product.description || 'No description available';
         this.imageUrl = '';
-        this.item = { id: this.productId, name: this.productName, price: product.price };
+        this.item = { id: this.productId, name: this.productName, price: product.price, stock: this.productStock };
         this.container = this.render(); // Save the container element
         this.container.dataset.productId = this.productId;
         this.container.dataset.shopId = this.shopId;
@@ -68,19 +68,11 @@ class ItemCardComponent {
             <p class="desc">${this.productDescription}</p>
             <div class="buttons">
                 <button class="add" id="addToCart">Add to Cart</button>
-                <button class="like" id="subscribe" ><span>♥</span></button>
             </div>
         `;
-
         productElement.querySelector("#addToCart").addEventListener('click', (event) => {
             event.stopPropagation();
             addItemToCart(this.item);
-        });
-
-        productElement.querySelector("#subscribe").addEventListener('click', (event) => {
-            event.stopPropagation();
-            console.log(this.shopId);
-            SubscribeShop(this.shopId);
         });
         
         // Append elements to the container
@@ -90,7 +82,7 @@ class ItemCardComponent {
         container.appendChild(sizesElement);
         container.appendChild(productElement);
 
-        return container;
+        return container;        
     }
 }
 

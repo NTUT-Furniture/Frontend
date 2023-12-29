@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <p class="price">Price: ${business.price}</p>
             <img class="image" src="${business.image_url}" alt="${business.name}">
             <label for="quantity">Quantity:</label>
-            <input type="number" id="quantity" name="quantity" value="1" min="1">
+            <input type="number" id="quantity" name="quantity" value="1" min="1" max="${business.quantity}">
             <button class="buy-button">Buy</button>
         `;
         card.querySelector('.buy-button').addEventListener('click', () => handleBuyButtonClick(business, card));
@@ -28,6 +28,9 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('Please enter a valid quantity.');
             return;
         }
+
+        let item = {id: business.id, name: business.name, price: business.price, stock: business.quantity};
+        addItemToCartWithQuantity(item, quantity);
 
         // 在這裡可以添加購買邏輯，使用 business 和 quantity 進行相應的處理
         alert(`Buy ${quantity} of ${business.name}`);
