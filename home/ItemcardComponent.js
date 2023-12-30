@@ -104,7 +104,6 @@ async function fetchProducts() {
         const products = await response.json();
         allProducts = products.products;
         generateItemCard(products.products, 'ALL');
-        
     } catch (error) {
         console.error('Error fetching products:', error);
     }
