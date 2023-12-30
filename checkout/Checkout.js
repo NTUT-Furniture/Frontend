@@ -48,15 +48,44 @@ function displayShopping(coupon = 1) {
 }
 
 // Apply coupon function
-function applyCoupon() {
+async function applyCoupon() {
     var couponInput = document.getElementById('coupon');
     var message = document.getElementById('message');
+    let resultPromise = getCurrentCoupons();
+    let nowCoupons = await resultPromise;
+    console.log(nowCoupons);
 
     if (couponInput.value.trim() === 'SAVE10') {
-        message.textContent = 'Coupon applied successfully!';
+        message.textContent = 'Coupon applied successfully! Use Coupon: SAVE10';
         displayShopping(0.1);
     } else {
         message.textContent = 'Invalid coupon code.';
+    }
+}
+
+async function getCurrentCoupons() {
+    console.log('Get Current Counpons');
+    try {
+        const baseURL = `http://localhost:8000/api/coupon/`;
+        const url = new URL(baseURL);
+        const response = await fetch(url.toString(), {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+        });
+
+        if (response.ok) {
+            const jsonResponse = await response.json();
+            console.log(jsonResponse);
+            console.log('Success Get Current Coupons');
+            return jsonResponse;
+        } else {
+            console.log('No coupons now');
+            return null;
+        }
+    } catch (error) {
+        console.error('Get Counpons API Error', error);
     }
 }
 

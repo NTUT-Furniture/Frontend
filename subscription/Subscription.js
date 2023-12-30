@@ -8,15 +8,15 @@ async function toggleSub() {
 async function showSubscription(subPopup) {
     let resultPromise = getAccountSubscription();
     let result = await resultPromise; // Wait for the promise to resolve
-    console.log('hihi');
-    console.log(result);
+    // console.log('hihi');
+    // console.log(result);
     
     subPopup.innerHTML = "";
 
     // Assuming the result is an object with a 'subscriptions' property
     if (result && result.subscriptions) {
         for (var i=0; i<result.subscriptions.length; i++) {
-            console.log('Subscriptions details:', result.subscriptions[i].shop_uuid);
+            // console.log('Subscriptions details:', result.subscriptions[i].shop_uuid);
         }
         // console.log('Subscriptions details:', result.subscriptions);
         // console.log('Subscriptions details:', result.subscriptions[0].shop_uuid);
@@ -37,7 +37,7 @@ async function showSubscription(subPopup) {
                 button.textContent = "Unsubscribe";
                 button.onclick = async function () {
                     // Handle remove button click event
-                    console.log("Remove button clicked for shop_uuid: " + shopID);
+                    // console.log("Remove button clicked for shop_uuid: " + shopID);
                     // Add your logic to remove the subscription
                     await unsubscibeWithAccount(shopID);
                     await showSubscription(subPopup);
@@ -51,7 +51,7 @@ async function showSubscription(subPopup) {
             subPopup.appendChild(subscriptionItem);
         }
     } else {
-        console.log('No subscriptions found.');
+        // console.log('No subscriptions found.');
         var nothing = document.createElement("div");
         nothing.innerHTML = "<strong>u do not subscribe any shop</strong>"
         subPopup.appendChild(nothing);
@@ -66,10 +66,10 @@ async function showSubscription(subPopup) {
 }
 
 async function getAccountSubscription() {
-    console.log('Get Subscription');
+    // console.log('Get Subscription');
     try {
         accID = getCookie('account_uuid');
-        console.log('subscription account_uuid: ' + accID);
+        // console.log('subscription account_uuid: ' + accID);
         const baseURL = `http://localhost:8000/api/subscription/account?`;
         const url = new URL(baseURL);
         url.searchParams.append("target", "account_uuid");
@@ -84,11 +84,11 @@ async function getAccountSubscription() {
 
         if (response.ok) {
             const jsonResponse = await response.json();
-            console.log(jsonResponse);
-            console.log('Success Get Subscription');
+            // console.log(jsonResponse);
+            // console.log('Success Get Subscription');
             return jsonResponse;
         } else {
-            console.log('u have not subscribe any shop');
+            // console.log('u have not subscribe any shop');
             return null;
         }
     } catch (error) {
@@ -99,8 +99,8 @@ async function getAccountSubscription() {
 async function unsubscibeWithAccount(shopID) {
     try {
         accID = getCookie('account_uuid');
-        console.log('subscription account_uuid: ' + accID);
-        console.log('subscription shop_uuid: ' + shopID);
+        // console.log('subscription account_uuid: ' + accID);
+        // console.log('subscription shop_uuid: ' + shopID);
         const baseURL = `http://localhost:8000/api/subscription/unsubscribe?`;
         const url = new URL(baseURL);
         url.searchParams.append("shop_uuid", shopID);
@@ -115,8 +115,8 @@ async function unsubscibeWithAccount(shopID) {
 
         if (response.ok) {
             const jsonResponse = await response.json();
-            console.log(jsonResponse);
-            console.log('Success Delete Subscription');
+            // console.log(jsonResponse);
+            // console.log('Success Delete Subscription');
             // return jsonResponse;
         } else {
             alert('??? sth went wrong');
