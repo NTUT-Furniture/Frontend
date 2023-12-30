@@ -6,53 +6,49 @@ async function showShopSetting() {
     formElement.action = ''; // 設置表單的 action 屬性
     formElement.method = 'POST'; // 設置表單的 method 屬性
     let data =""
-    const shopUuid = getCookie('shop_uuid');
+    let shopUuid = getCookie('shop_uuid');
     const token = getCookie('token');
-    console.log(shopUuid === 'undefined');
-    if (shopUuid === 'undefined') {
-        try {
-            const response = await fetch('http://localhost:8000/api/shop/?name=Shop&description=Empty', {
+    console.log(shopUuid);
+    console.log(shopUuid === undefined);
+    try {
+        // 嘗試獲取商店信息
+        const getResponse = await fetch('http://localhost:8000/api/shop/mine', {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + token,
+            },
+        });
+        if (getResponse.ok) {
+            data = await getResponse.json();
+            console.log('Get Shop Success:', data);
+            shopUuid = data.shop_uuid;
+        } else if (getResponse.status === 404) {
+            const postResponse = await fetch('http://localhost:8000/api/shop/?name=Shop&description=Empty', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
                     'Authorization': 'Bearer ' + token,
                 },
             });
-
-            data = await response.json();
-            console.log(data);
-            if (response.ok) {
+            if (postResponse.ok) {
+                data = await postResponse.json();
                 console.log('Shop Create Success:', data);
+                shopUuid = data.shop_uuid;
             } else {
+
                 throw new Error('Shop Create Error');
             }
-            setCookie("shop_uuid", data.shop_uuid);
-        } catch (error) {
-            console.error('Create Shop Error:', error);
+        } else {
+            throw new Error('Get Shop Error');
         }
+    } catch (error) {
+        console.error('API Shop Error:', error);
+        return;
     }
-    else{
-        try {
-            const response = await fetch('http://localhost:8000/api/shop/mine', {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Authorization': 'Bearer ' + token,
-                },
-            });
 
-            data = await response.json();
-            console.log(data);
-            if (response.ok) {
-                console.log('Get Shop Success:', data);
-            } else {
-                throw new Error('Get Shop Error');
-            }
-            setCookie("shop_uuid", data.shop_uuid);
-            shopUuid = data.shop_uuid;
-        } catch (error) {
-            console.error('API GET Shop Error:', error);
-        }
+    if (shopUuid) {
+        setCookie("shop_uuid", shopUuid,7);
     }
 
     console.log(data);
@@ -154,7 +150,7 @@ async function showShopSetting() {
             formData.append('file', file);
 
             try {
-                const response = await fetch(`http://localhost:8000/api/image/?shop_uuid=${shopUuid}&img_type=banner`, {
+                const response = await fetch(`http://localhost:8000/api/image/?shop_uuid=${getCookie('shop_uuid')}&img_type=banner`, {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + token,
