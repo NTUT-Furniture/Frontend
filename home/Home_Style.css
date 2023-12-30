@@ -36,7 +36,7 @@ body {
     cursor: pointer;
     /* text-decoration: underline; */
     margin-bottom: 5px; /* Add some spacing between tags */
-    margin-top: 5px; /* Adjust spacing between the top edge and the first tag */
+    margin-top: 20px; /* Adjust spacing between the top edge and the first tag */
     border-bottom: 1px solid #ccc; /* Add a border between tags */
     padding-bottom: 5px; /* Adjust spacing between text and border */
 }
