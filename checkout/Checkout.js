@@ -60,6 +60,13 @@ function applyCoupon() {
     }
 }
 
+function getCookie(cookieName) {
+    const cookies = document.cookie;
+    const cookieArray = cookies.split('; ');
+    const tokenCookie = cookieArray.find(row => row.startsWith(cookieName + '='));
+    return tokenCookie ? tokenCookie.split('=')[1] : null;
+}
+
 // Checkout function
 function checkout() {
     console.log('Checkout successful! Items purchased:', shopping);
@@ -72,5 +79,6 @@ function checkout() {
 function continueShopping() {
     window.location.href = '../home/Index.html';
 }
+
 
 displayShopping();

@@ -191,8 +191,9 @@ th, td, #detail {
     padding: 4px;
     font-size: 24px;
     text-align: center;
-    overflow: hidden; /* 防止長文字溢出 */
-    white-space: nowrap; /* 不換行 */
+    max-width: 150px; /* 設定最大寬度 */
+    word-wrap: break-word; /* 允許長單詞在必要時換行 */
+    text-transform: none;
 }
 
 a {

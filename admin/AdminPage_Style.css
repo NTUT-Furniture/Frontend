@@ -182,3 +182,15 @@ td:last-child {
     width: 1%;
     white-space: nowrap;
 }
+
+.th-sort-asc::after {
+    content: "▲";
+}
+
+.th-sort-desc::after {
+    content: "▼";
+}
+
+.sortable:hover {
+    cursor: pointer;
+}

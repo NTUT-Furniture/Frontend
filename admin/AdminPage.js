@@ -1,38 +1,57 @@
 // 假設您的後端 API 端點為 "/api/accounts"
-function fetchAccounts() {
-    fetch('/api/accounts')
-        .then(response => response.json())
-        .then(data => {
-            renderTable(data);
-        })
-        .catch(error => console.error('Error:', error));
-    // addEditButtonEventListeners();
+async function fetchAccounts() {
+    const apiUrl = 'http://localhost:8000/api/account/all';
+    const requestOptions = {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + getCookie('token') // 確保 getCookie 函數是可用的
+        }
+    };
+    try {
+        const response = await fetch(apiUrl, requestOptions);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        data.accounts.forEach(account => {
+            renderRow(account);
+        });
+    } catch (error) {
+        console.error('Error:', error);
+    }
 }
 
-// 渲染單行帳號資訊
 function renderRow(account) {
     const table = document.getElementById("accountsTable");
     let row = table.insertRow();
-    row.insertCell(0).innerHTML = account.id || '';
+    row.insertCell(0).innerHTML = account.account_uuid || '';
     row.insertCell(1).innerHTML = account.name || '';
-    row.insertCell(2).innerHTML = '******';
-    row.insertCell(3).innerHTML = account.imageURL || '';
-    row.insertCell(4).innerHTML = account.email || '';
-    row.insertCell(5).innerHTML = account.phone || '';
-    row.insertCell(6).innerHTML = account.card || '';
-    row.insertCell(7).innerHTML = account.birthday ? formatDate(account.birthday) : '';
-    row.insertCell(8).innerHTML = account.address || '';
-    row.insertCell(9).innerHTML = account.createTime ? formatDate(account.createTime) : '';
+    row.insertCell(2).innerHTML = '******'; // 隱藏敏感資訊
+    // row.insertCell(3).innerHTML = account.imageURL || ''; // 如果您的資料中包含 imageURL
+    row.insertCell(3).innerHTML = account.email || '';
+    row.insertCell(4).innerHTML = account.phone || '';
+    row.insertCell(5).innerHTML = account.credit_card || ''; // 隱藏信用卡資訊
+    row.insertCell(6).innerHTML = account.birthday ? formatDate(account.birthday) : '';
+    row.insertCell(7).innerHTML = account.address || '';
+    // row.insertCell(8).innerHTML = account.is_active ? 'Yes' : 'No ';
+    let isActiveCell = row.insertCell(8);
+    isActiveCell.innerHTML = account.is_active ? 'Yes' : 'No';
+    if (account.is_active) {
+        isActiveCell.style.backgroundColor = 'green';
+    } else {
+        isActiveCell.style.backgroundColor = 'red';
+    }
+    row.insertCell(9).innerHTML = formatDate(account.update_time);
 
     let actionsCell = row.insertCell(10);
-    actionsCell.innerHTML = `<button class="modify-btn">修改</button>
-                             <button class="delete-btn">刪除</button>`;
+    actionsCell.innerHTML = `<button class="modify-btn">Edit</button>
+                             <button class="delete-btn">Ban</button>`;
 }
 
-// 日期格式化函數（假設您想將日期格式化為特定格式）
 function formatDate(dateString) {
-    let date = new Date(dateString);
-    return date.toLocaleDateString(); // 這會將日期格式化為本地格式，您可以根據需要調整
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
 }
 
 // 模態框控制
@@ -71,95 +90,200 @@ function submitForm() {
     closeModal();
 }
 
-// 添加一筆測試帳號資訊
-function addTestAccount() {
-    const testAccount = {
-        id: "1",
-        name: "測試用戶",
-        password:"**********",
-        imageURL: "https://example.com/image.jpg",
-        email: "test@example.com",
-        phone: "1234567890",
-        card: "1234 5678 9012 3456",
-        birthday: "1990-01-01",
-        address: "測試地址 123",
-        createTime: new Date().toISOString()
-    };
+// // 添加一筆測試帳號資訊
+// function addTestAccount() {
+//     const testAccount = {
+//         id: "1",
+//         name: "測試用戶",
+//         password:"**********",
+//         imageURL: "https://example.com/image.jpg",
+//         email: "test@example.com",
+//         phone: "1234567890",
+//         card: "1234 5678 9012 3456",
+//         birthday: "1990-01-01",
+//         address: "測試地址 123",
+//         // createTime: new Date().toISOString()
+//     };
 
-    renderRow(testAccount);
-}
+//     renderRow(testAccount);
+// }
 
-// 讓表格行可編輯並添加確認和取消按鈕
 function makeRowEditable(row) {
+    console.log("click modify");
     for (let i = 0; i < row.cells.length - 1; i++) {
         let cell = row.cells[i];
         let cellText = cell.innerHTML;
-        // 保存原始數據
         cell.setAttribute('data-original-text', cellText);
+        // console.log(cellText)
+        if ([0, 3, 8, 9].includes(i)) continue;
+        cell.innerHTML = '';
         let input = document.createElement('input');
         input.type = 'text';
-        input.value = cellText;
-        cell.innerHTML = '';
+        if (i === 2) {
+            input.type = 'password';
+            input.value = '';
+        } else if (i === 6) { 
+            input.type = 'date';
+            input.value = cellText ? cellText : ''; 
+        } else {
+            input.value = cellText;
+        }
         cell.appendChild(input);
     }
-    // 添加確認和取消按鈕
     let actionsCell = row.cells[row.cells.length - 1];
-    actionsCell.innerHTML = `<button class="confirm-btn">確認</button>
-                             <button class="cancel-btn">取消</button>`;
-    // 為確認和取消按鈕添加事件處理器
+    actionsCell.innerHTML = `<button class="confirm-btn">Confirm</button>
+                             <button class="cancel-btn">Cancel</button>`;
     actionsCell.getElementsByClassName('confirm-btn')[0].addEventListener('click', () => confirmEdit(row));
     actionsCell.getElementsByClassName('cancel-btn')[0].addEventListener('click', () => cancelEdit(row));
 }
 
-// 確認編輯
-function confirmEdit(row) {
-    console.log("確認編輯");
-    // ...將編輯後的數據保存到後端...
+async function confirmEdit(row) {
+    const account_uuid = row.cells[0].getAttribute('data-original-text');
+    const name = row.cells[1].firstChild.value;
+    const pwd = row.cells[2].firstChild.value;
+    const phone = row.cells[4].firstChild.value;
+    const credit_card = row.cells[5].firstChild.value;
+    const birthday = row.cells[6].firstChild.value;
+    const address = row.cells[7].firstChild.value;
+    const is_active = 1;
+    const role = 0;
+    console.log(row.cells[0].getAttribute('data-original-text'))
+    const accountData = {
+        name,
+        pwd,
+        phone,
+        credit_card,
+        birthday,
+        address,
+        is_active,
+        role
+    };
 
-    // 將輸入欄位轉換回文本
-    for (let i = 0; i < row.cells.length - 1; i++) {
-        let cell = row.cells[i];
-        let input = cell.firstChild;
-        cell.innerHTML = input.value; // 或者將數據保存到後端後再更新
+    const apiUrl = `http://localhost:8000/api/account/?account_uuid=${account_uuid}`;
+    const requestOptions = {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + getCookie('token'),
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(accountData)
+    };
+
+    try {
+        const response = await fetch(apiUrl, requestOptions);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        fetchAccounts();
+    } catch (error) {
+        console.error('Error:', error);
     }
-    // 恢復原來的修改按鈕
-    row.cells[row.cells.length - 1].innerHTML = `<button class="modify-btn">修改</button>
-                                                 <button class="delete-btn">刪除</button>`;
-    addEditButtonEventListener(row.cells[row.cells.length - 1].getElementsByClassName('modify-btn')[0]);
 }
 
-// 取消編輯
+async function makeRowBan(row) {
+    const account_uuid = row.cells[0].textContent;
+    const accountData = {
+        is_active : 0,
+    };
+    console.log(accountData)
+    const apiUrl = `http://localhost:8000/api/account/?account_uuid=${account_uuid}`;
+    const requestOptions = {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + getCookie('token'),
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(accountData)
+    };
+
+    try {
+        const response = await fetch(apiUrl, requestOptions);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        fetchAccounts();
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
 function cancelEdit(row) {
-    // 在這裡添加取消編輯的邏輯，通常是恢復原始數據
-    console.log("取消編輯");
+    console.log("Cancel Edit");
     for (let i = 0; i < row.cells.length - 1; i++) {
         let cell = row.cells[i];
-        // 恢復原始數據
-        cell.innerHTML = cell.getAttribute('data-original-text');
+        cell.innerHTML = cell.getAttribute('data-original-text') || ''; // 恢复原始数据
     }
-    // 恢復原來的修改按鈕
-    row.cells[row.cells.length - 1].innerHTML = `<button class="modify-btn">修改</button>
-                                                <button class="delete-btn">刪除</button>`;
-    addEditButtonEventListener(row.cells[row.cells.length - 1].getElementsByClassName('modify-btn')[0]);
+    let actionsCell = row.cells[row.cells.length - 1];
+    actionsCell.innerHTML = `<button class="modify-btn">Edit</button>
+                             <button class="delete-btn">Ban</button>`;
+    addEditButtonEventListener(actionsCell.getElementsByClassName('modify-btn')[0]);
 }
 
-// 為修改按鈕添加事件處理器
 function addEditButtonEventListener(button) {
+    console.log("add edit event")
     button.addEventListener('click', function() {
         let row = this.parentNode.parentNode;
         makeRowEditable(row);
     });
 }
 
-// 為所有修改按鈕添加事件處理器
+function addBanButtonEventListener(button) {
+    console.log("add edit event")
+    button.addEventListener('click', function() {
+        let row = this.parentNode.parentNode;
+        makeRowBan(row);
+    });
+}
+
 function addEditButtonEventListeners() {
     const editButtons = document.querySelectorAll('.modify-btn');
     editButtons.forEach(addEditButtonEventListener);
+    const banButtons = document.querySelectorAll('.delete-btn');
+    banButtons.forEach(addBanButtonEventListener);
 }
 
-// 在頁面加載時添加測試帳號
-window.onload = function() {
-    fetchAccounts();
-    addTestAccount(); // 添加測試帳號
+
+function getCookie(cookieName) {
+    const cookies = document.cookie;
+    const cookieArray = cookies.split('; ');
+    const tokenCookie = cookieArray.find(row => row.startsWith(cookieName + '='));
+    return tokenCookie ? tokenCookie.split('=')[1] : null;
+}
+
+function sortTableByColumn(table, column, asc = true) {
+    const dirModifier = asc ? 1 : -1;
+    const tHead = table.tHead;
+    const rows = Array.from(tHead.querySelectorAll("tr:nth-child(n+2)")); // 从第二行开始获取行
+    const sortedRows = rows.sort((a, b) => {
+        const aColText = a.querySelector(`td:nth-child(${column + 1})`).textContent.trim();
+        const bColText = b.querySelector(`td:nth-child(${column + 1})`).textContent.trim();
+
+        return aColText > bColText ? (1 * dirModifier) : (-1 * dirModifier);
+    });
+    while (tHead.rows.length > 1) {
+        tHead.deleteRow(1);
+    }
+    sortedRows.forEach(row => tHead.appendChild(row));
+
+    table.querySelectorAll("th").forEach(th => th.classList.remove("th-sort-asc", "th-sort-desc"));
+    table.querySelector(`th:nth-child(${column + 1})`).classList.toggle("th-sort-asc", asc);
+    table.querySelector(`th:nth-child(${column + 1})`).classList.toggle("th-sort-desc", !asc);
+}
+
+window.onload = async function() {
+    await fetchAccounts();
+    //addTestAccount(); // 添加測試帳號
     addEditButtonEventListeners();
+    document.querySelectorAll("#accountsTable th.sortable").forEach(headerCell => {
+        headerCell.addEventListener("click", () => {
+            const tableElement = headerCell.closest("table");
+            console.log(tableElement)
+            const headerIndex = Array.prototype.indexOf.call(headerCell.parentNode.children, headerCell);
+            const currentIsAscending = headerCell.classList.contains("th-sort-asc");
+            console.log("clicke table");
+            sortTableByColumn(tableElement, headerIndex, !currentIsAscending);
+        });
+    });
 };
