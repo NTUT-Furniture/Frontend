@@ -32,6 +32,21 @@ body {
     font-size: 18px;
 }
 
+.fixed-category .tag {
+    cursor: pointer;
+    /* text-decoration: underline; */
+    margin-bottom: 5px; /* Add some spacing between tags */
+    margin-top: 5px; /* Adjust spacing between the top edge and the first tag */
+    border-bottom: 1px solid #ccc; /* Add a border between tags */
+    padding-bottom: 5px; /* Adjust spacing between text and border */
+}
+
+.fixed-category .tag.selected {
+    font-weight: bold; /* Example: Make the selected tag bold */
+    color: #ffffff; /* Example: Change the text color of the selected tag */
+    border-bottom: 2px solid #ffffff; /* Example: Make the border thicker and red for the selected tag */
+}
+
 /* 定義位於category文字區域右側的樣式 */
 #mainPage {
     margin-left: 210px; /* 與固定文字區域寬度一致，形成空間 */

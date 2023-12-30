@@ -104,7 +104,7 @@ async function fetchProducts() {
         const products = await response.json();
         allProducts = products.products;
         generateItemCard(products.products, 'ALL');
-        addEventListenersToCards();
+        
     } catch (error) {
         console.error('Error fetching products:', error);
     }
@@ -134,6 +134,8 @@ function generateItemCard(products, tagFilter) {
             itemListContainer.appendChild(itemCardInstance.container);
         }
     }
+
+    addEventListenersToCards();
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -143,6 +145,16 @@ document.addEventListener('DOMContentLoaded', () => {
     tagListContainer.addEventListener('click', (event) => {
         if (event.target.tagName === 'P') {
             const selectedTag = event.target.dataset.tag;
+
+            // 移除先前被選中的標籤的 "selected" 類
+            const selectedTagElement = tagListContainer.querySelector('.tag.selected');
+            if (selectedTagElement) {
+                selectedTagElement.classList.remove('selected');
+            }
+
+            // 將新選中的標籤添加 "selected" 類
+            event.target.classList.add('selected');
+
             generateItemCard(allProducts, selectedTag);
         }
     });
