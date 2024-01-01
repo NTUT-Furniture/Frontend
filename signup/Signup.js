@@ -28,6 +28,7 @@ document.getElementById('submitButton').addEventListener('click', function () {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
+            mode: 'no-cors',
         })
             .then(response => response.json())
             .then(data => {
@@ -67,6 +68,7 @@ async function UserLogin(username, password) {
                 'Accept': 'application/json',
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
+            mode: 'no-cors',
             body: new URLSearchParams({
                 grant_type: '',
                 username: username,
@@ -94,6 +96,7 @@ async function GetAccount(token, type) {
                 'Accept': 'application/json',
                 'Authorization': type + " " + token,
             },
+            mode: 'no-cors',
         });
 
         const data = await response.json();

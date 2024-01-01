@@ -54,6 +54,7 @@ function generateProductHTML(shopName, productName, productURL, productDetail, p
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json'
                 },
+                mode: 'no-cors',
             });
     
             if (response.ok) {
@@ -111,7 +112,8 @@ function setupLikeButtons(productId) {
                     headers: {
                         'Accept': 'application/json',
                         'Authorization': `Bearer ${token}`
-                    }
+                    },
+                    mode: 'no-cors',
                 });
                 if (response.status === 500) {
                     console.log('delete')
@@ -121,7 +123,8 @@ function setupLikeButtons(productId) {
                         headers: {
                             'Accept': 'application/json',
                             'Authorization': `Bearer ${token}`
-                        }
+                        },
+                        mode: 'no-cors',
                     });
                     if (!response.ok) {
                         console.error('Failed to delete like/dislike after server error');
@@ -181,7 +184,8 @@ async function getShopName(shopUuid) {
             method: 'GET',
             headers: {
                 'accept': 'application/json'
-            }
+            },
+            mode: 'no-cors',
         });
         if (!response.ok) {
             throw new Error('Network response was not ok');
@@ -207,7 +211,8 @@ async function getProductReviews(productUuid) {
             method: 'GET',
             headers: {
                 'accept': 'application/json'
-            }
+            },
+            mode: 'no-cors',
         });
         if (response.status === 404) {
             return [];

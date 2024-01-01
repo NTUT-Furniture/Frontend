@@ -21,6 +21,7 @@ document.getElementById('avatarInput').addEventListener('change', async function
                 headers: {
                     'Authorization': 'Bearer ' + token,
                 },
+                mode: 'no-cors',
                 body: formData
             });
 

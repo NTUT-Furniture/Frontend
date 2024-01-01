@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
             url.searchParams.append('order', "shop_uuid");
             url.searchParams.append('shop_uuid', shopUUID);
             url.searchParams.append('is_active', '1');
-            const response = await fetch(url.toString());
+            const response = await fetch(url.toString(),{mode: 'no-cors',});
             const data = await response.json();
             console.log("fetch all product data", data);
             return data;

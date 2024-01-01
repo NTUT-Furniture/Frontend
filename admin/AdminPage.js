@@ -7,7 +7,8 @@ async function fetchAccounts() {
         headers: {
             'Accept': 'application/json',
             'Authorization': 'Bearer ' + getCookie('token') // 確保 getCookie 函數是可用的
-        }
+        },
+        mode: 'no-cors',
     };
     try {
         const response = await fetch(apiUrl, requestOptions);
@@ -144,6 +145,7 @@ async function confirmEdit(row) {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'Authorization':"Bearer " + getCookie('token'),
                 },
+                mode: 'no-cors',
             });
         const data = await response.json();
         console.log(data);
@@ -169,6 +171,7 @@ async function makeRowBan(row) {
             'Authorization': 'Bearer ' + getCookie('token'),
             'Content-Type': 'application/json'
         },
+        mode: 'no-cors',
     };
 
     try {
@@ -322,6 +325,7 @@ function submitForm() {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
+            mode: 'no-cors',
         })
         .then(response => response.json())
         .then(data => {

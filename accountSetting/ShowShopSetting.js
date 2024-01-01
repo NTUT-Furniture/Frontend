@@ -18,6 +18,7 @@ async function showShopSetting() {
                 'Accept': 'application/json',
                 'Authorization': 'Bearer ' + token,
             },
+            mode: 'no-cors',
         });
         if (getResponse.ok) {
             data = await getResponse.json();
@@ -30,6 +31,7 @@ async function showShopSetting() {
                     'Accept': 'application/json',
                     'Authorization': 'Bearer ' + token,
                 },
+                mode: 'no-cors',
             });
             if (postResponse.ok) {
                 data = await postResponse.json();
@@ -155,6 +157,7 @@ async function showShopSetting() {
                     headers: {
                         'Authorization': 'Bearer ' + token,
                     },
+                    mode: 'no-cors',
                     body: formData
                 });
 
@@ -189,6 +192,7 @@ async function GetAccount(type,token) {
                 'Accept': 'application/json',
                 'Authorization': type + " " + token,
             },
+            mode: 'no-cors',
         });
 
         const data = await response.json();
@@ -212,6 +216,7 @@ async function modifyShopSetting(type, token) {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'Authorization': type + " " + token,
                 },
+                mode: 'no-cors',
             });
 
         const data = await response.json();

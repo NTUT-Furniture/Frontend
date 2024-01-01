@@ -5,7 +5,8 @@ function SubscribeShop(shop) {
         headers: {
             'Accept': 'application/json',
             'Authorization': `Bearer ${getCookie("token")}`
-        }
+        },
+        mode: 'no-cors',
     };
     fetch(url, fetchOptions)
         .then(response => {
