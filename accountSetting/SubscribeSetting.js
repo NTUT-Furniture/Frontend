@@ -20,8 +20,7 @@ function subscribeSetting() {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'
-                },
-                mode: 'no-cors',
+                }
             })
             .then(response => response.json())
             .then(shopDetails => ({
@@ -72,8 +71,7 @@ async function deleteSubscription(shopUuid) {
             headers: {
                 'accept': 'application/json',
                 'Authorization': `Bearer ${token}`
-            },
-            mode: 'no-cors',
+            }
         });
         if (!response.ok) {
             throw new Error('Network response was not ok');

@@ -89,7 +89,6 @@ async function modifyAccountSetting(type, token) {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'Authorization': type + " " + token,
                 },
-                mode: 'no-cors',
             });
 
         const data = await response.json();
@@ -109,7 +108,6 @@ async function GetAccountDetail(type,token) {
                 'Accept': 'application/json',
                 'Authorization': type + " " + token, 
             },
-            mode: 'no-cors',
         });
 
         if (!response.ok) {

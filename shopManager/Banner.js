@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     'Accept': 'application/json',
                     'Authorization': 'Bearer ' + getCookie('token'),
                 },
-                mode: 'no-cors',
             });
             
             if (response.ok) {
@@ -67,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function () {
                             'Accept': 'application/json',
                             'Authorization': 'Bearer ' + getCookie('token'),
                         },
-                        mode: 'no-cors',
                     });
         
                     data = await response.json();
@@ -98,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             url.searchParams.append('shop_uuid', await getShopUUID());
 
-            const response = await fetch(url.toString(),{mode: 'no-cors',});
+            const response = await fetch(url.toString());
 
             if (!response.ok) {
                 throw new Error('Failed to fetch shopname and description from the API');

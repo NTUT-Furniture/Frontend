@@ -64,7 +64,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 headers: {
                     'Authorization': 'Bearer ' + getCookie("token"),
                 },
-                mode: 'no-cors',
             });
 
         }
@@ -240,7 +239,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 headers: {
                     'Authorization': 'Bearer ' + getCookie("token"),
                 },
-                mode: 'no-cors',
             });
 
             if (response.ok) {
@@ -303,7 +301,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     headers: {
                         'Authorization': 'Bearer ' + getCookie('token'),
                     },
-                    mode: 'no-cors',
                     body: formData
                 });
 
@@ -436,7 +433,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 'Accept': 'application/json',
                 'Authorization': 'Bearer ' + getCookie('token'),
             },
-            mode: 'no-cors',
         });
         
         if (response.ok) {
@@ -458,7 +454,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log("self_shop_uuid", self_shop_uuid);
             url.searchParams.append('order', "shop_uuid");
             url.searchParams.append('shop_uuid', self_shop_uuid);
-            const response = await fetch(url.toString(),{mode: 'no-cors',});
+            const response = await fetch(url.toString());
             const data = await response.json();
             return data;
         } catch (error) {
@@ -544,7 +540,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     'Accept': 'application/json',
                     'Authorization': "Bearer " + getCookie("token"),
                 },
-                mode: 'no-cors',
             });
 
             if (!response.ok) {

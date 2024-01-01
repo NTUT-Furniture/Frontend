@@ -80,7 +80,6 @@ async function getAccountSubscription() {
                 'Accept': 'application/json',
                 'Authorization': 'Bearer ' + getCookie('token'),
             },
-            mode: 'no-cors',
         });
 
         if (response.ok) {
@@ -112,7 +111,6 @@ async function unsubscibeWithAccount(shopID) {
                 'Accept': 'application/json',
                 'Authorization': 'Bearer ' + getCookie('token'),
             },
-            mode: 'no-cors',
         });
 
         if (response.ok) {

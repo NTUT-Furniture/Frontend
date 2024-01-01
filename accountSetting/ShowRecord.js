@@ -6,8 +6,7 @@ async function showOrderRecord() {
             headers: {
                 'Accept': 'application/json',
                 'Authorization': 'Bearer ' + getCookie('token')
-            },
-            mode: 'no-cors',
+            }
         });
         const data = await response.json();
         console.log(data);
