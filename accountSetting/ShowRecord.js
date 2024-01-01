@@ -9,7 +9,7 @@ async function showOrderRecord() {
             }
         });
         const data = await response.json();
-
+        console.log(data);
         const container = document.getElementById('content');
         container.innerHTML = '';
         const table = document.createElement('table');
