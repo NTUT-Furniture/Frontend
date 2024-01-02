@@ -9,7 +9,7 @@
 <body>
     <div id="loginContainer" class="login-container">
         <h2>Login</h2>
-        <form class="login-form" action="" method="POST">
+        <form class="login-form" action="" method="POST" onsubmit="event.preventDefault(); submitForm();">
             <div class="form-group">
                 <label for="username">E-mail</label>
                 <input type="text" id="username" name="username" placeholder="請輸入用戶名稱" required>
@@ -18,7 +18,7 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" placeholder="請輸入密碼" required>
             </div>
-            <button type="button" onclick="submitForm()">Login</button>
+            <button type="submit">Login</button>
         </form>
         <a href="../signup/Signup.html">Sign up</a>
     </div>
