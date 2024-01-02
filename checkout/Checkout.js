@@ -63,6 +63,13 @@ async function applyCoupon() {
     }
 }
 
+function getCookie(cookieName) {
+    const cookies = document.cookie;
+    const cookieArray = cookies.split('; ');
+    const tokenCookie = cookieArray.find(row => row.startsWith(cookieName + '='));
+    return tokenCookie ? tokenCookie.split('=')[1] : null;
+}
+
 async function getCurrentCoupons() {
     console.log('Get Current Counpons');
     try {
@@ -101,5 +108,6 @@ function checkout() {
 function continueShopping() {
     window.location.href = '../home/Index.html';
 }
+
 
 displayShopping();

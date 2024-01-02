@@ -38,8 +38,7 @@ function subscribeSetting() {
         document.getElementById('content').innerHTML = `
         <table border="1">
         <tr><th>Shop Name</th><th>Shop Details</th></tr>
-        <td>Doesn't subscribe any shop yet!</td>
-        <td>Empty</td>
+        <td colspan="2">Doesn't subscribe any shop yet!</td>
         </table>
         `;
     });
