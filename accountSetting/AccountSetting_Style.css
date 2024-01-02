@@ -234,3 +234,10 @@ tr {
     font-size: larger;
     cursor: pointer; /* Makes it clear the button is clickable */
 }
+
+.discount {
+    color: red;     
+    font-weight: bold; 
+    font-style: italic; 
+    font-size: 0.8em;  
+}

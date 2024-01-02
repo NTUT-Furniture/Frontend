@@ -1,7 +1,7 @@
 async function showOrderRecord() {
     try {
         // Fetch data from API
-        const response = await fetch('http://localhost:8000/api/transaction/?account_uuid=' + getCookie('account_uuid'), {
+        const response = await fetch('http://localhost:8000/api/transaction/?target=Account', {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -25,28 +25,40 @@ async function showOrderRecord() {
         `;
         table.appendChild(thead);
         const tbody = document.createElement('tbody');
+
         data.transactions.forEach((transaction, index) => {
+            const productNames = transaction.products.transaction_product_logs.map(product => product.product_name).join('<br>');
+            let discountDisplay = '';
+            if (1 > transaction.discount > 0) {
+                const discountPercentage = ((1 - transaction.discount) * 100).toFixed(0);
+                discountDisplay = `<span class="discount"> ${discountPercentage}% off</span>`;
+            }
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${new Date(transaction.order_time).toLocaleDateString()}</td>
-                <td>Multiqqqqqqqqqqqqqqqqqqqqqqqqqple Products</td>
-                <td>Varies</td>
+                <td>${productNames}</td>
+                <td>${transaction.total_price} ${discountDisplay}</td> <!-- 同時顯示價格和折扣 -->
                 <td>${transaction.status}</td>
-                <td><a href="javascript:void(0);" onclick="toggleOpenDetail('detail-${index}')">Open</a></td>
+                <td><a href="javascript:void(0);" style="color: initial;" id="detail-status-${index}" onclick="toggleOpenDetail('detail-${index}' ,${index})">Open</a></td>
             `;
             tbody.appendChild(tr);
-
+        
             const detailTr = document.createElement('tr');
             detailTr.id = `detail-${index}`;
             detailTr.style.display = 'none';
             detailTr.innerHTML = `
                 <td colspan="5">
                     <table>
-                        ${transaction.products.map(product => `
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                        </tr>
+                        ${transaction.products.transaction_product_logs.map(product => `
                             <tr>
-                                <td>${product.product_uuid.substring(0, 5)}</td>
+                                <td>${product.product_name}</td>
                                 <td>${product.quantity}</td>
-                                <td>Money</td>
+                                <td>${product.price}</td>
                             </tr>
                         `).join('')}
                     </table>
@@ -62,9 +74,11 @@ async function showOrderRecord() {
     }
 }
 
-function toggleOpenDetail(detailId) {
+function toggleOpenDetail(detailId,index) {
     const detailRow = document.getElementById(detailId);
+    const status = document.getElementById(`detail-status-${index}`)
     if (detailRow) {
         detailRow.style.display = detailRow.style.display === 'none' ? '' : 'none';
+        status.innerHTML = status.innerHTML === 'Open' ? 'Close' :'Open';
     }
 }
