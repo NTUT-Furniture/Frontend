@@ -125,7 +125,7 @@ async function fetchImage(UUID, imgType) {
 function generateItemCard(products, tagFilter) {
     const itemListContainer = document.getElementById("itemList");
     itemListContainer.innerHTML = '';
-    console.log(products);
+    // console.log(products);
     for (const product of products) {
         // 如果標籤過濾為 "ALL" 或符合標籤條件，則生成商品卡片
         if (tagFilter === 'ALL' || product.tags.includes(tagFilter)) {
