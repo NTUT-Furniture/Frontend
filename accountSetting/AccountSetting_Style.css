@@ -241,3 +241,20 @@ tr {
     font-style: italic; 
     font-size: 0.8em;  
 }
+
+.product-description {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    border-radius: 6px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1;
+    /* transform: translateX(-50%); */
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.product-name-tooltip:hover .product-description {
+    visibility: visible;
+}
