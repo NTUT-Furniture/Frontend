@@ -1,5 +1,5 @@
 function subscribeSetting() {
-    const url = 'http://localhost:8000/api/subscription/account?target=account_uuid&account_uuid=05c2fd4b-2f54-404f-90c7-a3a98b293095';
+    const url = `http://localhost:8000/api/subscription/account?uuid_type=account_uuid&uuid=${getCookie('account_uuid')}`;
 
     fetch(url, {
         method: 'GET',
@@ -16,7 +16,7 @@ function subscribeSetting() {
     })
     .then(data => {
         return Promise.all(data.subscriptions.map(subscription => 
-            fetch(`http://localhost:8000/api/shop/?shop_uuid=${subscription.shop_uuid}`, {
+            fetch(`http://localhost:8000/api/shop/?shop_uuid=${subscription.uuid}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'
@@ -62,7 +62,7 @@ function createTable(subscriptions) {
         table += `<tr>`;
         table += `<td>${subscription.name}</td>`;
         table += `<td>${subscription.description}</td>`;
-        table += `<td><button class="delete-button" onclick="deleteSubscription('${subscription.shop_uuid}')">Delete</button></td>`;
+        table += `<td><button class="delete-button" onclick="deleteSubscription('${subscription.uuid}')">Delete</button></td>`;
         table += `</tr>`;
     });
 

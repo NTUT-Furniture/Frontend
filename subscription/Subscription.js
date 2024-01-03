@@ -9,7 +9,7 @@ async function showSubscription(subPopup) {
     let resultPromise = getAccountSubscription();
     let result = await resultPromise; // Wait for the promise to resolve
     // console.log('hihi');
-    // console.log(result);
+    console.log(result);
     
     subPopup.innerHTML = "";
 
@@ -21,14 +21,14 @@ async function showSubscription(subPopup) {
         // console.log('Subscriptions details:', result.subscriptions);
         // console.log('Subscriptions details:', result.subscriptions[0].shop_uuid);
         for (var i = 0; i < result.subscriptions.length; i++) {
-            var shopID = result.subscriptions[i].shop_uuid;
+            var shopID = result.subscriptions[i].uuid;
 
             // Create a div for each subscription item
             var subscriptionItem = document.createElement("div");
             subscriptionItem.className = "subscription-item";
 
             // Display shop_uuid
-            var shopUuidText = document.createTextNode(result.subscriptions[i].shop_uuid);
+            var shopUuidText = document.createTextNode(result.subscriptions[i].name);
             subscriptionItem.appendChild(shopUuidText);
 
             // Create remove button with IIFE to capture the current shopID
@@ -72,8 +72,8 @@ async function getAccountSubscription() {
         // console.log('subscription account_uuid: ' + accID);
         const baseURL = `http://localhost:8000/api/subscription/account?`;
         const url = new URL(baseURL);
-        url.searchParams.append("target", "account_uuid");
-        url.searchParams.append('account_uuid', accID);
+        url.searchParams.append("uuid_type", "account_uuid");
+        url.searchParams.append('uuid', accID);
         const response = await fetch(url.toString(), {
             method: 'GET',
             headers: {

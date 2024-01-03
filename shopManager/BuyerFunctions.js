@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <p class="quantity">Stock: ${business.quantity}</p>
             <p class="price">Price: ${business.price}</p>
             <img class="image" src="${business.image_url}" alt="${business.name}">
-            <label for="quantity" style="margin:1.1rem>Quantity:</label>
+            <label for="quantity" style="margin:1.1rem">Quantity:</label>
             <input type="number" id="quantity" name="quantity" value="1" min="1" max="${business.quantity}">
             <button class="buy-button">Buy</button>
         `;
