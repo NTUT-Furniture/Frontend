@@ -86,6 +86,8 @@ class ItemCardComponent {
     }
 }
 
+var allProducts = []
+
 async function fetchProducts() {
     try {
         const response = await fetch('http://localhost:8000/api/product/all?order=product_uuid&limit=2147483647', {
@@ -100,8 +102,8 @@ async function fetchProducts() {
         }
 
         const products = await response.json();
-        generateItemCard(products.products);
-        addEventListenersToCards();
+        allProducts = products.products;
+        generateItemCard(products.products, 'ALL');
     } catch (error) {
         console.error('Error fetching products:', error);
     }
@@ -120,14 +122,47 @@ async function fetchImage(UUID, imgType) {
     }
 }
 
-function generateItemCard(products) {
+function generateItemCard(products, tagFilter) {
     const itemListContainer = document.getElementById("itemList");
     itemListContainer.innerHTML = '';
-
+    // console.log(products);
     for (const product of products) {
-        const itemCardInstance = new ItemCardComponent(product);
-        itemListContainer.appendChild(itemCardInstance.container);
+        // 如果標籤過濾為 "ALL" 或符合標籤條件，則生成商品卡片
+        if (tagFilter === 'ALL' || product.tags.includes(tagFilter)) {
+            const itemCardInstance = new ItemCardComponent(product);
+            itemListContainer.appendChild(itemCardInstance.container);
+        }
     }
+
+    addEventListenersToCards();
 }
 
-document.addEventListener('DOMContentLoaded', fetchProducts);
+document.addEventListener('DOMContentLoaded', () => {
+    const tagListContainer = document.getElementById('tagList');
+
+    // 監聽 tag 點擊事件
+    tagListContainer.addEventListener('click', (event) => {
+        if (event.target.tagName === 'P') {
+            const selectedTag = event.target.dataset.tag;
+
+            // 移除先前被選中的標籤的 "selected" 類
+            const selectedTagElement = tagListContainer.querySelector('.tag.selected');
+            if (selectedTagElement) {
+                selectedTagElement.classList.remove('selected');
+            }
+
+            // 將新選中的標籤添加 "selected" 類
+            event.target.classList.add('selected');
+
+            generateItemCard(allProducts, selectedTag);
+        }
+    });
+
+    // 模擬一次點擊 "ALL" 標籤
+    const allTagElement = tagListContainer.querySelector('[data-tag="ALL"]');
+    if (allTagElement) {
+        allTagElement.click();
+    }
+
+    fetchProducts();
+});

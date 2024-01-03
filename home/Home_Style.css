@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Lato:400,700');
 
 body {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  background: #E0C9CB;
-  font-family: 'Lato', sans-serif;
-  text-transform: uppercase;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    background: #E0C9CB;
+    font-family: 'Lato', sans-serif;
+    text-transform: uppercase;
 }
 
 #home-title {
@@ -17,14 +17,34 @@ body {
 
 /* 定義category文字區域的樣式 */
 .fixed-category {
-  position: fixed;
-  top: 50px;
-  left: 0;
-  width: 200px; /* 設定區域寬度 */
-  background-color: #333333;
-  color: #fff;
-  padding: 10px;
-  margin-left: 15px;
+    cursor: pointer;
+    position: fixed;
+    top: 50px;
+    left: 0;
+    width: 200px; /* 設定區域寬度 */
+    background-color: #333333;
+    color: #fff;
+    padding: 10px;
+    margin-left: 15px;
+}
+
+.fixed-category p {
+    font-size: 18px;
+}
+
+.fixed-category .tag {
+    cursor: pointer;
+    /* text-decoration: underline; */
+    margin-bottom: 5px; /* Add some spacing between tags */
+    margin-top: 20px; /* Adjust spacing between the top edge and the first tag */
+    border-bottom: 1px solid #ccc; /* Add a border between tags */
+    padding-bottom: 5px; /* Adjust spacing between text and border */
+}
+
+.fixed-category .tag.selected {
+    font-weight: bold; /* Example: Make the selected tag bold */
+    color: #ffffff; /* Example: Change the text color of the selected tag */
+    border-bottom: 2px solid #ffffff; /* Example: Make the border thicker and red for the selected tag */
 }
 
 /* 定義位於category文字區域右側的樣式 */
