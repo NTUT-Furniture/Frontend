@@ -86,7 +86,7 @@ async function deleteSubscription(shopUuid) {
             throw new Error('Network response was not ok');
         }
         console.log('Subscription deleted successfully');
-        subscribeSetting();
     } catch (error) {
     }
+    subscribeSetting();
 }
