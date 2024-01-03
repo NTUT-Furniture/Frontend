@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 break;
             case 2:
                 console.log('Status button clicked');
-                showStatusTable(popup);
+                showStatusTable(popup, business);
                 currentDetailType = 'status';
                 break;
             default:
@@ -317,6 +317,75 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // async function showStatusTable(popup, businessCardData) {
+    //     const tableExists = popup.querySelector('.table');
+    //     if (tableExists) return;
+        
+    //     if (openDetailForm) {
+    //         const statusTableContainer = document.createElement('div');
+    //         statusTableContainer.classList.add('table-container');
+    //         statusTableContainer.style.position = 'absolute';
+    //         statusTableContainer.style.top = '0';
+    //         statusTableContainer.style.left = '0';
+    //         statusTableContainer.style.right = '0';
+    //         statusTableContainer.style.bottom = '15%'; // Adjust the bottom value as needed
+    //         statusTableContainer.style.overflow = 'auto';
+
+    //         const statusTable = document.createElement('table');
+    //         statusTable.classList.add('table');
+    //         // Header row
+    //         try {
+    //             const response = await fetch('http://localhost:8000/api/transaction/?target=Shop', {
+    //                 method: 'GET',
+    //                 headers: {
+    //                     'Accept': 'application/json',
+    //                     'Authorization': 'Bearer ' + getCookie('token')
+    //                 }
+    //             });
+    //             if (!response.ok) {
+    //                 throw new Error('Failed to fetch data from the API');
+    //             }
+        
+    //             const data = await response.json();
+    //             // Header row
+    //             statusTable.innerHTML = `
+    //                 <tr>
+    //                     <th>Transaction ID</th>
+    //                     <th>Customer ID</th>
+    //                     <th>Product Name</th>
+    //                     <th>Status</th>
+    //                     <th>Date Ordered</th>
+    //                     <th>Expected Delivery Date</th>
+    //                 </tr>
+    //             `;
+        
+    //             // Data rows
+    //             data.transactions.forEach(transaction => {
+    //                 console.log(transaction);
+    //                 if (transaction.products.transaction_product_logs[0].product_name != businessCardData.name){
+    //                     return;
+    //                 }
+    //                 statusTable.innerHTML += `
+    //                     <tr>
+    //                         <td>${transaction.transaction_uuid}</td>
+    //                         <td>${transaction.account_uuid}</td>
+    //                         <td>${transaction.products.transaction_product_logs[0].product_name}</td>
+    //                         <td>${transaction.status}</td>
+    //                         <td>${transaction.order_time}</td>
+    //                         <td>${transaction.receive_time}</td>
+    //                     </tr>
+    //                 `;
+    //             });
+        
+    //             statusTableContainer.appendChild(statusTable);
+    //             popup.appendChild(statusTableContainer);
+    //         } catch (error) {
+    //             console.error('Error fetching data:', error);
+    //             alert('An error occurred while fetching status data. Please try again later.');
+    //         }
+    //     }
+    // }
+
     function showStatusTable(popup) {
         const tableExists = popup.querySelector('.table');
         if (tableExists) return;
@@ -423,7 +492,7 @@ document.addEventListener('DOMContentLoaded', function () {
             popup.appendChild(statusTableContainer);
         }
     }
-
+    
     async function getShopUUID(){
         const urlParams = new URLSearchParams(window.location.search);
         console.log("get self shop_uuid");
