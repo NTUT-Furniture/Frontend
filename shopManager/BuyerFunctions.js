@@ -56,7 +56,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     
     function fetchImage(UUID, imgType) {
-        return `http://localhost:8000/api/image/${UUID}?img_type=${imgType}`;
+        const timestamp = new Date().getTime();
+        return `http://localhost:8000/api/image/${UUID}?img_type=${imgType}&_=${timestamp}`;
     }
 
     async function renderBusinessCards() {

@@ -108,7 +108,8 @@ async function fetchProducts() {
 }
 
 async function fetchImage(UUID, imgType) {
-    const imageUrl = `http://localhost:8000/api/image/${UUID}?img_type=${imgType}`;
+    const timestamp = new Date().getTime();
+    const imageUrl = `http://localhost:8000/api/image/${UUID}?img_type=${imgType}&_=${timestamp}`;
     // console.log(`in fetch Image,UUID = ${UUID}, imgType = ${imgType}`);
     // console.log(imageUrl);
     try {
