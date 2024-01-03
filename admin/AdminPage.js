@@ -72,24 +72,6 @@ function formatDate(dateString) {
     return new Date(dateString).toLocaleDateString(undefined, options);
 }
 
-// // 添加一筆測試帳號資訊
-// function addTestAccount() {
-//     const testAccount = {
-//         id: "1",
-//         name: "測試用戶",
-//         password:"**********",
-//         imageURL: "https://example.com/image.jpg",
-//         email: "test@example.com",
-//         phone: "1234567890",
-//         card: "1234 5678 9012 3456",
-//         birthday: "1990-01-01",
-//         address: "測試地址 123",
-//         // createTime: new Date().toISOString()
-//     };
-
-//     renderRow(testAccount);
-// }
-
 function makeRowEditable(row) {
     console.log("click modify");
     for (let i = 0; i < row.cells.length - 1; i++) {
@@ -198,7 +180,8 @@ function cancelEdit(row) {
 
 function addEditButtonEventListener(button) {
     console.log("add edit event")
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
         let row = this.parentNode.parentNode;
         makeRowEditable(row);
     });
@@ -206,7 +189,8 @@ function addEditButtonEventListener(button) {
 
 function addBanButtonEventListener(button) {
     console.log("add Ban event")
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
         let row = this.parentNode.parentNode;
         makeRowBan(row);
     });
