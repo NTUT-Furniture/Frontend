@@ -48,15 +48,28 @@ function displayShopping(coupon = 1) {
 }
 
 // Apply coupon function
-function applyCoupon() {
+async function applyCoupon() {
     var couponInput = document.getElementById('coupon');
     var message = document.getElementById('message');
+    let resultPromise = getCurrentCoupons();
+    let nowCoupons = await resultPromise;
+    console.log(nowCoupons);
+    let usingCoupon = false;
 
-    if (couponInput.value.trim() === 'SAVE10') {
-        message.textContent = 'Coupon applied successfully!';
-        displayShopping(0.1);
-    } else {
+    if (nowCoupons && nowCoupons.coupons) {
+        for (let index = 0; index < nowCoupons.coupons.length; index++) {
+            const element = nowCoupons.coupons[index];
+            if (couponInput.value.trim() === element.coupon_code) {
+                message.textContent = 'Coupon applied successfully! Use Coupon: ' + element.coupon_code;
+                displayShopping((100 - element.discount) / 100);
+                usingCoupon = true;
+                break;
+            }
+        }
+    }
+    if (! usingCoupon) {
         message.textContent = 'Invalid coupon code.';
+        displayShopping();
     }
 }
 
@@ -65,6 +78,32 @@ function getCookie(cookieName) {
     const cookieArray = cookies.split('; ');
     const tokenCookie = cookieArray.find(row => row.startsWith(cookieName + '='));
     return tokenCookie ? tokenCookie.split('=')[1] : null;
+}
+
+async function getCurrentCoupons() {
+    console.log('Get Current Counpons');
+    try {
+        const baseURL = `http://localhost:8000/api/coupon/`;
+        const url = new URL(baseURL);
+        const response = await fetch(url.toString(), {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+        });
+
+        if (response.ok) {
+            const jsonResponse = await response.json();
+            console.log(jsonResponse);
+            console.log('Success Get Current Coupons');
+            return jsonResponse;
+        } else {
+            console.log('No coupons now');
+            return null;
+        }
+    } catch (error) {
+        console.error('Get Counpons API Error', error);
+    }
 }
 
 // Checkout function
