@@ -96,7 +96,6 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="button-container" style="position: fixed; top: 85%; display: flex; flex-direction: column; height: 15%; justify-content: flex-end; align-items: flex-end; width: 100%;">
                 <div class="bottom-buttons" style="display: flex; justify-content: space-around; width: 100%;">
                     <button class="detail-button">Edit</button>
-                    <button class="detail-button">Status</button>
                     <button class="close-button">Close</button>
                 </div>
             </div>
@@ -133,11 +132,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 showEditForm(business, card, popup);
                 currentDetailType = 'edit';
                 break;
-            case 2:
-                console.log('Status button clicked');
-                showStatusTable(popup, business);
-                currentDetailType = 'status';
-                break;
             default:
                 break;
         }
@@ -148,12 +142,6 @@ document.addEventListener('DOMContentLoaded', function () {
         switch (currentDetailType) {
             case 'edit':
                 hideEditForm(popup);
-                break;
-            case 'status':
-                hideStatusTable(popup);
-                break;
-            case 'comment':
-                hideCommentSection(popup);
                 break;
             default:
                 break;
@@ -166,16 +154,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const editForm = popup.querySelector('.edit-form');
         if (editForm) {
             editForm.remove();
-        }
-    }
-
-    function hideStatusTable(popup) {
-        console.log("status clean be called");
-        const TableContainer = popup.querySelector('.table-container');
-        const statusTable = popup.querySelector('.table');
-        if (statusTable) {
-            statusTable.remove();
-            TableContainer.remove();
         }
     }
 
@@ -328,23 +306,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // async function showStatusTable(popup, businessCardData) {
-    //     const tableExists = popup.querySelector('.table');
-    //     if (tableExists) return;
-        
-    //     if (openDetailForm) {
-    //         const statusTableContainer = document.createElement('div');
-    //         statusTableContainer.classList.add('table-container');
-    //         statusTableContainer.style.position = 'absolute';
-    //         statusTableContainer.style.top = '0';
-    //         statusTableContainer.style.left = '0';
-    //         statusTableContainer.style.right = '0';
-    //         statusTableContainer.style.bottom = '15%'; // Adjust the bottom value as needed
-    //         statusTableContainer.style.overflow = 'auto';
-
-    //         const statusTable = document.createElement('table');
-    //         statusTable.classList.add('table');
-    //         // Header row
     //         try {
     //             const response = await fetch('http://localhost:8000/api/transaction/?target=Shop', {
     //                 method: 'GET',
@@ -388,121 +349,6 @@ document.addEventListener('DOMContentLoaded', function () {
     //                 `;
     //             });
         
-    //             statusTableContainer.appendChild(statusTable);
-    //             popup.appendChild(statusTableContainer);
-    //         } catch (error) {
-    //             console.error('Error fetching data:', error);
-    //             alert('An error occurred while fetching status data. Please try again later.');
-    //         }
-    //     }
-    // }
-
-    function showStatusTable(popup) {
-        const tableExists = popup.querySelector('.table');
-        if (tableExists) return;
-
-        if (openDetailForm) {
-            const statusTableContainer = document.createElement('div');
-            statusTableContainer.classList.add('table-container');
-            statusTableContainer.style.position = 'absolute';
-            statusTableContainer.style.top = '0';
-            statusTableContainer.style.left = '0';
-            statusTableContainer.style.right = '0';
-            statusTableContainer.style.bottom = '15%'; // Adjust the bottom value as needed
-            statusTableContainer.style.overflow = 'auto';
-
-            const statusTable = document.createElement('table');
-            statusTable.classList.add('table');
-            // Header row
-            statusTable.innerHTML = `
-            <tr>
-                <th>Order ID</th>
-                <th>Customer Name</th>
-                <th>Product Name</th>
-                <th>Status</th>
-                <th>Date Ordered</th>
-                <th>Expected Delivery Date</th>
-            </tr>
-        `;
-
-            // Mock Data
-            const mockOrderData = [
-                {
-                    orderId: 1,
-                    customerName: 'John Doe',
-                    productName: 'Product A',
-                    status: 'InProgress',
-                    dateOrdered: '2023-01-01',
-                    expectedDeliveryDate: '2023-01-10'
-                },
-                {
-                    orderId: 2,
-                    customerName: 'Jane Smith',
-                    productName: 'Product B',
-                    status: 'Completed',
-                    dateOrdered: '2023-01-15',
-                    expectedDeliveryDate: '2023-01-25'
-                },
-                {
-                    orderId: 2,
-                    customerName: 'Jane Smith',
-                    productName: 'Product B',
-                    status: 'Completed',
-                    dateOrdered: '2023-01-15',
-                    expectedDeliveryDate: '2023-01-25'
-                },
-                {
-                    orderId: 2,
-                    customerName: 'Jane Smith',
-                    productName: 'Product B',
-                    status: 'Completed',
-                    dateOrdered: '2023-01-15',
-                    expectedDeliveryDate: '2023-01-25'
-                },
-                {
-                    orderId: 2,
-                    customerName: 'Jane Smith',
-                    productName: 'Product B',
-                    status: 'Completed',
-                    dateOrdered: '2023-01-15',
-                    expectedDeliveryDate: '2023-01-25'
-                },
-                {
-                    orderId: 2,
-                    customerName: 'Jane Smith',
-                    productName: 'Product B',
-                    status: 'Completed',
-                    dateOrdered: '2023-01-15',
-                    expectedDeliveryDate: '2023-01-25'
-                }, {
-                    orderId: 2,
-                    customerName: 'Jane Smith',
-                    productName: 'Product B',
-                    status: 'Completed',
-                    dateOrdered: '2023-01-15',
-                    expectedDeliveryDate: '2023-01-25'
-                },
-
-                // Add more mock data as needed
-            ];
-
-            // Data rows
-            mockOrderData.forEach(order => {
-                statusTable.innerHTML += `
-                <tr>
-                    <td>${order.orderId}</td>
-                    <td>${order.customerName}</td>
-                    <td>${order.productName}</td>
-                    <td>${order.status}</td>
-                    <td>${order.dateOrdered}</td>
-                    <td>${order.expectedDeliveryDate}</td>
-                </tr>
-            `;
-            });
-            statusTableContainer.appendChild(statusTable);
-            popup.appendChild(statusTableContainer);
-        }
-    }
     
     async function getShopUUID(){
         const urlParams = new URLSearchParams(window.location.search);
