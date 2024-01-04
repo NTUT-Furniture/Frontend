@@ -21,23 +21,14 @@ function displayShopping(coupon = 1) {
     cartItem.innerHTML = '';
     // Add table headers
     var headerRow = cartItem.insertRow(0);
-    var headerCell1 = headerRow.insertCell(0);
-    var headerCell2 = headerRow.insertCell(1);
-    var headerCell3 = headerRow.insertCell(2);
-    headerCell1.textContent = 'Item Name';
-    headerCell2.textContent = 'Quantity';
-    headerCell3.textContent = 'Price';
-    
+    headerRow.innerHTML = '<th>Item Name</th><th>Quantity</th><th>Price</th>';
+
     var cost = 0;
+
     // Add table content
     shopping.forEach(function (item, index) {
         var row = cartItem.insertRow(index + 1); // Index + 1 to skip the header row
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
-        var cell3 = row.insertCell(2);
-        cell1.textContent = item.name;
-        cell2.textContent = item.quantity;
-        cell3.textContent = item.quantity * item.price;
+        row.innerHTML = `<td>${item.name}</td><td>${item.quantity}</td><td>${item.quantity * item.price}</td>`;
         cost += item.quantity * item.price;
     });
     console.log(cost);

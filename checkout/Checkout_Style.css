@@ -1,25 +1,108 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    background-color: #E0C9CB;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #F5E1E3; /* Soft pink background */
+    color: #333; /* Dark text color */
+    font-size: 18px; /* Base font size */
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+header {
+    background-color: #FF647C; /* Coral header background color */
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    color: #fff; /* White text color for header */
+    margin: 0;
+}
+
+.checkout-section {
+    background-color: #fff; /* White background color for checkout section */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+h2 {
+    color: #008080; /* Teal heading color */
+}
+
+button {
+    background-color: #FF647C; /* Coral button color */
+    color: #fff; /* White text color */
+    padding: 12px 20px;
+    border: none;
+    cursor: pointer;
+    margin-right: 8px; /* Slightly smaller margin */
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #D7384F; /* Darker coral on hover */
+}
+
+button span {
+    font-size: 1.2rem; /* Larger font size for button text */
+}
+
+#couponInput button {
+    background-color: #333; /* Dark button color for coupon */
+}
+
+#couponInput input {
+    padding: 0.9rem; /* Slightly larger padding */
+    margin-right: 5px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
 }
 
 #cartItem {
     border-collapse: collapse;
     width: 100%;
+    margin-top: 20px;
 }
 
 #cartItem th, #cartItem td {
-    border: 3px solid #000000;
-    padding: 8px;
+    border: 1px solid #ddd;
+    padding: 1rem; /* Use rem units */
     text-align: left;
 }
 
+#cartItem th {
+    background-color: #FF647C; /* Coral header background color */
+    color: #fff; /* White text color for header */
+}
+
+#cartItem th:hover {
+    background-color: #FF647C; /* Coral header background color on hover (same as normal state) */
+}
+
+#cartItem tr:nth-child(even) {
+    background-color: #f8f8f8; /* Alternate row background color */
+}
+
+#cartItem tr:hover {
+    background-color: #e0e0e0; /* Hovered row background color */
+}
+
 #couponInput {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 #message {
-    color: red;
+    color: #D7384F; /* Dark coral color for message */
     margin-bottom: 10px;
+}
+
+#totalCost {
+    margin-top: 20px;
 }

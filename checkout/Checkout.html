@@ -9,21 +9,25 @@
     <title>checkout</title>
 </head>
 <body>
-    <h2>Checkout Page</h2>
+    <div class="container">
+        <section class="checkout-section">
+            <h2>Checkout Page</h2>
 
-    <table id="cartItem">
-    </table>
-    <br>
-    <div id="totalCost"></div>
-    <br>
-    <div id="couponInput">
-        <label for="coupon">coupon:</label>
-        <input type="text" id="coupon" placeholder="input coupon">
-        <button onclick="applyCoupon()">use coupon</button>
-        <p id="message">No coupon.</p>
+            <table id="cartItem">
+            </table>
+            <br>
+            <div id="totalCost"></div>
+            <br>
+            <div id="couponInput">
+                <label for="coupon">coupon:</label>
+                <input type="text" id="coupon" placeholder="input coupon">
+                <button onclick="applyCoupon()">use coupon</button>
+                <p id="message">No coupon.</p>
+            </div>
+
+            <button onclick="checkout()">checkout</button>
+            <button onclick="continueShopping()">continue shopping</button>
+        </section>
     </div>
-
-    <button onclick="checkout()">checkout</button>
-    <button onclick="continueShopping()">continue shopping</button>
 </body>
 </html>
