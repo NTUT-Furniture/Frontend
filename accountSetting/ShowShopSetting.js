@@ -229,7 +229,7 @@ async function loadBannerImage() {
     // 添加時間戳和隨機數以產生唯一的 URL
     const timestamp = new Date().getTime();
     const randomNum = Math.random();
-    imageUrl = `http://localhost:8000/api/image/${shopUuid}?img_type=banner&_=${timestamp}&rand=${randomNum}`;
+    imageUrl = `http://localhost:8000/api/image/${shopUuid}?img_type=banner&_=${timestamp}`;
     console.log(imageUrl);
     document.getElementById('Banner').style.backgroundImage = `url(${imageUrl})`;
     document.getElementById('Banner').textContent = "Banner";

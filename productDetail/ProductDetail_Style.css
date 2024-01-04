@@ -156,10 +156,10 @@ button:hover {
     font-size: 48px;
     color: #333333; /* 深灰色 */
     text-decoration: none; /* 取消下劃線 */
-    transition: transform 0.3s ease; /* 平滑過渡效果 */
 }
 
 .shop-name:hover {
-    transform: scale(2); /* 鼠標懸停時放大 */
-    /*font-size: 2em; /* 鼠標懸停時放大字體大小 */
-}
+    color: #3498db; /* 改变颜色 */
+    transform: scale(1.1); /* 轻微放大 */
+    transition: color 0.3s, transform 0.3s; /* 平滑过渡效果 */
+  }

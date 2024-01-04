@@ -34,7 +34,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function fetchImage(UUID, imgType) {
-        return `http://localhost:8000/api/image/${UUID}?img_type=${imgType}`;
+        const timestamp = new Date().getTime();
+        return `http://localhost:8000/api/image/${UUID}?img_type=${imgType}&_=${timestamp}`;
     }
 
     async function getShopUUID(){
@@ -113,6 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const shopData = await getShop();
             const bannerImage = await fetchImage(shopData.shop_uuid, "banner");
+            console.log(bannerImage);
             const shopAvatar = await fetchImage(shopData.shop_uuid, "avatar");
             const Data = {
                 shop_uuid: shopData.shop_uuid,

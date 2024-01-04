@@ -41,8 +41,18 @@ function subscribeSetting() {
         <td colspan="2">Doesn't subscribe any shop yet!</td>
         </table>
         `;
+        // const tableHtml = createTable(fakeSubscriptions);
+        // document.getElementById('content').innerHTML = tableHtml;
     });
 }
+
+const fakeSubscriptions = [
+    { name: "Cafe Central", description: "A cozy coffee shop A bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titleswith a wide variety of blends", shop_uuid: "uuid1" },
+    { name: "The Book Nook", description: "A bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titles", shop_uuid: "uuid2" },
+    { name: "Tech Trends", description: "Latest A bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesgadgets and electronics", shop_uuid: "uuid3" },
+    { name: "Garden Delights", description: "Your souA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesrce for plants and garden supplies", shop_uuid: "uuid4" },
+    { name: "Sweet Treats", description: "Homemade cakes, cookies, aA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesnd more", shop_uuid: "uuid5" },
+];
 
 function createTable(subscriptions) {
     let table = '<table border="1">';
@@ -76,7 +86,7 @@ async function deleteSubscription(shopUuid) {
             throw new Error('Network response was not ok');
         }
         console.log('Subscription deleted successfully');
-        subscribeSetting();
     } catch (error) {
     }
+    subscribeSetting();
 }
