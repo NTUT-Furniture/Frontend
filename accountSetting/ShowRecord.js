@@ -56,7 +56,11 @@ async function showOrderRecord() {
                         </tr>
                         ${transaction.products.transaction_product_logs.map(product => `
                             <tr>
-                                <td>${product.product_name}</td>
+                                <td>
+                                    <span class="product-name-tooltip">${product.product_name}
+                                        <span class="product-description">${product.product_description}</span>
+                                    </span>
+                                </td>
                                 <td>${product.quantity}</td>
                                 <td>${product.price}</td>
                             </tr>

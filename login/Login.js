@@ -48,6 +48,8 @@ async function UserLogin(userData) {
         alert('Invalid username or password. Please try again.');
     } else if (userData.detail && userData.detail[0].type === "missing") {
         alert('Missing username or password. Please try again.');
+    } else if (userData.detail && userData.detail=== "Inactive user") {
+        alert('You was had Banned! Please to Talk with Admin!');
     } else {
         try {
             alert('Login successful! Redirecting to HomePage.');

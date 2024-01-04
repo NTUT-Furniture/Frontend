@@ -72,24 +72,6 @@ function formatDate(dateString) {
     return new Date(dateString).toLocaleDateString(undefined, options);
 }
 
-// // 添加一筆測試帳號資訊
-// function addTestAccount() {
-//     const testAccount = {
-//         id: "1",
-//         name: "測試用戶",
-//         password:"**********",
-//         imageURL: "https://example.com/image.jpg",
-//         email: "test@example.com",
-//         phone: "1234567890",
-//         card: "1234 5678 9012 3456",
-//         birthday: "1990-01-01",
-//         address: "測試地址 123",
-//         // createTime: new Date().toISOString()
-//     };
-
-//     renderRow(testAccount);
-// }
-
 function makeRowEditable(row) {
     console.log("click modify");
     for (let i = 0; i < row.cells.length - 1; i++) {
@@ -97,7 +79,7 @@ function makeRowEditable(row) {
         let cellText = cell.innerHTML;
         cell.setAttribute('data-original-text', cellText);
         // console.log(cellText)
-        if ([0, 3, 8, 9].includes(i)) continue;
+        if ([0, 3, 8, 9,10,11,12].includes(i)) continue;
         cell.innerHTML = '';
         let input = document.createElement('input');
         input.type = 'text';
@@ -112,7 +94,7 @@ function makeRowEditable(row) {
         }
         cell.appendChild(input);
     }
-    let actionsCell = row.cells[row.cells.length - 1];
+    let actionsCell = row.cells[10];
     actionsCell.innerHTML = `<button class="confirm-btn">Confirm</button>
                              <button class="cancel-btn">Cancel</button>`;
     actionsCell.getElementsByClassName('confirm-btn')[0].addEventListener('click', () => confirmEdit(row));
@@ -189,7 +171,7 @@ function cancelEdit(row) {
         let cell = row.cells[i];
         cell.innerHTML = cell.getAttribute('data-original-text') || ''; // 恢复原始数据
     }
-    let actionsCell = row.cells[row.cells.length - 1];
+    let actionsCell = row.cells[10];
     console.log(row.cells[8].innerHTML);
     actionsCell.innerHTML = `<button class="modify-btn">Edit</button>
                              <button class="delete-btn">${row.cells[8].innerHTML ? 'Ban':"UnBan"}</button>`;
@@ -198,7 +180,8 @@ function cancelEdit(row) {
 
 function addEditButtonEventListener(button) {
     console.log("add edit event")
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
         let row = this.parentNode.parentNode;
         makeRowEditable(row);
     });
@@ -206,7 +189,8 @@ function addEditButtonEventListener(button) {
 
 function addBanButtonEventListener(button) {
     console.log("add Ban event")
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
         let row = this.parentNode.parentNode;
         makeRowBan(row);
     });
