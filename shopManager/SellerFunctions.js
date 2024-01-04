@@ -1,8 +1,19 @@
 document.addEventListener('DOMContentLoaded', function () {
     const managementContainer = document.getElementById('business-management');
     const addButton = document.createElement('button');
-    addButton.textContent = 'Add Business';
-    document.body.appendChild(addButton);
+    addButton.textContent = 'Add Product';
+    addButton.classList.add('add-business-button'); // Add a class for styling
+
+    // Apply styling to the button
+    addButton.style.position = 'absolute';
+    addButton.style.top = '420px';
+    addButton.style.left = '0';
+    addButton.style.display = 'block'; // Ensure it displays as a block
+    addButton.style.zIndex = '999';
+
+    // Append the button to the managementContainer
+    managementContainer.appendChild(addButton);
+    
     let openDetailForm = null;
     let currentDetailType = null;
     
@@ -17,20 +28,20 @@ document.addEventListener('DOMContentLoaded', function () {
             <p class="tags">Tag: ${business.tags}</p>
             <img class="image" src="${business.image}" alt="${business.name}">
             <button class="detail-button">Detail</button>
-            <button class="delete-button">Delete</button>
+            <button class="product-delete-button">Delete</button>
         `;
 
         // 添加點擊事件監聽器
         card.addEventListener('click', (event) => {
             // 檢查點擊的目標元素是否為按鈕
-            if (!event.target.matches('.detail-button') && !event.target.matches('.delete-button')) {
+            if (!event.target.matches('.detail-button') && !event.target.matches('.product-delete-button')) {
                 // 不是按鈕，執行跳轉頁面的操作
                 const businessSrc = event.currentTarget.querySelector('img').src;
                 redirectToSpecificPage(business, businessSrc);
             }
         });
 
-        card.querySelector('.delete-button').addEventListener('click', () => showDeleteForm(business, card));
+        card.querySelector('.product-delete-button').addEventListener('click', () => showDeleteForm(business, card));
         card.querySelector('.detail-button').addEventListener('click', () => showDetailPopup(business, card));
 
         managementContainer.appendChild(card);
