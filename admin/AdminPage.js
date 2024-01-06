@@ -17,9 +17,6 @@ async function fetchAccounts() {
         const data = await response.json();
         console.log(data);
         data.accounts.forEach(account => {
-            account.shop_uuid = "1ed02a41-4413-4374-b437-8c04856cf4b9";
-            account.shop_name = "Garry\'s for test";
-            account.shop_is_active = "0";
             renderRow(account);
         });
         addEditButtonEventListeners();
@@ -64,7 +61,13 @@ function renderRow(account) {
                              <button class="delete-btn">${account.is_active ? 'Ban':"UnBan"}</button>`;
     row.insertCell(11).innerHTML = account.shop_uuid || '';
     row.insertCell(12).innerHTML = account.shop_name || '';
-    row.insertCell(13).innerHTML = account.shop_is_active || '';
+    let isShopActiveCell = row.insertCell(13);
+    isShopActiveCell.innerHTML = account.shop_is_active ? 'Yes' : 'No';
+    if (account.shop_is_active) {
+        isShopActiveCell.style.backgroundColor = 'green';
+    } else {
+        isShopActiveCell.style.backgroundColor = 'red';
+    }
 }
 
 function formatDate(dateString) {
