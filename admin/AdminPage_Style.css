@@ -63,7 +63,7 @@ th {
     background-color: #f2f2f2;
 }
 
-.modify-btn, .delete-btn {
+.modify-btn, .delete-btn, .delete-shop-btn {
     margin-right: 5px;
     padding: 5px 10px;
     font-size: 14px;
@@ -77,7 +77,7 @@ th {
     color: white;
 }
 
-.delete-btn {
+.delete-btn, .delete-shop-btn{
     background-color: #dc3545;
     color: white;
 }
