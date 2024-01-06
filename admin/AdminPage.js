@@ -58,7 +58,8 @@ function renderRow(account) {
     let actionsCell = row.insertCell(10);
     console.log(account.is_active);
     actionsCell.innerHTML = `<button class="modify-btn">Edit</button>
-                             <button class="delete-btn">${account.is_active ? 'Ban':"UnBan"}</button>`;
+                             <button class="delete-btn">${account.is_active ? 'Ban Account':"UnBan Account"}</button>
+                             ${account.shop_uuid ? `<button class="delete-shop-btn">${account.shop_is_active ? 'Ban Shop':"UnBan Shop"}</button>`:""}`;
     row.insertCell(11).innerHTML = account.shop_uuid || '';
     row.insertCell(12).innerHTML = account.shop_name || '';
     let isShopActiveCell = row.insertCell(13);
@@ -143,7 +144,7 @@ async function confirmEdit(row) {
 async function makeRowBan(row) {
     const account_uuid = row.cells[0].textContent;
     const button = row.cells[10].querySelector('.delete-btn');
-    const isBanning = button.textContent.trim() === 'Ban';
+    const isBanning = button.textContent.trim() === 'Ban Account';
 
     console.log(`Ban You? ${isBanning ? 0 : 1}`)
     const apiUrl = `http://localhost:8000/api/account/?account_uuid=${account_uuid}&is_active=${isBanning ? 0 : 1}`;
@@ -168,6 +169,35 @@ async function makeRowBan(row) {
     }
 }
 
+async function makeRowShopBan(row) {
+    const shop_uuid = row.cells[11].textContent;
+    const button = row.cells[10].querySelector('.delete-shop-btn');
+    const isBanning = button.textContent.trim() === 'Ban Shop';
+
+    console.log(`Ban You? ${isBanning ? 0 : 1}`)
+    const apiUrl = `http://localhost:8000/api/shop/?shop_uuid=${shop_uuid}&is_active=${isBanning ? 0 : 1}`;
+    const requestOptions = {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + getCookie('token'),
+            'Content-Type': 'application/json'
+        },
+    };
+
+    try {
+        const response = await fetch(apiUrl, requestOptions);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        console.log(response)
+        clearTable();
+        fetchAccounts();
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
 function cancelEdit(row) {
     console.log("Cancel Edit");
     for (let i = 0; i < row.cells.length - 1; i++) {
@@ -177,7 +207,8 @@ function cancelEdit(row) {
     let actionsCell = row.cells[10];
     console.log(row.cells[8].innerHTML);
     actionsCell.innerHTML = `<button class="modify-btn">Edit</button>
-                             <button class="delete-btn">${row.cells[8].innerHTML ? 'Ban':"UnBan"}</button>`;
+                             <button class="delete-btn">${row.cells[8].innerHTML ? 'Ban Account':"UnBan Account"}</button>
+                             ${row.cells[11].innerHTML ? `<button class="delete-shop-btn">${account.shop_is_active ? 'Ban Shop':"UnBan Shop"}</button>`:""}`;
     addEditButtonEventListener(actionsCell.getElementsByClassName('modify-btn')[0]);
 }
 
@@ -199,11 +230,22 @@ function addBanButtonEventListener(button) {
     });
 }
 
+function addBanShopButtonEventListener(button) {
+    console.log("add Ban Shop event")
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
+        let row = this.parentNode.parentNode;
+        makeRowShopBan(row);
+    });
+}
+
 function addEditButtonEventListeners() {
     const editButtons = document.querySelectorAll('.modify-btn');
     editButtons.forEach(addEditButtonEventListener);
     const banButtons = document.querySelectorAll('.delete-btn');
     banButtons.forEach(addBanButtonEventListener);
+    const banShopButtons = document.querySelectorAll('.delete-shop-btn');
+    banShopButtons.forEach(addBanShopButtonEventListener);
 }
 
 
