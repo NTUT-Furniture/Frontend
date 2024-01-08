@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <p class="description">${business.description}</p>
             <p class="stock">Stock: ${business.stock}</p>
             <p class="price">Price: ${business.price}</p>
-            <p class="tags">Tag: ${business.tags}</p>
+            <p class="tags">TagS: ${business.tags}</p>
             <img class="image" src="${business.image}" alt="${business.name}">
             <button class="product-edit-button">Edit</button>
             <button class="product-delete-button">Delete</button>
@@ -427,6 +427,7 @@ document.addEventListener('DOMContentLoaded', function () {
     renderBusinessCards();
 
     async function createProduct(newBusinessCardData){
+        console.log("in create", newBusinessCardData);
         try {
             // Replace baseURL with the actual API base URL for fetching images
             const baseURL = `http://localhost:8000/api/product/?`;
@@ -435,6 +436,7 @@ document.addEventListener('DOMContentLoaded', function () {
             url.searchParams.append('stock', newBusinessCardData.stock);
             url.searchParams.append('price', newBusinessCardData.price);
             url.searchParams.append('tags', newBusinessCardData.tags);
+            url.searchParams.append('description', newBusinessCardData.description);
             url.searchParams.append('is_avtive', newBusinessCardData.is_active);
             const response = await fetch(url.toString(), {
                 method: 'POST',
@@ -457,7 +459,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     addButton.addEventListener('click', () => {
         // Create a new business object with default values
-        const newBusiness = {
+        const defaultProduct = {
             id: generateUniqueId(),
             name: 'New Product',
             description: 'Description',
@@ -467,8 +469,97 @@ document.addEventListener('DOMContentLoaded', function () {
             is_active: 1,
             image: '../Resources/default_banner.webp', // Provide a default image URL
         };
-        createProduct(newBusiness);
+        showAddProductPopup(defaultProduct);
+        //createProduct(newBusiness);
     });
+
+    function showAddProductPopup(defaultProduct){
+        if (openDetailForm) {
+            openDetailForm.remove();
+            openDetailForm = null;
+        }
+
+        const popup = document.createElement('div');
+        popup.classList.add('detail-popup', 'large');
+        popup.innerHTML = `
+            <div class="button-container" style="position: fixed; top: 85%; display: flex; flex-direction: column; height: 15%; justify-content: flex-end; align-items: flex-end; width: 100%;">
+                <div class="bottom-buttons" style="display: flex; justify-content: space-around; width: 100%;">
+                    <button class="save-button">Create</button>
+                    <button class="close-button">Close</button>
+                </div>
+            </div>
+        `;
+        const closeButton = popup.querySelector('.close-button');
+        closeButton.addEventListener('click', () => {
+            popup.remove();
+            openDetailForm = null;
+        });
+
+        // 將懸浮視窗附加到 #business-management
+        const businessManagement = document.getElementById('business-management');
+        businessManagement.appendChild(popup);
+
+        const formExists = popup.querySelector('.product-edit-form');
+        if (formExists) return formExists.querySelector('input[name="name"]').focus();
+        const form = document.createElement('form');
+        form.classList.add('product-edit-form');
+        form.style.margin = "20px"; // 設定 form 的 margin
+        form.style.maxWidth = "300px"; // 設定 form 的最大寬度
+        form.style.position = "relative";
+        form.style.transform = "translate(40%)";
+        ['name', 'description', 'stock', 'price', 'image', 'tags'].forEach((field) => {
+            const input = document.createElement('input');
+            input.name = field;
+            input.placeholder = field.charAt(0).toUpperCase() + field.slice(1);
+            input.style.display = "block";
+            input.style.marginBottom = "10px"; // 設定 input 之間的距離
+
+            if (field === 'stock' || field === 'price') {
+                input.type = 'number';
+                input.value = defaultProduct[field];
+            } else if (field === 'image') {
+                input.type = 'file';
+                input.name = field;
+                input.style.display = "block";
+                input.style.marginBottom = "10px"; // 設定 input 之間的距離
+                //input.value = defaultProduct[field];
+            } else {
+                input.type = 'text';
+                input.value = defaultProduct[field];
+            }
+            
+            form.appendChild(input);
+        });
+
+        // 顯示懸浮視窗
+        popup.classList.add('show');
+        const submitButton = popup.querySelector('.save-button');
+        submitButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            console.log("Click Save Button");
+            const formData = {};
+            const formInputs = form.querySelectorAll('input');
+            formInputs.forEach(input => {
+                if (input.type === 'file') {
+                    // Handle file input separately (e.g., you might want to upload the file)
+                    formData[input.name] = input.files[0] || defaultProduct["image"]; // This assumes you only allow one file
+                } else {
+                    formData[input.name] = input.value;
+                }
+            });
+    
+            console.log("new product data",formData);
+            createProduct(formData);
+            
+            form.remove();
+            popup.remove();
+            openDetailForm = null;
+        });
+        form.append(submitButton);
+        popup.appendChild(form);
+
+    }
+    
 
     function generateUniqueId() {
         return Date.now();
