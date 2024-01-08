@@ -20,11 +20,11 @@ async function showSubscription(subPopup) {
         }
         // console.log('Subscriptions details:', result.subscriptions);
         // console.log('Subscriptions details:', result.subscriptions[0].shop_uuid);
-        // Create a table element
         // 創建容器元素
         var subTableContainer = document.createElement("div");
         subTableContainer.className = "subscription-table-container";
-
+        
+        // Create a table element
         var subTable = document.createElement("table");
         subTable.className = "subscription-table";
 
