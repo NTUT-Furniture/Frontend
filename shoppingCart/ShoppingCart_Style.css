@@ -78,3 +78,26 @@
 #cart-popup button:hover {
     background-color: #ff0000;
 }
+
+.shopping-cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.item-row {
+    border-bottom: 1px solid #ccc;
+}
+
+.item-cell {
+    padding: 10px;
+}
+
+.qty-cell input {
+    width: 40px; /* 調整數量輸入框的寬度 */
+}
+
+.button-cell button {
+    padding: 5px 10px;
+    cursor: pointer;
+}

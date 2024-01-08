@@ -147,18 +147,62 @@ function showCartItems() {
     } else {
         const totalAmount = shoppingCart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
+        // shoppingCart.forEach(item => {
+        // const itemDiv = document.createElement('div');
+        // itemDiv.classList.add('item');
+        // itemDiv.innerHTML = `
+        //     <span>${item.name} (Qty: </span>
+        //     <input type="number" min="1" max="${item.stock}" value="${item.quantity}" onchange="updateQuantity('${item.id}', this.value)">
+        //     <span>)</span>
+        //     <div>$${item.price * item.quantity}</div>
+        //     <button onclick="removeItem('${item.id}')">Remove</button>
+        // `;
+        // cartPopup.appendChild(itemDiv);
+        // });
+        // 創建一個<table>元素
+        const table = document.createElement('table');
+        table.classList.add('shopping-cart-table');
+
+        // 使用forEach遍歷shoppingCart中的每個商品項目
         shoppingCart.forEach(item => {
-        const itemDiv = document.createElement('div');
-        itemDiv.classList.add('item');
-        itemDiv.innerHTML = `
-            <span>${item.name} (Qty: </span>
-            <input type="number" min="1" max="${item.stock}" value="${item.quantity}" onchange="updateQuantity('${item.id}', this.value)">
-            <span>)</span>
-            <div>$${item.price * item.quantity}</div>
-            <button onclick="removeItem('${item.id}')">Remove</button>
-        `;
-        cartPopup.appendChild(itemDiv);
+            // 創建一個<tr>元素，表示一個商品項目
+            const row = document.createElement('tr');
+            row.classList.add('item-row');
+
+            // 使用<td>元素來呈現每個商品項目的不同部分
+            const nameCell = document.createElement('td');
+            nameCell.classList.add('item-cell');
+            nameCell.textContent = item.name;
+            row.appendChild(nameCell);
+
+            const quantityCell = document.createElement('td');
+            quantityCell.classList.add('item-cell', 'qty-cell');
+            quantityCell.innerHTML = `
+                <span>(Qty: </span>
+                <input type="number" min="1" max="${item.stock}" value="${item.quantity}" onchange="updateQuantity('${item.id}', this.value)">
+                <span>)</span>
+            `;
+            row.appendChild(quantityCell);
+
+            const priceCell = document.createElement('td');
+            priceCell.classList.add('item-cell');
+            priceCell.textContent = `$${item.price * item.quantity}`;
+            row.appendChild(priceCell);
+
+            const removeCell = document.createElement('td');
+            removeCell.classList.add('item-cell', 'button-cell');
+            const removeButton = document.createElement('button');
+            removeButton.textContent = 'Remove';
+            removeButton.onclick = () => removeItem(item.id);
+            removeCell.appendChild(removeButton);
+            row.appendChild(removeCell);
+
+            // 把這一行商品項目添加到表格中
+            table.appendChild(row);
         });
+
+        // 將整個表格添加到cartPopup中
+        cartPopup.appendChild(table);
 
         const totalDiv = document.createElement('div');
         totalDiv.innerHTML = `<strong>Total:</strong> $${totalAmount}`;
