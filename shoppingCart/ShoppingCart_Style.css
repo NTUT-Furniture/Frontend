@@ -79,30 +79,30 @@
     background-color: #ff0000;
 }
 
-.shopping-cart-container {
+#cart-popup .shopping-cart-container {
     max-height: 300px; /* 設定最大高度，當超過這個高度時將出現滾輪 */
     overflow-y: auto; /* 啟用垂直滾輪 */
 }
 
-.shopping-cart-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+#cart-popup table.shopping-cart-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin-top: 20px !important;
 }
 
-.item-row {
-    border-bottom: 1px solid #ccc;
+#cart-popup table.shopping-cart-table .item-row {
+    border-bottom: 1px solid #ccc !important;
 }
 
-.item-cell {
-    padding: 10px;
+#cart-popup table.shopping-cart-table .item-cell {
+    padding: 10px !important;
 }
 
-.qty-cell input {
-    width: 40px; /* 調整數量輸入框的寬度 */
+#cart-popup table.shopping-cart-table .qty-cell input {
+    width: 40px !important;
 }
 
-.button-cell button {
-    padding: 5px 10px;
-    cursor: pointer;
+#cart-popup table.shopping-cart-table .button-cell button {
+    padding: 5px 10px !important;
+    cursor: pointer !important;
 }
