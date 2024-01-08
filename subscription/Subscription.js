@@ -53,7 +53,7 @@ async function showSubscription(subPopup) {
     } else {
         // console.log('No subscriptions found.');
         var nothing = document.createElement("div");
-        nothing.innerHTML = "<strong>u do not subscribe any shop</strong>"
+        nothing.innerHTML = "<strong>you do not subscribe any shop</strong>"
         subPopup.appendChild(nothing);
     }
     var closeButton = document.createElement("button");
