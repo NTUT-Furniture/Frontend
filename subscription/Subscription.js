@@ -70,7 +70,8 @@ async function getAccountSubscription() {
     try {
         accID = getCookie('account_uuid');
         // console.log('subscription account_uuid: ' + accID);
-        const baseURL = `http://localhost:8000/api/subscription/account?`;
+        let baseURL = window.location.origin;
+        baseURL = `${baseURL}:8000/api/subscription/account?`;
         const url = new URL(baseURL);
         url.searchParams.append("uuid_type", "account_uuid");
         url.searchParams.append('uuid', accID);
@@ -101,7 +102,8 @@ async function unsubscibeWithAccount(shopID) {
         accID = getCookie('account_uuid');
         // console.log('subscription account_uuid: ' + accID);
         // console.log('subscription shop_uuid: ' + shopID);
-        const baseURL = `http://localhost:8000/api/subscription/unsubscribe?`;
+        let baseURL = window.location.origin;
+        baseURL = `${baseURL}:8000/api/subscription/unsubscribe?`;
         const url = new URL(baseURL);
         url.searchParams.append("shop_uuid", shopID);
         url.searchParams.append('account_uuid', accID);

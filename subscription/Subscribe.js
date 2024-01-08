@@ -1,5 +1,6 @@
 function SubscribeShop(shop) {
-    const url = `http://localhost:8000/api/subscription/?shop_uuid=${shop}&account_uuid=${getCookie("account_uuid")}`;
+    const baseURL = window.location.origin;
+    const url = `${baseURL}:8000/api/subscription/?shop_uuid=${shop}&account_uuid=${getCookie("account_uuid")}`;
     const fetchOptions = {
         method: 'POST',
         headers: {

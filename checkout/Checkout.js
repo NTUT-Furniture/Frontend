@@ -82,8 +82,9 @@ function getCookie(cookieName) {
 
 async function getCurrentCoupons() {
     console.log('Get Current Counpons');
+    const baseURL = window.location.origin;
     try {
-        const baseURL = `http://localhost:8000/api/coupon/`;
+        const baseURL = `${baseURL}:8000/api/coupon/`;
         const url = new URL(baseURL);
         const response = await fetch(url.toString(), {
             method: 'GET',
