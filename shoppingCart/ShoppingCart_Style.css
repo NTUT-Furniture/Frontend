@@ -79,6 +79,11 @@
     background-color: #ff0000;
 }
 
+.shopping-cart-container {
+    max-height: 300px; /* 設定最大高度，當超過這個高度時將出現滾輪 */
+    overflow-y: auto; /* 啟用垂直滾輪 */
+}
+
 .shopping-cart-table {
     width: 100%;
     border-collapse: collapse;

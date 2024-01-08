@@ -159,6 +159,9 @@ function showCartItems() {
         // `;
         // cartPopup.appendChild(itemDiv);
         // });
+        // Create a div element to wrap the shopping cart table
+        const tableContainer = document.createElement('div');
+        tableContainer.classList.add('shopping-cart-container');
         // 創建一個<table>元素
         const table = document.createElement('table');
         table.classList.add('shopping-cart-table');
@@ -198,12 +201,15 @@ function showCartItems() {
             row.appendChild(removeCell);
 
             // 把這一行商品項目添加到表格中
-            table.appendChild(row);
+            table.appendChild(row);            
         });
+        
+        // Append the table to the container
+        tableContainer.appendChild(table);
 
-        // 將整個表格添加到cartPopup中
-        cartPopup.appendChild(table);
-
+        // Append the container to the cartPopup
+        cartPopup.appendChild(tableContainer);
+        
         const totalDiv = document.createElement('div');
         totalDiv.innerHTML = `<strong>Total:</strong> $${totalAmount}`;
         cartPopup.appendChild(totalDiv);
