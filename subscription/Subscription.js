@@ -20,8 +20,19 @@ async function showSubscription(subPopup) {
         }
         // console.log('Subscriptions details:', result.subscriptions);
         // console.log('Subscriptions details:', result.subscriptions[0].shop_uuid);
+        // Create a table element
+        // 創建容器元素
+        var subTableContainer = document.createElement("div");
+        subTableContainer.className = "subscription-table-container";
+
+        var subTable = document.createElement("table");
+        subTable.className = "subscription-table";
+
         for (var i = 0; i < result.subscriptions.length; i++) {
             var shopID = result.subscriptions[i].uuid;
+            
+            var subRow = subTable.insertRow();
+            var subCell = subRow.insertCell(0);
 
             // Create a div for each subscription item
             var subscriptionItem = document.createElement("div");
@@ -46,10 +57,12 @@ async function showSubscription(subPopup) {
             })(shopID);
 
             subscriptionItem.appendChild(removeButton);
-
-            // Append the subscription item to the popup
-            subPopup.appendChild(subscriptionItem);
+            subCell.appendChild(subscriptionItem);
         }
+        // 將表格插入容器
+        subTableContainer.appendChild(subTable);
+        // Append the subscription item to the popup
+        subPopup.appendChild(subTableContainer);
     } else {
         // console.log('No subscriptions found.');
         var nothing = document.createElement("div");
