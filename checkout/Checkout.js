@@ -1,4 +1,5 @@
 let shopping = [];
+let allShop = [];
 
 // Display shopping cart content
 function displayShopping(coupon = 1) {
@@ -9,6 +10,7 @@ function displayShopping(coupon = 1) {
         try {
             // Parse the JSON string to get the shopping cart array
             shopping = JSON.parse(decodeURIComponent(cartParam));
+            allShop = [];
         } catch (error) {
             console.error('Error parsing shopping cart data:', error);
         }
@@ -21,7 +23,7 @@ function displayShopping(coupon = 1) {
     cartItem.innerHTML = '';
     // Add table headers
     var headerRow = cartItem.insertRow(0);
-    headerRow.innerHTML = '<th>Item Name</th><th>Quantity</th><th>Price</th>';
+    headerRow.innerHTML = '<th>Product Name</th><th>Quantity</th><th>Price</th>';
 
     var cost = 0;
 
@@ -30,7 +32,11 @@ function displayShopping(coupon = 1) {
         var row = cartItem.insertRow(index + 1); // Index + 1 to skip the header row
         row.innerHTML = `<td>${item.name}</td><td>${item.quantity}</td><td>${item.quantity * item.price}</td>`;
         cost += item.quantity * item.price;
+        if (!allShop.includes(item.shopID)) {
+            allShop.push(item.shopID);
+        }
     });
+    console.log(allShop);
     console.log(cost);
     console.log(coupon);
     console.log(cost * coupon);
