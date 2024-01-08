@@ -36,7 +36,7 @@ function generateProductHTML(shopName, productName, productURL, productDetail, p
     
     let priceInt = parseInt(price.replace(/\D/g, ''), 10);
     // console.log(priceInt);
-    let item = {id: productId, name: productName, price: priceInt, stock: productStock};
+    let item = {id: productId, name: productName, price: priceInt, stock: productStock, shopID: shopId};
     container.querySelector("#addToCart").addEventListener('click', (event) => {
         addItemToCart(item);
     });

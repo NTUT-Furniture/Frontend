@@ -8,10 +8,11 @@ class ItemCardComponent {
         this.productTags = product.tags;
         this.productDescription = product.description || 'No description available';
         this.imageUrl = '';
-        this.item = { id: this.productId, name: this.productName, price: product.price, stock: this.productStock };
+        this.item = { id: this.productId, name: this.productName, price: product.price, stock: this.productStock, shopID: this.shopId };
         this.container = this.render(); // Save the container element
         this.container.dataset.productId = this.productId;
         this.container.dataset.shopId = this.shopId;
+        this.container.dataset.productStock = this.productStock;
     }
 
     render() {

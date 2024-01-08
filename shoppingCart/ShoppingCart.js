@@ -81,6 +81,7 @@ function toggleCart() {
     const cartPopup = document.getElementById('cart-popup');
     cartPopup.innerHTML = ''; // Clear previous content
 
+    // console.log(shoppingCart);
     if (cartPopup.style.display === 'none' || cartPopup.style.display === '') {
         // Show cart content
         cartPopup.style.display = 'block';
@@ -306,7 +307,7 @@ function updateQuantity(itemId, newQuantity) {
 }
 
 function testAddItem() {
-    const item = {id: "1", name: 'Item 1', price: 50, stock: 5};
+    const item = {id: "1", name: 'Item 1', price: 50, stock: 5, shopID: "1"};
     addItemToCart(item);
 }
 
