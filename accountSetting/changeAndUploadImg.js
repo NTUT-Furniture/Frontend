@@ -16,8 +16,8 @@ document.getElementById('avatarInput').addEventListener('change', async function
         formData.append('file', file);
 
         try {
-            const baseURL = window.location.origin;
-            const response = await fetch(`${baseURL}:8000/api/image/?img_type=avatar`, {
+            const baseURL = "https://nfta.noobdy.com";
+            const response = await fetch(`${baseURL}/api/image/?img_type=avatar`, {
                 method: 'POST',
                 headers: {
                     'Authorization': 'Bearer ' + token,
@@ -42,8 +42,8 @@ document.getElementById('avatarInput').addEventListener('change', async function
 function loadAvatarImage() {
     account_uuid = getCookie('account_uuid');
     const timestamp = new Date().getTime();
-    const baseURL = window.location.origin;
-    const imageUrl = `${baseURL}:8000/api/image/${account_uuid}?img_type=avatar&t=${timestamp}`;
+    const baseURL = "https://nfta.noobdy.com";
+    const imageUrl = `${baseURL}/api/image/${account_uuid}?img_type=avatar&t=${timestamp}`;
     document.getElementById('avatarImage').src = imageUrl;
     console.log(imageUrl)
 }

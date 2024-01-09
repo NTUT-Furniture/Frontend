@@ -51,10 +51,10 @@ function getCookie(name) {
 
 document.addEventListener('DOMContentLoaded', function() {
     var accountLink = document.getElementById('navbar-account');
-    const baseURL = window.location.origin;
+    const baseURL = "https://nfta.noobdy.com";
     accountLink.addEventListener('click', function(event) {
         event.preventDefault();
-        fetch(`${baseURL}:8000/api/account/`, {
+        fetch(`${baseURL}/api/account/`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

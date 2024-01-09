@@ -82,9 +82,9 @@ function getCookie(cookieName) {
 
 async function getCurrentCoupons() {
     console.log('Get Current Counpons');
-    let baseURL = window.location.origin;
+    let baseURL = "https://nfta.noobdy.com";
     try {
-        baseURL = `${baseURL}:8000/api/coupon/`;
+        baseURL = `${baseURL}/api/coupon/`;
         const url = new URL(baseURL);
         const response = await fetch(url.toString(), {
             method: 'GET',

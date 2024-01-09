@@ -1,8 +1,8 @@
 async function showOrderRecord() {
     try {
         // Fetch data from API
-        const baseURL = window.location.origin;
-        const response = await fetch(`${baseURL}:8000/api/transaction/?target=Account`, {
+        const baseURL = "https://nfta.noobdy.com";
+        const response = await fetch(`${baseURL}/api/transaction/?target=Account`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

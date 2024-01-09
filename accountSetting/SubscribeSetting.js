@@ -1,6 +1,6 @@
 function subscribeSetting() {
-    const baseURL = window.location.origin;
-    const url = `${baseURL}:8000/api/subscription/account?uuid_type=account_uuid&uuid=${getCookie('account_uuid')}`;
+    const baseURL = "https://nfta.noobdy.com";
+    const url = `${baseURL}/api/subscription/account?uuid_type=account_uuid&uuid=${getCookie('account_uuid')}`;
 
     fetch(url, {
         method: 'GET',
@@ -17,7 +17,7 @@ function subscribeSetting() {
     })
     .then(data => {
         return Promise.all(data.subscriptions.map(subscription =>
-            fetch(`${baseURL}:8000/api/shop/?shop_uuid=${subscription.uuid}`, {
+            fetch(`${baseURL}/api/shop/?shop_uuid=${subscription.uuid}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'
@@ -75,8 +75,8 @@ async function deleteSubscription(shopUuid) {
     try {
         const token = getCookie('token');
         const accountUuid = getCookie('account_uuid');
-        const baseURL = window.location.origin;
-        const url = `${baseURL}:8000/api/subscription/unsubscribe?shop_uuid=${shopUuid}&account_uuid=${accountUuid}`;
+        const baseURL = "https://nfta.noobdy.com";
+        const url = `${baseURL}/api/subscription/unsubscribe?shop_uuid=${shopUuid}&account_uuid=${accountUuid}`;
         const response = await fetch(url, {
             method: 'DELETE',
             headers: {

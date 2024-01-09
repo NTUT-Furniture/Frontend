@@ -70,8 +70,8 @@ async function getAccountSubscription() {
     try {
         accID = getCookie('account_uuid');
         // console.log('subscription account_uuid: ' + accID);
-        let baseURL = window.location.origin;
-        baseURL = `${baseURL}:8000/api/subscription/account?`;
+        let baseURL = "https://nfta.noobdy.com";
+        baseURL = `${baseURL}/api/subscription/account?`;
         const url = new URL(baseURL);
         url.searchParams.append("uuid_type", "account_uuid");
         url.searchParams.append('uuid', accID);
@@ -102,8 +102,8 @@ async function unsubscibeWithAccount(shopID) {
         accID = getCookie('account_uuid');
         // console.log('subscription account_uuid: ' + accID);
         // console.log('subscription shop_uuid: ' + shopID);
-        let baseURL = window.location.origin;
-        baseURL = `${baseURL}:8000/api/subscription/unsubscribe?`;
+        let baseURL = "https://nfta.noobdy.com";
+        baseURL = `${baseURL}/api/subscription/unsubscribe?`;
         const url = new URL(baseURL);
         url.searchParams.append("shop_uuid", shopID);
         url.searchParams.append('account_uuid', accID);

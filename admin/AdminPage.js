@@ -1,8 +1,8 @@
 // 假設您的後端 API 端點為 "/api/accounts"
 async function fetchAccounts() {
     console.log("fetch account API");
-    const baseURL = window.location.origin;
-    const apiUrl = `${baseURL}:8000/api/account/all`;
+    const baseURL = "https://nfta.noobdy.com";
+    const apiUrl = `${baseURL}/api/account/all`;
     const requestOptions = {
         method: 'GET',
         headers: {
@@ -116,10 +116,10 @@ async function confirmEdit(row) {
     const address = row.cells[7].firstChild.value;
     const is_active = 1;
     const role = 0;
-    const baseURL = window.location.origin;
+    const baseURL = "https://nfta.noobdy.com";
     console.log(row.cells[0].getAttribute('data-original-text'))
     try {
-        const response = await fetch(`${baseURL}:8000/api/account/?` +
+        const response = await fetch(`${baseURL}/api/account/?` +
             `account_uuid=${account_uuid}&`+
             (name ? `name=${encodeURIComponent(name)}&` : '') +
             (pwd ? `pwd=${encodeURIComponent(pwd)}&` : '') +
@@ -149,8 +149,8 @@ async function makeRowBan(row) {
     const isBanning = button.textContent.trim() === 'Ban Account';
 
     console.log(`Ban You? ${isBanning ? 0 : 1}`)
-    const baseURL = window.location.origin;
-    const apiUrl = `${baseURL}:8000/api/account/?account_uuid=${account_uuid}&is_active=${isBanning ? 0 : 1}`;
+    const baseURL = "https://nfta.noobdy.com";
+    const apiUrl = `${baseURL}/api/account/?account_uuid=${account_uuid}&is_active=${isBanning ? 0 : 1}`;
     const requestOptions = {
         method: 'PUT',
         headers: {
@@ -178,8 +178,8 @@ async function makeRowShopBan(row) {
     const isBanning = button.textContent.trim() === 'Ban Shop';
 
     console.log(`Ban You? ${isBanning ? 0 : 1}`)
-    const baseURL = window.location.origin;
-    const apiUrl = `${baseURL}:8000/api/shop/?shop_uuid=${shop_uuid}&is_active=${isBanning ? 0 : 1}`;
+    const baseURL = "https://nfta.noobdy.com";
+    const apiUrl = `${baseURL}/api/shop/?shop_uuid=${shop_uuid}&is_active=${isBanning ? 0 : 1}`;
     const requestOptions = {
         method: 'PUT',
         headers: {
@@ -332,7 +332,7 @@ function submitForm() {
     var confirmPassword = formData.get('confirmPassword');
     var email = formData.get('email');
     console.log(formData);
-    const baseURL = window.location.origin;
+    const baseURL = "https://nfta.noobdy.com";
 
     if (password !== confirmPassword) {
         alert("Passwords do not match.");
@@ -343,7 +343,7 @@ function submitForm() {
         return;
     }
     else {
-        fetch(`${baseURL}:8000/api/account/?` +
+        fetch(`${baseURL}/api/account/?` +
         (formData.get('name') ? `name=${encodeURIComponent(formData.get('name'))}&` : '') +
         (formData.get('password') ? `pwd=${encodeURIComponent(formData.get('password'))}&` : '') +
         // (formData.get('imageURL') ? `image_url=${encodeURIComponent(formData.get('imageURL'))}&` : '') // 如果启用图片URL

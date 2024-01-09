@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const baseURL = window.location.origin;
+    const baseURL = "https://nfta.noobdy.com";
     const managementContainer = document.getElementById('business-management');
     const addButton = document.createElement('button');
     addButton.textContent = 'Add Business';
@@ -56,12 +56,12 @@ document.addEventListener('DOMContentLoaded', function () {
         card.remove(); // Replace with actual delete form implementation 
         alert(`Delete business ${business.id}`);
         try {
-            let baseURL = window.location.origin;
-            baseURL = `${baseURL}:8000/api/product/?`;
+            let baseURL = "https://nfta.noobdy.com";
+            baseURL = `${baseURL}/api/product/?`;
             const url = new URL(baseURL);
             url.searchParams.append("product_uuid",business.id);
             url.searchParams.append('is_active', "0");
-            const response = aw"\$\{baseURL\}:8000/api/[a-zA-Z0-9/?=&%]+"ait fetch(url.toString(), {
+            const response = aw"\$\{baseURL\}/api/[a-zA-Z0-9/?=&%]+"ait fetch(url.toString(), {
                 method: 'PUT',
                 headers: {
                     'Authorization': 'Bearer ' + getCookie("token"),
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function updateProduct(business, card, formData){
         try {
-            const baseURL = `${baseURL}:8000/api/product/?`;
+            const baseURL = `${baseURL}/api/product/?`;
             const url = new URL(baseURL);
             url.searchParams.append("product_uuid",business.id);
             url.searchParams.append('name', formData.name);
@@ -298,7 +298,7 @@ document.addEventListener('DOMContentLoaded', function () {
             formData.append('file', file);
             console.log("file", file);
             try {
-                const response = await fetch(`${baseURL}:8000/api/image/?shop_uuid=${getCookie("shop_uuid")}&product_uuid=${business.id}&img_type=avatar`, {
+                const response = await fetch(`${baseURL}/api/image/?shop_uuid=${getCookie("shop_uuid")}&product_uuid=${business.id}&img_type=avatar`, {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + getCookie('token'),
@@ -429,7 +429,7 @@ document.addEventListener('DOMContentLoaded', function () {
     async function getShopUUID(){
         const urlParams = new URLSearchParams(window.location.search);
         console.log("get self shop_uuid");
-        const response = await fetch(`${baseURL}:8000/api/shop/mine`, {
+        const response = await fetch(`${baseURL}/api/shop/mine`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -449,7 +449,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function fetchBusinessCardData() {
         try {
-            const baseURL = `${baseURL}:8000/api/product/all?`;
+            const baseURL = `${baseURL}/api/product/all?`;
             const url = new URL(baseURL);
             const self_shop_uuid = await getShopUUID();
             
@@ -466,7 +466,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     async function fetchImage(UUID, imgType) {
         const timestamp = new Date().getTime();
-        const imageUrl = `${baseURL}:8000/api/image/${UUID}?img_type=${imgType}&_=${timestamp}`;
+        const imageUrl = `${baseURL}/api/image/${UUID}?img_type=${imgType}&_=${timestamp}`;
         console.log(`in fetch Image,UUID = ${UUID}, imgType = ${imgType}`);
         console.log(imageUrl);
         try {
@@ -530,7 +530,7 @@ document.addEventListener('DOMContentLoaded', function () {
     async function createProduct(newBusinessCardData){
         try {
             // Replace baseURL with the actual API base URL for fetching images
-            const baseURL = `${baseURL}:8000/api/product/?`;
+            const baseURL = `${baseURL}/api/product/?`;
             const url = new URL(baseURL);
             url.searchParams.append('name', newBusinessCardData.name);
             url.searchParams.append('stock', newBusinessCardData.stock);

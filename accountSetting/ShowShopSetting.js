@@ -10,10 +10,10 @@ async function showShopSetting() {
     const token = getCookie('token');
     console.log(shopUuid);
     console.log(shopUuid === undefined);
-    const baseURL = window.location.origin;
+    const baseURL = "https://nfta.noobdy.com";
     try {
         // 嘗試獲取商店信息
-        const getResponse = await fetch(`${baseURL}:8000/api/shop/mine`, {
+        const getResponse = await fetch(`${baseURL}/api/shop/mine`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -25,7 +25,7 @@ async function showShopSetting() {
             console.log('Get Shop Success:', data);
             shopUuid = data.shop_uuid;
         } else if (getResponse.status === 404) {
-            const postResponse = await fetch(`${baseURL}:8000/api/shop/?name=Shop&description=Empty`, {
+            const postResponse = await fetch(`${baseURL}/api/shop/?name=Shop&description=Empty`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -151,7 +151,7 @@ async function showShopSetting() {
             formData.append('file', file);
 
             try {
-                const response = await fetch(`${baseURL}:8000/api/image/?shop_uuid=${getCookie('shop_uuid')}&img_type=banner`, {
+                const response = await fetch(`${baseURL}/api/image/?shop_uuid=${getCookie('shop_uuid')}&img_type=banner`, {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + token,
@@ -183,9 +183,9 @@ function getCookie(name) {
 }
 
 async function GetAccount(type,token) {
-    const baseURL = window.location.origin;
+    const baseURL = "https://nfta.noobdy.com";
     try {
-        const response = await fetch(`${baseURL}:8000/api/shop/mine`, {
+        const response = await fetch(`${baseURL}/api/shop/mine`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -204,10 +204,10 @@ async function GetAccount(type,token) {
 async function modifyShopSetting(type, token) {
     var shopName = document.getElementById('shopname').value;
     var description = document.getElementById('description').value;
-    const baseURL = window.location.origin;
+    const baseURL = "https://nfta.noobdy.com";
 
     try {
-        const response = await fetch(`${baseURL}:8000/api/shop/?` +
+        const response = await fetch(`${baseURL}/api/shop/?` +
             `name=${shopName}&`+
             `description=${description}`, {
                 method: 'PUT',
@@ -232,8 +232,8 @@ async function loadBannerImage() {
     // 添加時間戳和隨機數以產生唯一的 URL
     const timestamp = new Date().getTime();
     const randomNum = Math.random();
-    const baseURL = window.location.origin;
-    imageUrl = `${baseURL}:8000/api/image/${shopUuid}?img_type=banner&_=${timestamp}`;
+    const baseURL = "https://nfta.noobdy.com";
+    imageUrl = `${baseURL}/api/image/${shopUuid}?img_type=banner&_=${timestamp}`;
     console.log(imageUrl);
     document.getElementById('Banner').style.backgroundImage = `url(${imageUrl})`;
     document.getElementById('Banner').textContent = "Banner";
