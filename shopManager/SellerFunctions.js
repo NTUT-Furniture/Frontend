@@ -1,18 +1,23 @@
 document.addEventListener('DOMContentLoaded', function () {
     const managementContainer = document.getElementById('business-management');
+    const buttonContainer = document.createElement('div');
     const addButton = document.createElement('button');
+    const transactionButton = document.createElement('button');
     addButton.textContent = 'Add Product';
     addButton.classList.add('add-business-button'); // Add a class for styling
-
+    transactionButton.textContent = 'Go to transaction';
+    transactionButton.classList.add('transactions-button'); // Add a class for styling
+    
     // Apply styling to the button
-    addButton.style.position = 'absolute';
-    addButton.style.top = '420px';
-    addButton.style.left = '0';
-    addButton.style.display = 'block'; // Ensure it displays as a block
-    addButton.style.zIndex = '999';
+    buttonContainer.style.position = 'absolute';
+    buttonContainer.style.top = '420px';
+    buttonContainer.style.left = '0';
+    buttonContainer.style.display = 'block';
+    buttonContainer.style.zIndex = '999';
 
-    // Append the button to the managementContainer
-    managementContainer.appendChild(addButton);
+    buttonContainer.appendChild(addButton);
+    buttonContainer.appendChild(transactionButton);
+    managementContainer.appendChild(buttonContainer);
     
     let openDetailForm = null;
     
@@ -280,51 +285,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Upload to API Error', error);
             }
         }
-    }
-
-    //         try {
-    //             const response = await fetch('http://localhost:8000/api/transaction/?target=Shop', {
-    //                 method: 'GET',
-    //                 headers: {
-    //                     'Accept': 'application/json',
-    //                     'Authorization': 'Bearer ' + getCookie('token')
-    //                 }
-    //             });
-    //             if (!response.ok) {
-    //                 throw new Error('Failed to fetch data from the API');
-    //             }
-        
-    //             const data = await response.json();
-    //             // Header row
-    //             statusTable.innerHTML = `
-    //                 <tr>
-    //                     <th>Transaction ID</th>
-    //                     <th>Customer ID</th>
-    //                     <th>Product Name</th>
-    //                     <th>Status</th>
-    //                     <th>Date Ordered</th>
-    //                     <th>Expected Delivery Date</th>
-    //                 </tr>
-    //             `;
-        
-    //             // Data rows
-    //             data.transactions.forEach(transaction => {
-    //                 console.log(transaction);
-    //                 if (transaction.products.transaction_product_logs[0].product_name != businessCardData.name){
-    //                     return;
-    //                 }
-    //                 statusTable.innerHTML += `
-    //                     <tr>
-    //                         <td>${transaction.transaction_uuid}</td>
-    //                         <td>${transaction.account_uuid}</td>
-    //                         <td>${transaction.products.transaction_product_logs[0].product_name}</td>
-    //                         <td>${transaction.status}</td>
-    //                         <td>${transaction.order_time}</td>
-    //                         <td>${transaction.receive_time}</td>
-    //                     </tr>
-    //                 `;
-    //             });
-        
+    }        
     
     async function getShopUUID(){
         const urlParams = new URLSearchParams(window.location.search);
@@ -473,6 +434,10 @@ document.addEventListener('DOMContentLoaded', function () {
         //createProduct(newBusiness);
     });
 
+    transactionButton.addEventListener('click', () => {
+        window.location.href = `../shopTransaction/ShopTransaction.html`;
+    })
+
     function showAddProductPopup(defaultProduct){
         if (openDetailForm) {
             openDetailForm.remove();
@@ -564,4 +529,5 @@ document.addEventListener('DOMContentLoaded', function () {
     function generateUniqueId() {
         return Date.now();
     }
+
 });
