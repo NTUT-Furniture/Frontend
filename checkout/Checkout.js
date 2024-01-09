@@ -1,8 +1,9 @@
 let shopping = [];
-let allShop = [];
+let usingCouponCode = "";
+// let allShop = [];
 
 // Display shopping cart content
-function displayShopping(coupon = 1) {
+function displayShopping(coupon = 1, couponCode = "") {
     // Retrieve the shopping cart data from the query parameters
     const urlParams = new URLSearchParams(window.location.search);
     const cartParam = urlParams.get('cart');
@@ -10,7 +11,8 @@ function displayShopping(coupon = 1) {
         try {
             // Parse the JSON string to get the shopping cart array
             shopping = JSON.parse(decodeURIComponent(cartParam));
-            allShop = [];
+            // allShop = [];
+            usingCouponCode = couponCode;
         } catch (error) {
             console.error('Error parsing shopping cart data:', error);
         }
@@ -32,11 +34,11 @@ function displayShopping(coupon = 1) {
         var row = cartItem.insertRow(index + 1); // Index + 1 to skip the header row
         row.innerHTML = `<td>${item.name}</td><td>${item.quantity}</td><td>${item.quantity * item.price}</td>`;
         cost += item.quantity * item.price;
-        if (!allShop.includes(item.shopID)) {
-            allShop.push(item.shopID);
-        }
+        // if (!allShop.includes(item.shopID)) {
+        //     allShop.push(item.shopID);
+        // }
     });
-    console.log(allShop);
+    // console.log(allShop);
     console.log(cost);
     console.log(coupon);
     console.log(cost * coupon);
@@ -104,11 +106,22 @@ async function getCurrentCoupons() {
 }
 
 // Checkout function
-function checkout() {
+async function checkout() {
     console.log('Checkout successful! Items purchased:', shopping);
-    alert('Checkout successful!');
-    clearShoppingCartCookie();
-    window.location.href = '../home/Index.html';
+    // alert('Checkout successful!');
+    let requestBodies = convertToRequestBody(shopping);
+    console.log(JSON.stringify(requestBodies, null, 2));
+    
+    requestBodies.forEach(async requestBody => {
+        console.log('----------------------------aaaaaa--------------------------------');
+        let resultPromise = createTransaction(requestBody);
+        let result = await resultPromise;
+        console.log('----------------------------bbbbbb--------------------------------');
+        // console.log(result);
+    });
+    
+    // clearShoppingCartCookie();
+    // window.location.href = '../home/Index.html';
 }
 
 // Continue shopping function
@@ -116,5 +129,75 @@ function continueShopping() {
     window.location.href = '../home/Index.html';
 }
 
+function convertToRequestBody(productList) {
+    // Group items by shopID
+    let groupedItems = {};
+    productList.forEach(item => {
+        if (!groupedItems[item.shopID]) {
+            groupedItems[item.shopID] = [];
+        }
+        groupedItems[item.shopID].push(item);
+    });
+
+    // Create request bodies for each shopID
+    let requestBodies = [];
+    for (let shopID in groupedItems) {
+        let products = {
+            transaction_product_logs: groupedItems[shopID].map(item => ({
+                product_uuid: item.id,
+                quantity: item.quantity
+            }))
+        };
+
+        let requestBody = {
+            shop_uuid: shopID,
+            coupon_code: usingCouponCode,
+            receive_time: "",
+            status: "Ordered",
+            products: products
+        };
+
+        requestBodies.push(requestBody);
+    }
+
+    return requestBodies;
+}
+
+async function createTransaction(requestBody) {
+    // const baseURL = window.location.origin;
+    
+    // Define the order of keys
+    const keyOrder = ['shop_uuid', 'coupon_code', 'receive_time', 'status', 'products'];
+    const sortedRequestBody = {};
+    // Sort the keys based on the defined order
+    keyOrder.forEach(key => {
+        if (requestBody.hasOwnProperty(key)) {
+        sortedRequestBody[key] = requestBody[key];
+        }
+    });
+
+    const jsonString = JSON.stringify(sortedRequestBody, null, 2);
+    console.log(jsonString);
+
+    const baseURL = "http://localhost:8000/api/transaction/";
+    fetch(baseURL, {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + getCookie('token'),
+            'Content-Type': 'application/json'
+        },
+        body: jsonString
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(`Request sent successfully for shop_uuid: ${requestBody.shop_uuid}`);
+        console.log('API Response:', data);
+    })
+    .catch(error => {
+        console.error(`Error sending request for shop_uuid: ${requestBody.shop_uuid}`);
+        console.error('Error details:', error);
+    });
+}
 
 displayShopping();
