@@ -181,6 +181,7 @@ function showCartItems() {
 
             const quantityCell = document.createElement('td');
             quantityCell.classList.add('item-cell', 'qty-cell');
+            quantityCell.style.whiteSpace = 'nowrap';  // 防止內容換行
             quantityCell.innerHTML = `
                 <span>(Qty: </span>
                 <input type="number" min="1" max="${item.stock}" value="${item.quantity}" onchange="updateQuantity('${item.id}', this.value)">
