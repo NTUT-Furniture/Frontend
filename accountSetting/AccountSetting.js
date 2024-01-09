@@ -74,7 +74,8 @@ async function modifyAccountSetting(type, token) {
         formData['password'] = "";
     }
     try {
-        const response = await fetch(`http://localhost:8000/api/account/?` +
+        const baseURL = "https://nfta.noobdy.com";
+        const response = await fetch(`${baseURL}/api/account/?` +
             // `account_uuid=${getCookie("account_uuid")}&`+
             (formData['username'] ? `name=${encodeURIComponent(formData['username'])}&` : '') +
             (formData['password'] ? `pwd=${encodeURIComponent(formData['password'])}&` : '') +
@@ -102,7 +103,8 @@ async function modifyAccountSetting(type, token) {
 
 async function GetAccountDetail(type,token) {
     try {
-        const response = await fetch('http://localhost:8000/api/account', {
+        const baseURL = "https://nfta.noobdy.com";
+        const response = await fetch(`${baseURL}/api/account`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

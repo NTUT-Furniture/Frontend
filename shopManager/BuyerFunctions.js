@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+    const baseURL = "https://nfta.noobdy.com";
     const managementContainer = document.getElementById('business-management');
     let openDetailForm = null;
     let currentDetailType = null;
@@ -38,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function fetchBusinessCardData() {
         try {
-            const baseURL = 'http://localhost:8000/api/product/all?';
+            const baseURL = `${baseURL}/api/product/all?`;
             const url = new URL(baseURL);
             const urlParams = new URLSearchParams(window.location.search);
             const passedShopUUID = urlParams.get('shop_uuid');
@@ -57,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     function fetchImage(UUID, imgType) {
         const timestamp = new Date().getTime();
-        return `http://localhost:8000/api/image/${UUID}?img_type=${imgType}&_=${timestamp}`;
+        return `${baseURL}/api/image/${UUID}?img_type=${imgType}&_=${timestamp}`;
     }
 
     async function renderBusinessCards() {

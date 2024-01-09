@@ -89,8 +89,9 @@ class ItemCardComponent {
 var allProducts = []
 
 async function fetchProducts() {
+    const baseURL = "https://nfta.noobdy.com";
     try {
-        const response = await fetch('http://localhost:8000/api/product/all?order=product_uuid&limit=2147483647', {
+        const response = await fetch(`${baseURL}/api/product/all?order=product_uuid&limit=2147483647`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json'
@@ -111,7 +112,8 @@ async function fetchProducts() {
 
 async function fetchImage(UUID, imgType) {
     const timestamp = new Date().getTime();
-    const imageUrl = `http://localhost:8000/api/image/${UUID}?img_type=${imgType}&_=${timestamp}`;
+    const baseURL = "https://nfta.noobdy.com";
+    const imageUrl = `${baseURL}/api/image/${UUID}?img_type=${imgType}&_=${timestamp}`;
     // console.log(`in fetch Image,UUID = ${UUID}, imgType = ${imgType}`);
     // console.log(imageUrl);
     try {
