@@ -108,7 +108,7 @@ async function getCurrentCoupons() {
 // Checkout function
 async function checkout() {
     console.log('Checkout successful! Items purchased:', shopping);
-    // alert('Checkout successful!');
+    alert('Checkout successful!');
     let requestBodies = convertToRequestBody(shopping);
     console.log(JSON.stringify(requestBodies, null, 2));
     
@@ -120,8 +120,8 @@ async function checkout() {
         // console.log(result);
     });
     
-    // clearShoppingCartCookie();
-    // window.location.href = '../home/Index.html';
+    clearShoppingCartCookie();
+    window.location.href = '../home/Index.html';
 }
 
 // Continue shopping function
