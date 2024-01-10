@@ -7,6 +7,7 @@
   overflow: visible;
   background-color: #333;
   z-index: 1000;
+  text-transform: uppercase;
 }
 
 /* Navbar links */

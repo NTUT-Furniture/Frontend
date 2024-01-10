@@ -39,7 +39,7 @@ async function showAccountSetting() {
     modifyButton.textContent = 'Confirm';
     modifyButton.addEventListener('click',async function(event) {
         event.preventDefault();
-        modifyAccountSetting("Bearer",token);
+        modifyAccountSetting("Bearer", token);
         try {
             await modifyAccountSetting("Bearer", token);
             window.location.reload();
@@ -104,7 +104,7 @@ async function modifyAccountSetting(type, token) {
 async function GetAccountDetail(type,token) {
     try {
         const baseURL = "https://nfta.noobdy.com";
-        const response = await fetch(`${baseURL}/api/account`, {
+        const response = await fetch(`${baseURL}/api/account/`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
