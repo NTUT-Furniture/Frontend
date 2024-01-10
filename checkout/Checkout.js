@@ -39,9 +39,9 @@ function displayShopping(coupon = 1, couponCode = "") {
         // }
     });
     // console.log(allShop);
-    console.log(cost);
-    console.log(coupon);
-    console.log(cost * coupon);
+    // console.log(cost);
+    // console.log(coupon);
+    // console.log(cost * coupon);
     const totalCost = document.getElementById('totalCost');
     totalCost.innerHTML = `<h2>total cost: ${cost * coupon}</h2>`;
 }
@@ -60,7 +60,7 @@ async function applyCoupon() {
             const element = nowCoupons.coupons[index];
             if (couponInput.value.trim() === element.coupon_code) {
                 message.textContent = 'Coupon applied successfully! Use Coupon: ' + element.coupon_code;
-                displayShopping((100 - element.discount) / 100);
+                displayShopping((100 - element.discount) / 100, element.coupon_code);
                 usingCoupon = true;
                 break;
             }
@@ -93,11 +93,11 @@ async function getCurrentCoupons() {
 
         if (response.ok) {
             const jsonResponse = await response.json();
-            console.log(jsonResponse);
-            console.log('Success Get Current Coupons');
+            // console.log(jsonResponse);
+            // console.log('Success Get Current Coupons');
             return jsonResponse;
         } else {
-            console.log('No coupons now');
+            // console.log('No coupons now');
             return null;
         }
     } catch (error) {
@@ -110,18 +110,15 @@ async function checkout() {
     console.log('Checkout successful! Items purchased:', shopping);
     alert('Checkout successful!');
     let requestBodies = convertToRequestBody(shopping);
-    console.log(JSON.stringify(requestBodies, null, 2));
+    // console.log(JSON.stringify(requestBodies, null, 2));
     
     requestBodies.forEach(async requestBody => {
-        console.log('----------------------------aaaaaa--------------------------------');
         let resultPromise = createTransaction(requestBody);
         let result = await resultPromise;
-        console.log('----------------------------bbbbbb--------------------------------');
-        // console.log(result);
     });
     
-    clearShoppingCartCookie();
-    window.location.href = '../home/Index.html';
+    // clearShoppingCartCookie();
+    // window.location.href = '../home/Index.html';
 }
 
 // Continue shopping function
@@ -148,15 +145,22 @@ function convertToRequestBody(productList) {
                 quantity: item.quantity
             }))
         };
-
-        let requestBody = {
-            shop_uuid: shopID,
-            coupon_code: usingCouponCode,
-            receive_time: "",
-            status: "Ordered",
-            products: products
-        };
-
+        let requestBody;
+        if (usingCouponCode === "") {
+            requestBody = {
+                shop_uuid: shopID,
+                status: "Ordered",
+                products: products
+            };
+        }
+        else {
+            requestBody = {
+                shop_uuid: shopID,
+                coupon_code: usingCouponCode,
+                status: "Ordered",
+                products: products
+            };
+        }
         requestBodies.push(requestBody);
     }
 
