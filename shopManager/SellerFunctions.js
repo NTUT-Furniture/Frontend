@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const url = new URL(baseURL);
             url.searchParams.append("product_uuid",business.id);
             url.searchParams.append('is_active', "0");
-            const response = aw"\$\{baseURL\}/api/[a-zA-Z0-9/?=&%]+"ait fetch(url.toString(), {
+            const response = await fetch(url.toString(), {
                 method: 'PUT',
                 headers: {
                     'Authorization': 'Bearer ' + getCookie("token"),
@@ -268,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function () {
             formData.append('file', file);
             console.log("file", file);
             try {
-                const response = await fetch(`http://localhost:8000/api/image/?shop_uuid=${getCookie("shop_uuid")}&product_uuid=${product_uuid}&img_type=avatar`, {
+                const response = await fetch(`${baseURL}/api/image/?shop_uuid=${getCookie("shop_uuid")}&product_uuid=${product_uuid}&img_type=avatar`, {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + getCookie('token'),

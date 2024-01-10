@@ -1,7 +1,8 @@
 async function fetchData() {
     console.log("in transaction page fetch data");
     try {
-        const response = await fetch('http://localhost:8000/api/transaction/?target=Shop', {
+        const baseURL = "https://nfta.noobdy.com";
+        const response = await fetch(`${baseURL}/api/transaction/?target=Shop`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -93,11 +94,12 @@ function handleSave(row, transaction, statusSelect, receiveTimeInput) {
             updatedReceiveTime += "T00:00:00";
         }
         // Determine the API endpoint based on the selected status
+        let baseURL = "https://nfta.noobdy.com";
         let apiEndpoint;
         if (updatedStatus === 'Arrived') {
-            apiEndpoint = `http://localhost:8000/api/transaction/${transactionId}?receive_time=${updatedReceiveTime}&status=${updatedStatus}`;
+            apiEndpoint = `${baseURL}/api/transaction/${transactionId}?receive_time=${updatedReceiveTime}&status=${updatedStatus}`;
         } else {
-            apiEndpoint = `http://localhost:8000/api/transaction/${transactionId}?status=${updatedStatus}`;
+            apiEndpoint = `${baseURL}/api/transaction/${transactionId}?status=${updatedStatus}`;
         }
     
         // Make the API call to update the data
