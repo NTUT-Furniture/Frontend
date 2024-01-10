@@ -5,34 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="../shopTransaction/ShopTransaction_Style.css">
     <title>Shop Transactions</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 10px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
 </head>
 <body>
 
@@ -56,69 +28,7 @@
         </table>
     </div>
 
-    <script>
-        async function fetchData() {
-            console.log("in transaction page fetch data");
-            try {
-                const response = await fetch('http://localhost:8000/api/transaction/?target=Shop', {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Authorization': 'Bearer ' + getCookie('token')
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to fetch data from the API');
-                }
-
-                const data = await response.json();
-                const statusTable = document.querySelector("#transactionsTable tbody");
-
-                // Header row
-                // statusTable.innerHTML = `
-                //     <tr>
-                //         <th>Transaction ID</th>
-                //         <th>Customer ID</th>
-                //         <th>Product Name</th>
-                //         <th>Status</th>
-                //         <th>Date Ordered</th>
-                //         <th>Expected Delivery Date</th>
-                //     </tr>
-                // `;
-
-                // Data rows
-                data.transactions.forEach(transaction => {
-                    console.log(transaction);
-                    statusTable.innerHTML += `
-                        <tr>
-                            <td>${transaction.transaction_uuid}</td>
-                            <td>${transaction.account_uuid}</td>
-                            <td>${transaction.products.transaction_product_logs[0].product_name}</td>
-                            <td>${transaction.status}</td>
-                            <td>${transaction.order_time}</td>
-                            <td>${transaction.receive_time}</td>
-                        </tr>
-                    `;
-                });
-            } catch (error) {
-                console.error('Error fetching data:', error.message);
-            }
-        }
-
-        function getCookie(name) {
-            var nameEQ = name + "=";
-            var ca = document.cookie.split(';');
-            for (var i = 0; i < ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-            }
-            return null;
-        }
-        // Call the fetchData function when the page loads
-        fetchData();
-    </script>
+    <script src="ShopTransaction.js"></script>
 
 </body>
 </html>
