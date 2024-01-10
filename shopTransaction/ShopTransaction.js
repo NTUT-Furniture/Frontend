@@ -17,20 +17,51 @@ async function fetchData() {
         const statusTable = document.querySelector("#transactionsTable tbody");
         data.transactions.forEach(transaction => {
             console.log(transaction);
-            statusTable.innerHTML += `
-                <tr>
-                    <td>${transaction.transaction_uuid}</td>
-                    <td>${transaction.account_uuid}</td>
-                    <td>${transaction.products.transaction_product_logs[0].product_name}</td>
-                    <td>${transaction.status}</td>
-                    <td>${transaction.order_time}</td>
-                    <td>${transaction.receive_time}</td>
-                </tr>
+            const row = document.createElement('tr');
+
+            row.innerHTML = `
+                <td>${transaction.transaction_uuid}</td>
+                <td>${transaction.account_uuid}</td>
+                <td class="product">${transaction.products.transaction_product_logs[0].product_name}</td>
+                <td class="status">${transaction.status}</td>
+                <td class="order-time">${transaction.order_time}</td>
+                <td class="receive-time">${transaction.receive_time}</td>
+                <td><button class="edit-btn">Edit</button></td>
             `;
+
+            row.querySelector('.edit-btn').addEventListener('click', () => handleEdit(row, transaction));
+
+            statusTable.appendChild(row);
         });
     } catch (error) {
         console.error('Error fetching data:', error.message);
     }
+}
+
+function handleEdit(row, transaction) {
+    const statusCell = row.querySelector('.status');
+    const receiveTimeCell = row.querySelector('.receive-time');
+
+    // Create dropdown for status
+    const statusSelect = document.createElement('select');
+    statusSelect.innerHTML = `
+        <option value="Ordered" ${transaction.status === 'Ordered' ? 'selected' : ''}>Ordered</option>
+        <option value="Delivering" ${transaction.status === 'Delivering' ? 'selected' : ''}>Delivering</option>
+        <option value="Arrived" ${transaction.status === 'Arrived' ? 'selected' : ''}>Arrived</option>
+        <option value="Canceled" ${transaction.status === 'Canceled' ? 'selected' : ''}>Canceled</option>
+    `;
+
+    // Create input for receive-time
+    const receiveTimeInput = document.createElement('input');
+    receiveTimeInput.type = 'date';
+    receiveTimeInput.value = transaction.receive_time;
+
+    // Replace cell content with editable elements
+    //productCell.innerHTML = `<input type="text" value="${transaction.products.transaction_product_logs[0].product_name}">`;
+    statusCell.innerHTML = '';
+    statusCell.appendChild(statusSelect);
+    receiveTimeCell.innerHTML = '';
+    receiveTimeCell.appendChild(receiveTimeInput);
 }
 
 function getCookie(name) {
