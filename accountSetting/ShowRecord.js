@@ -29,7 +29,7 @@ async function showOrderRecord() {
         data.transactions.forEach((transaction, index) => {
             const productNames = transaction.products.transaction_product_logs.map(product => product.product_name).join('<br>');
             let discountDisplay = '';
-            if (1 > transaction.discount > 0) {
+            if (1 > transaction.discount && transaction.discount >= 0) {
                 const discountPercentage = ((1 - transaction.discount) * 100).toFixed(0);
                 discountDisplay = `<span class="discount"> ${discountPercentage}% off</span>`;
             }

@@ -60,7 +60,7 @@ async function applyCoupon() {
             const element = nowCoupons.coupons[index];
             if (couponInput.value.trim() === element.coupon_code) {
                 message.textContent = 'Coupon applied successfully! Use Coupon: ' + element.coupon_code;
-                displayShopping((100 - element.discount) / 100, element.coupon_code);
+                displayShopping(element.discount / 100, element.coupon_code);
                 usingCoupon = true;
                 break;
             }
@@ -111,14 +111,22 @@ async function checkout() {
     alert('Checkout successful!');
     let requestBodies = convertToRequestBody(shopping);
     // console.log(JSON.stringify(requestBodies, null, 2));
-    
-    requestBodies.forEach(async requestBody => {
-        let resultPromise = createTransaction(requestBody);
-        let result = await resultPromise;
-    });
-    
-    // clearShoppingCartCookie();
-    // window.location.href = '../home/Index.html';
+
+    try {
+        const transactionResults = await Promise.all(requestBodies.map(requestBody => createTransaction(requestBody)));
+        
+        // Process transactionResults as needed
+        transactionResults.forEach(result => {
+            console.log(result);
+        });
+
+        clearShoppingCartCookie();
+        window.location.href = '../home/Index.html';
+    } catch (error) {
+        console.error('Error during checkout:', error);
+        // Handle the error, e.g., display an error message to the user
+        alert('Checkout failed. Please try again later.');
+    }
 }
 
 // Continue shopping function
@@ -169,14 +177,14 @@ function convertToRequestBody(productList) {
 
 async function createTransaction(requestBody) {
     // const baseURL = window.location.origin;
-    
+
     // Define the order of keys
     const keyOrder = ['shop_uuid', 'coupon_code', 'receive_time', 'status', 'products'];
     const sortedRequestBody = {};
     // Sort the keys based on the defined order
     keyOrder.forEach(key => {
         if (requestBody.hasOwnProperty(key)) {
-        sortedRequestBody[key] = requestBody[key];
+            sortedRequestBody[key] = requestBody[key];
         }
     });
 
@@ -184,24 +192,32 @@ async function createTransaction(requestBody) {
     console.log(jsonString);
 
     const baseURL = "http://localhost:8000/api/transaction/";
-    fetch(baseURL, {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Bearer ' + getCookie('token'),
-            'Content-Type': 'application/json'
-        },
-        body: jsonString
-    })
-    .then(response => response.json())
-    .then(data => {
+    
+    try {
+        const response = await fetch(baseURL, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + getCookie('token'),
+                'Content-Type': 'application/json'
+            },
+            body: jsonString
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
         console.log(`Request sent successfully for shop_uuid: ${requestBody.shop_uuid}`);
         console.log('API Response:', data);
-    })
-    .catch(error => {
+
+        return data; // Return data on success
+    } catch (error) {
         console.error(`Error sending request for shop_uuid: ${requestBody.shop_uuid}`);
         console.error('Error details:', error);
-    });
+        throw error; // Throw the error to be caught by the calling function
+    }
 }
 
 displayShopping();
