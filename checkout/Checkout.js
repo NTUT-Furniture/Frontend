@@ -164,7 +164,7 @@ async function createTransaction(requestBody) {
     console.log(jsonString);
 
     const baseURL = "https://nfta.noobdy.com"
-    const api = `${baseURL}:8000/api/transaction/`;
+    const api = `${baseURL}/api/transaction/`;
     
     try {
         const response = await fetch(api, {
