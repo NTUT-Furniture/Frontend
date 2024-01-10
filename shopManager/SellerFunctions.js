@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (field === 'image') {
                         const imageElement = card.querySelector('.image');
                         if (imageElement) {
-                            updateProductImg(business, formData['image'])
+                            updateProductImg(business.id, formData['image'])
                             .then(() => {
                                 console.log('get uploaded image');
                                 return fetchImage(business.id, 'avatar');  // Return the promise
@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("updated product in", business);
     }
 
-    async function updateProductImg(business, file){
+    async function updateProductImg(product_uuid, file){
         if (file) {
             //const reader = new FileReader();
             //reader.readAsDataURL(file);
@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function () {
             formData.append('file', file);
             console.log("file", file);
             try {
-                const response = await fetch(`http://localhost:8000/api/image/?shop_uuid=${getCookie("shop_uuid")}&product_uuid=${business.id}&img_type=avatar`, {
+                const response = await fetch(`http://localhost:8000/api/image/?shop_uuid=${getCookie("shop_uuid")}&product_uuid=${product_uuid}&img_type=avatar`, {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + getCookie('token'),
@@ -410,7 +410,11 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!response.ok) {
                 throw new Error('Failed to create a product from the API');
             }
-            console.log("Create Product response", response);
+            const responseData = await response.json();
+            //console.log("response data json:",responseData);
+            const productUUID = responseData.product_uuid;
+            //console.log("Product UUID:", productUUID);
+            await updateProductImg(productUUID, newBusinessCardData.image);
             location.reload();
         } catch (error) {
             console.error('Error Create Product response:', error);
@@ -431,7 +435,6 @@ document.addEventListener('DOMContentLoaded', function () {
             image: '../Resources/default_banner.webp', // Provide a default image URL
         };
         showAddProductPopup(defaultProduct);
-        //createProduct(newBusiness);
     });
 
     transactionButton.addEventListener('click', () => {
