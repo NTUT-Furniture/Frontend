@@ -52,7 +52,7 @@ async function showSubscription(subPopup) {
         subPopup.appendChild(subTableContainer);
     } else {
         var nothing = document.createElement("div");
-        nothing.innerHTML = "<strong>you do not subscribe any shop</strong>"
+        nothing.innerHTML = "<h2>you do not subscribe any shop</h2>"
         subPopup.appendChild(nothing);
     }
     var closeButton = document.createElement("button");
