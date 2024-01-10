@@ -60,9 +60,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 return jsonResponse.shop_uuid;
             } 
             else if (response.status == 404){
+                const baseURL = "https://nfta.noobdy.com";
                 console.log("fail to get self shop, because dont have shop");
                 try {
-                    const response = await fetch('${baseURL}/api/shop/?name=Default Shop&description=Default Description', {
+                    const response = await fetch(`${baseURL}/api/shop/?name=Default Shop&description=Default Description`, {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
@@ -113,6 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     async function initBanner() {
+        const baseURL = "https://nfta.noobdy.com";
         try {
             const shopData = await getShop();
             const bannerImage = await fetchImage(shopData.shop_uuid, "banner");
