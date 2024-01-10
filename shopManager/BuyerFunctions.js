@@ -32,8 +32,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         let item = {id: business.id, name: business.name, price: business.price, stock: business.quantity};
         addItemToCartWithQuantity(item, quantity);
-
+        
         // 在這裡可以添加購買邏輯，使用 business 和 quantity 進行相應的處理
+
         alert(`Buy ${quantity} of ${business.name}`);
     }
 

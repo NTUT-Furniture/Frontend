@@ -1,11 +1,26 @@
 document.addEventListener('DOMContentLoaded', function () {
     const baseURL = "https://nfta.noobdy.com";
     const managementContainer = document.getElementById('business-management');
+    const buttonContainer = document.createElement('div');
     const addButton = document.createElement('button');
-    addButton.textContent = 'Add Business';
-    document.body.appendChild(addButton);
+    const transactionButton = document.createElement('button');
+    addButton.textContent = 'Add Product';
+    addButton.classList.add('add-business-button'); // Add a class for styling
+    transactionButton.textContent = 'Go to transaction';
+    transactionButton.classList.add('transactions-button'); // Add a class for styling
+    
+    // Apply styling to the button
+    buttonContainer.style.position = 'absolute';
+    buttonContainer.style.top = '420px';
+    buttonContainer.style.left = '0';
+    buttonContainer.style.display = 'block';
+    buttonContainer.style.zIndex = '999';
+
+    buttonContainer.appendChild(addButton);
+    buttonContainer.appendChild(transactionButton);
+    managementContainer.appendChild(buttonContainer);
+    
     let openDetailForm = null;
-    let currentDetailType = null;
     
     function renderBusinessCard(business) {
         const card = document.createElement('div');
@@ -15,25 +30,40 @@ document.addEventListener('DOMContentLoaded', function () {
             <p class="description">${business.description}</p>
             <p class="stock">Stock: ${business.stock}</p>
             <p class="price">Price: ${business.price}</p>
-            <p class="tags">Tag: ${business.tags}</p>
+            <p class="tags">TagS: ${business.tags}</p>
             <img class="image" src="${business.image}" alt="${business.name}">
-            <button class="detail-button">Detail</button>
-            <button class="delete-button">Delete</button>
+            <button class="product-edit-button">Edit</button>
+            <button class="product-delete-button">Delete</button>
         `;
 
         // 添加點擊事件監聽器
         card.addEventListener('click', (event) => {
             // 檢查點擊的目標元素是否為按鈕
-            if (!event.target.matches('.detail-button') && !event.target.matches('.delete-button')) {
+            if (!event.target.matches('.product-edit-button') && !event.target.matches('.product-delete-button')) {
                 // 不是按鈕，執行跳轉頁面的操作
                 const businessSrc = event.currentTarget.querySelector('img').src;
                 redirectToSpecificPage(business, businessSrc);
             }
         });
 
-        card.querySelector('.delete-button').addEventListener('click', () => showDeleteForm(business, card));
-        card.querySelector('.detail-button').addEventListener('click', () => showDetailPopup(business, card));
+        card.querySelector('.product-delete-button').addEventListener('click', () => showDeleteForm(business, card));
+        card.querySelector('.product-edit-button').addEventListener('click', () => showEditPopup(business, card));
+        // Apply styles to the edit and delete buttons
+        const editButton = card.querySelector('.product-edit-button');
+        const deleteButton = card.querySelector('.product-delete-button');
+        const buttonWidth = '70px'; // Adjust the width as needed
+        const buttonHeight = '30px'; // Adjust the height as needed
+        const buttonMargin = '5px'; // Adjust the margin as needed
+    
+        editButton.style.width = buttonWidth;
+        editButton.style.height = buttonHeight;
+        editButton.style.marginLeft = '20px';
+        editButton.style.marginRight = '40px';
 
+        deleteButton.style.width = buttonWidth;
+        deleteButton.style.height = buttonHeight;
+        deleteButton.style.marginRight = '20px';
+        deleteButton.style.marginLeft = '65px';
         managementContainer.appendChild(card);
     }
     
@@ -61,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const url = new URL(baseURL);
             url.searchParams.append("product_uuid",business.id);
             url.searchParams.append('is_active', "0");
-            const response = aw"\$\{baseURL\}/api/[a-zA-Z0-9/?=&%]+"ait fetch(url.toString(), {
+            const response = await fetch(url.toString(), {
                 method: 'PUT',
                 headers: {
                     'Authorization': 'Bearer ' + getCookie("token"),
@@ -74,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function showDetailPopup(business, card) {
+    function showEditPopup(business, card) {
 
         if (openDetailForm) {
             openDetailForm.remove();
@@ -86,14 +116,13 @@ document.addEventListener('DOMContentLoaded', function () {
         popup.innerHTML = `
             <div class="button-container" style="position: fixed; top: 85%; display: flex; flex-direction: column; height: 15%; justify-content: flex-end; align-items: flex-end; width: 100%;">
                 <div class="bottom-buttons" style="display: flex; justify-content: space-around; width: 100%;">
-                    <button class="detail-button">Edit</button>
-                    <button class="detail-button">Status</button>
+                    <button class="save-button">Save</button>
                     <button class="close-button">Close</button>
                 </div>
             </div>
         `;
 
-        popup.querySelectorAll('.detail-button').forEach((button, index) => {
+        popup.querySelectorAll('.product-edit-button').forEach((button, index) => {
             button.addEventListener('click', () => handleDetailButtonClick(business, card, popup, index + 1));
         });
 
@@ -107,77 +136,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const businessManagement = document.getElementById('business-management');
         businessManagement.appendChild(popup);
 
-        // 顯示懸浮視窗
-        popup.classList.add('show');
-        openDetailForm = popup;
-    }
-
-    function handleDetailButtonClick(business, card, popup, buttonIndex) {
-        // assume that already have a form be called, hide it
-        if (currentDetailType) {
-            hideDetailContent(popup);
-        }
-
-        switch (buttonIndex) {
-            case 1:
-                console.log('Edit button clicked');
-                showEditForm(business, card, popup);
-                currentDetailType = 'edit';
-                break;
-            case 2:
-                console.log('Status button clicked');
-                showStatusTable(popup);
-                currentDetailType = 'status';
-                break;
-            default:
-                break;
-        }
-    }
-
-    function hideDetailContent(popup) {
-        // 根據當前的詳細類型隱藏相應的內容
-        switch (currentDetailType) {
-            case 'edit':
-                hideEditForm(popup);
-                break;
-            case 'status':
-                hideStatusTable(popup);
-                break;
-            case 'comment':
-                hideCommentSection(popup);
-                break;
-            default:
-                break;
-        }
-
-        currentDetailType = null;
-    }
-
-    function hideEditForm(popup) {
-        const editForm = popup.querySelector('.edit-form');
-        if (editForm) {
-            editForm.remove();
-        }
-    }
-
-    function hideStatusTable(popup) {
-        console.log("status clean be called");
-        const TableContainer = popup.querySelector('.table-container');
-        const statusTable = popup.querySelector('.table');
-        if (statusTable) {
-            statusTable.remove();
-            TableContainer.remove();
-        }
-    }
-
-    function showEditForm(business, card, popup) {
-        const formExists = popup.querySelector('.edit-form');
+        const formExists = popup.querySelector('.product-edit-form');
         if (formExists) return formExists.querySelector('input[name="name"]').focus();
         const form = document.createElement('form');
-        form.classList.add('edit-form');
+        form.classList.add('product-edit-form');
         form.style.margin = "20px"; // 設定 form 的 margin
         form.style.maxWidth = "300px"; // 設定 form 的最大寬度
-
+        form.style.position = "relative";
+        form.style.transform = "translate(40%)";
         ['name', 'description', 'stock', 'price', 'image', 'tags'].forEach((field) => {
             const input = document.createElement('input');
             input.name = field;
@@ -201,10 +167,11 @@ document.addEventListener('DOMContentLoaded', function () {
             form.appendChild(input);
         });
 
-        const submitButton = document.createElement('button');
-        submitButton.type = 'button';
-        submitButton.textContent = 'Save';
+        // 顯示懸浮視窗
+        popup.classList.add('show');
+        const submitButton = popup.querySelector('.save-button');
         submitButton.addEventListener('click', () => {
+            console.log("Click Save Button");
             const formData = {};
             const formInputs = form.querySelectorAll('input');
             formInputs.forEach(input => {
@@ -221,9 +188,12 @@ document.addEventListener('DOMContentLoaded', function () {
             updateProduct(business, card, formData);
             
             form.remove();
+            popup.remove();
+            openDetailForm = null;
         });
         form.append(submitButton);
         popup.appendChild(form);
+
     }
 
     async function updateProduct(business, card, formData){
@@ -251,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (field === 'image') {
                         const imageElement = card.querySelector('.image');
                         if (imageElement) {
-                            updateProductImg(business, formData['image'])
+                            updateProductImg(business.id, formData['image'])
                             .then(() => {
                                 console.log('get uploaded image');
                                 return fetchImage(business.id, 'avatar');  // Return the promise
@@ -289,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("updated product in", business);
     }
 
-    async function updateProductImg(business, file){
+    async function updateProductImg(product_uuid, file){
         if (file) {
             //const reader = new FileReader();
             //reader.readAsDataURL(file);
@@ -298,7 +268,7 @@ document.addEventListener('DOMContentLoaded', function () {
             formData.append('file', file);
             console.log("file", file);
             try {
-                const response = await fetch(`${baseURL}/api/image/?shop_uuid=${getCookie("shop_uuid")}&product_uuid=${business.id}&img_type=avatar`, {
+                const response = await fetch(`${baseURL}/api/image/?shop_uuid=${getCookie("shop_uuid")}&product_uuid=${product_uuid}&img_type=avatar`, {
                     method: 'POST',
                     headers: {
                         'Authorization': 'Bearer ' + getCookie('token'),
@@ -317,115 +287,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Upload to API Error', error);
             }
         }
-    }
-
-    function showStatusTable(popup) {
-        const tableExists = popup.querySelector('.table');
-        if (tableExists) return;
-
-        if (openDetailForm) {
-            const statusTableContainer = document.createElement('div');
-            statusTableContainer.classList.add('table-container');
-            statusTableContainer.style.position = 'absolute';
-            statusTableContainer.style.top = '0';
-            statusTableContainer.style.left = '0';
-            statusTableContainer.style.right = '0';
-            statusTableContainer.style.bottom = '15%'; // Adjust the bottom value as needed
-            statusTableContainer.style.overflow = 'auto';
-
-            const statusTable = document.createElement('table');
-            statusTable.classList.add('table');
-            // Header row
-            statusTable.innerHTML = `
-            <tr>
-                <th>Order ID</th>
-                <th>Customer Name</th>
-                <th>Product Name</th>
-                <th>Status</th>
-                <th>Date Ordered</th>
-                <th>Expected Delivery Date</th>
-            </tr>
-        `;
-
-            // Mock Data
-            const mockOrderData = [
-                {
-                    orderId: 1,
-                    customerName: 'John Doe',
-                    productName: 'Product A',
-                    status: 'InProgress',
-                    dateOrdered: '2023-01-01',
-                    expectedDeliveryDate: '2023-01-10'
-                },
-                {
-                    orderId: 2,
-                    customerName: 'Jane Smith',
-                    productName: 'Product B',
-                    status: 'Completed',
-                    dateOrdered: '2023-01-15',
-                    expectedDeliveryDate: '2023-01-25'
-                },
-                {
-                    orderId: 2,
-                    customerName: 'Jane Smith',
-                    productName: 'Product B',
-                    status: 'Completed',
-                    dateOrdered: '2023-01-15',
-                    expectedDeliveryDate: '2023-01-25'
-                },
-                {
-                    orderId: 2,
-                    customerName: 'Jane Smith',
-                    productName: 'Product B',
-                    status: 'Completed',
-                    dateOrdered: '2023-01-15',
-                    expectedDeliveryDate: '2023-01-25'
-                },
-                {
-                    orderId: 2,
-                    customerName: 'Jane Smith',
-                    productName: 'Product B',
-                    status: 'Completed',
-                    dateOrdered: '2023-01-15',
-                    expectedDeliveryDate: '2023-01-25'
-                },
-                {
-                    orderId: 2,
-                    customerName: 'Jane Smith',
-                    productName: 'Product B',
-                    status: 'Completed',
-                    dateOrdered: '2023-01-15',
-                    expectedDeliveryDate: '2023-01-25'
-                }, {
-                    orderId: 2,
-                    customerName: 'Jane Smith',
-                    productName: 'Product B',
-                    status: 'Completed',
-                    dateOrdered: '2023-01-15',
-                    expectedDeliveryDate: '2023-01-25'
-                },
-
-                // Add more mock data as needed
-            ];
-
-            // Data rows
-            mockOrderData.forEach(order => {
-                statusTable.innerHTML += `
-                <tr>
-                    <td>${order.orderId}</td>
-                    <td>${order.customerName}</td>
-                    <td>${order.productName}</td>
-                    <td>${order.status}</td>
-                    <td>${order.dateOrdered}</td>
-                    <td>${order.expectedDeliveryDate}</td>
-                </tr>
-            `;
-            });
-            statusTableContainer.appendChild(statusTable);
-            popup.appendChild(statusTableContainer);
-        }
-    }
-
+    }        
+    
     async function getShopUUID(){
         const urlParams = new URLSearchParams(window.location.search);
         console.log("get self shop_uuid");
@@ -528,6 +391,7 @@ document.addEventListener('DOMContentLoaded', function () {
     renderBusinessCards();
 
     async function createProduct(newBusinessCardData){
+        console.log("in create", newBusinessCardData);
         try {
             // Replace baseURL with the actual API base URL for fetching images
             const baseURL = `${baseURL}/api/product/?`;
@@ -536,6 +400,7 @@ document.addEventListener('DOMContentLoaded', function () {
             url.searchParams.append('stock', newBusinessCardData.stock);
             url.searchParams.append('price', newBusinessCardData.price);
             url.searchParams.append('tags', newBusinessCardData.tags);
+            url.searchParams.append('description', newBusinessCardData.description);
             url.searchParams.append('is_avtive', newBusinessCardData.is_active);
             const response = await fetch(url.toString(), {
                 method: 'POST',
@@ -548,7 +413,11 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!response.ok) {
                 throw new Error('Failed to create a product from the API');
             }
-            console.log("Create Product response", response);
+            const responseData = await response.json();
+            //console.log("response data json:",responseData);
+            const productUUID = responseData.product_uuid;
+            //console.log("Product UUID:", productUUID);
+            await updateProductImg(productUUID, newBusinessCardData.image);
             location.reload();
         } catch (error) {
             console.error('Error Create Product response:', error);
@@ -558,9 +427,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     addButton.addEventListener('click', () => {
         // Create a new business object with default values
-        const newBusiness = {
+        const defaultProduct = {
             id: generateUniqueId(),
-            name: 'New Business',
+            name: 'New Product',
             description: 'Description',
             stock: 0,
             price: 0,
@@ -568,10 +437,103 @@ document.addEventListener('DOMContentLoaded', function () {
             is_active: 1,
             image: '../Resources/default_banner.webp', // Provide a default image URL
         };
-        createProduct(newBusiness);
+        showAddProductPopup(defaultProduct);
     });
+
+    transactionButton.addEventListener('click', () => {
+        window.location.href = `../shopTransaction/ShopTransaction.html`;
+    })
+
+    function showAddProductPopup(defaultProduct){
+        if (openDetailForm) {
+            openDetailForm.remove();
+            openDetailForm = null;
+        }
+
+        const popup = document.createElement('div');
+        popup.classList.add('detail-popup', 'large');
+        popup.innerHTML = `
+            <div class="button-container" style="position: fixed; top: 85%; display: flex; flex-direction: column; height: 15%; justify-content: flex-end; align-items: flex-end; width: 100%;">
+                <div class="bottom-buttons" style="display: flex; justify-content: space-around; width: 100%;">
+                    <button class="save-button">Create</button>
+                    <button class="close-button">Close</button>
+                </div>
+            </div>
+        `;
+        const closeButton = popup.querySelector('.close-button');
+        closeButton.addEventListener('click', () => {
+            popup.remove();
+            openDetailForm = null;
+        });
+
+        // 將懸浮視窗附加到 #business-management
+        const businessManagement = document.getElementById('business-management');
+        businessManagement.appendChild(popup);
+
+        const formExists = popup.querySelector('.product-edit-form');
+        if (formExists) return formExists.querySelector('input[name="name"]').focus();
+        const form = document.createElement('form');
+        form.classList.add('product-edit-form');
+        form.style.margin = "20px"; // 設定 form 的 margin
+        form.style.maxWidth = "300px"; // 設定 form 的最大寬度
+        form.style.position = "relative";
+        form.style.transform = "translate(40%)";
+        ['name', 'description', 'stock', 'price', 'image', 'tags'].forEach((field) => {
+            const input = document.createElement('input');
+            input.name = field;
+            input.placeholder = field.charAt(0).toUpperCase() + field.slice(1);
+            input.style.display = "block";
+            input.style.marginBottom = "10px"; // 設定 input 之間的距離
+
+            if (field === 'stock' || field === 'price') {
+                input.type = 'number';
+                input.value = defaultProduct[field];
+            } else if (field === 'image') {
+                input.type = 'file';
+                input.name = field;
+                input.style.display = "block";
+                input.style.marginBottom = "10px"; // 設定 input 之間的距離
+                //input.value = defaultProduct[field];
+            } else {
+                input.type = 'text';
+                input.value = defaultProduct[field];
+            }
+            
+            form.appendChild(input);
+        });
+
+        // 顯示懸浮視窗
+        popup.classList.add('show');
+        const submitButton = popup.querySelector('.save-button');
+        submitButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            console.log("Click Save Button");
+            const formData = {};
+            const formInputs = form.querySelectorAll('input');
+            formInputs.forEach(input => {
+                if (input.type === 'file') {
+                    // Handle file input separately (e.g., you might want to upload the file)
+                    formData[input.name] = input.files[0] || defaultProduct["image"]; // This assumes you only allow one file
+                } else {
+                    formData[input.name] = input.value;
+                }
+            });
+    
+            console.log("new product data",formData);
+            createProduct(formData);
+            
+            form.remove();
+            popup.remove();
+            openDetailForm = null;
+        });
+        form.append(submitButton);
+        popup.appendChild(form);
+
+    }
+    
 
     function generateUniqueId() {
         return Date.now();
     }
+
 });
