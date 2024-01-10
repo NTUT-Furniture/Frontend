@@ -192,10 +192,11 @@ async function createTransaction(requestBody) {
     const jsonString = JSON.stringify(sortedRequestBody, null, 2);
     console.log(jsonString);
 
-    const baseURL = "http://localhost:8000/api/transaction/";
+    const baseURL = "https://nfta.noobdy.com"
+    const api = `${baseURL}:8000/api/transaction/`;
     
     try {
-        const response = await fetch(baseURL, {
+        const response = await fetch(api, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
