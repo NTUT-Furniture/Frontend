@@ -1,4 +1,5 @@
 document.getElementById('submitButton').addEventListener('click', function () {
+    const baseURL = "https://nfta.noobdy.com";
     const inputElements = document.querySelectorAll('input');
     const formData = {};
     const passwordError = document.getElementById('passwordError');
@@ -15,7 +16,7 @@ document.getElementById('submitButton').addEventListener('click', function () {
     else {
         emailError.textContent = '';
         passwordError.textContent = '';
-        fetch(`http://localhost:8000/api/account/?` +
+        fetch(`${baseURL}/api/account/?` +
         (formData['username'] ? `name=${encodeURIComponent(formData['username'])}&` : '') +
         (formData['password'] ? `pwd=${encodeURIComponent(formData['password'])}&` : '') +
         (formData['image_url'] ? `image_url=${encodeURIComponent(formData['image_url'])}&` : '') +
@@ -60,8 +61,9 @@ function UserSignup(userData,name,pwd) {
     }
 }
 async function UserLogin(username, password) {
+    const baseURL = "https://nfta.noobdy.com";
     try {
-        const response = await fetch('http://localhost:8000/api/token', {
+        const response = await fetch(`${baseURL}/api/token`, {
             method: 'POST', // 使用 POST 方法
             headers: {
                 'Accept': 'application/json',
@@ -86,9 +88,10 @@ async function UserLogin(username, password) {
 }
 
 async function GetAccount(token, type) {
+    const baseURL = "https://nfta.noobdy.com";
 
     try {
-        const response = await fetch('http://localhost:8000/api/account/', {
+        const response = await fetch(`${baseURL}/api/account/`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

@@ -17,8 +17,8 @@ function submitForm() {
     const passwordInput = document.getElementById('password');
     const username = usernameInput.value;
     const password = passwordInput.value;
-
-    fetch('http://localhost:8000/api/token', {
+    const baseURL = "https://nfta.noobdy.com"
+    fetch(`${baseURL}/api/token`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -73,8 +73,9 @@ function setCookie(name, value, days) {
 }
 
 async function GetAccount(token, type) {
+    const baseURL = "https://nfta.noobdy.com";
     try {
-        const response = await fetch('http://localhost:8000/api/account/', {
+        const response = await fetch(`${baseURL}/api/account/`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

@@ -1,5 +1,6 @@
 function generateProductHTML(shopName, productName, productURL, productDetail, price, reviews, productId ,shopId, productStock) {
     const container = document.getElementById('product-container');
+    const baseURL = "https://nfta.noobdy.com";
     // console.log(productId);
     // console.log(productName);
     // console.log(productURL);
@@ -47,7 +48,7 @@ function generateProductHTML(shopName, productName, productURL, productDetail, p
         const token = getCookie('token');
     
         try {
-            const response = await fetch(`http://localhost:8000/api/comment/?product_uuid=${productUuid}&text=${reviewText}`, {
+            const response = await fetch(`${baseURL}/api/comment/?product_uuid=${productUuid}&text=${reviewText}`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -99,12 +100,13 @@ async function loadReviews(productUuid) {
 }
 
 function setupLikeButtons(productId) {
+    const baseURL = "https://nfta.noobdy.com";
     document.querySelectorAll('.like-button, .dislike-button').forEach(button => {
         button.addEventListener('click', async (event) => {
             const reviewId = button.closest('.review').id;
             let isLikeButton = button.classList.contains('like-button');
             const token = getCookie('token');
-            let url = `http://localhost:8000/api/comment/addLike?comment_uuid=${reviewId}&if_hates=${isLikeButton ? 0 : 1}`;
+            let url = `${baseURL}/api/comment/addLike?comment_uuid=${reviewId}&if_hates=${isLikeButton ? 0 : 1}`;
             try {
                 let response = await fetch(url, {
                     method: 'POST',
@@ -115,7 +117,7 @@ function setupLikeButtons(productId) {
                 });
                 if (response.status === 500) {
                     console.log('delete')
-                    url = `http://localhost:8000/api/comment/deleteLike?comment_uuid=${reviewId}`;
+                    url = `${baseURL}/api/comment/deleteLike?comment_uuid=${reviewId}`;
                     response = await fetch(url, {
                         method: 'DELETE',
                         headers: {
@@ -175,8 +177,9 @@ async function main() {
 }
 
 async function getShopName(shopUuid) {
+    const baseURL = "https://nfta.noobdy.com";
     try {
-        const url = `http://localhost:8000/api/shop/?shop_uuid=${shopUuid}`;
+        const url = `${baseURL}/api/shop/?shop_uuid=${shopUuid}`;
         const response = await fetch(url, {
             method: 'GET',
             headers: {
@@ -201,8 +204,9 @@ async function getShopName(shopUuid) {
 }
 
 async function getProductReviews(productUuid) {
+    const baseURL = "https://nfta.noobdy.com";
     try {
-        const url = `http://localhost:8000/api/comment/guest?product_uuid=${productUuid}`;
+        const url = `${baseURL}/api/comment/guest?product_uuid=${productUuid}`;
         const response = await fetch(url, {
             method: 'GET',
             headers: {
