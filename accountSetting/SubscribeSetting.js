@@ -1,5 +1,6 @@
 function subscribeSetting() {
-    const url = `http://localhost:8000/api/subscription/account?uuid_type=account_uuid&uuid=${getCookie('account_uuid')}`;
+    const baseURL = "https://nfta.noobdy.com";
+    const url = `${baseURL}/api/subscription/account?uuid_type=account_uuid&uuid=${getCookie('account_uuid')}`;
 
     fetch(url, {
         method: 'GET',
@@ -15,8 +16,8 @@ function subscribeSetting() {
         return response.json();
     })
     .then(data => {
-        return Promise.all(data.subscriptions.map(subscription => 
-            fetch(`http://localhost:8000/api/shop/?shop_uuid=${subscription.uuid}`, {
+        return Promise.all(data.subscriptions.map(subscription =>
+            fetch(`${baseURL}/api/shop/?shop_uuid=${subscription.uuid}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'
@@ -41,8 +42,18 @@ function subscribeSetting() {
         <td colspan="2">Doesn't subscribe any shop yet!</td>
         </table>
         `;
+        // const tableHtml = createTable(fakeSubscriptions);
+        // document.getElementById('content').innerHTML = tableHtml;
     });
 }
+
+const fakeSubscriptions = [
+    { name: "Cafe Central", description: "A cozy coffee shop A bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titleswith a wide variety of blends", shop_uuid: "uuid1" },
+    { name: "The Book Nook", description: "A bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titles", shop_uuid: "uuid2" },
+    { name: "Tech Trends", description: "Latest A bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesgadgets and electronics", shop_uuid: "uuid3" },
+    { name: "Garden Delights", description: "Your souA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesrce for plants and garden supplies", shop_uuid: "uuid4" },
+    { name: "Sweet Treats", description: "Homemade cakes, cookies, aA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesA bookstore with rare and popular titlesnd more", shop_uuid: "uuid5" },
+];
 
 function createTable(subscriptions) {
     let table = '<table border="1">';
@@ -64,7 +75,8 @@ async function deleteSubscription(shopUuid) {
     try {
         const token = getCookie('token');
         const accountUuid = getCookie('account_uuid');
-        const url = `http://localhost:8000/api/subscription/unsubscribe?shop_uuid=${shopUuid}&account_uuid=${accountUuid}`;
+        const baseURL = "https://nfta.noobdy.com";
+        const url = `${baseURL}/api/subscription/unsubscribe?shop_uuid=${shopUuid}&account_uuid=${accountUuid}`;
         const response = await fetch(url, {
             method: 'DELETE',
             headers: {
@@ -76,7 +88,7 @@ async function deleteSubscription(shopUuid) {
             throw new Error('Network response was not ok');
         }
         console.log('Subscription deleted successfully');
-        subscribeSetting();
     } catch (error) {
     }
+    subscribeSetting();
 }

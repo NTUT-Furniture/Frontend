@@ -1,7 +1,8 @@
 // 假設您的後端 API 端點為 "/api/accounts"
 async function fetchAccounts() {
     console.log("fetch account API");
-    const apiUrl = 'http://localhost:8000/api/account/all';
+    const baseURL = "https://nfta.noobdy.com";
+    const apiUrl = `${baseURL}/api/account/all`;
     const requestOptions = {
         method: 'GET',
         headers: {
@@ -17,9 +18,6 @@ async function fetchAccounts() {
         const data = await response.json();
         console.log(data);
         data.accounts.forEach(account => {
-            account.shop_uuid = "1ed02a41-4413-4374-b437-8c04856cf4b9";
-            account.shop_name = "Garry\'s for test";
-            account.shop_is_active = "0";
             renderRow(account);
         });
         addEditButtonEventListeners();
@@ -61,34 +59,23 @@ function renderRow(account) {
     let actionsCell = row.insertCell(10);
     console.log(account.is_active);
     actionsCell.innerHTML = `<button class="modify-btn">Edit</button>
-                             <button class="delete-btn">${account.is_active ? 'Ban':"UnBan"}</button>`;
+                             <button class="delete-btn">${account.is_active ? 'Ban Account':"UnBan Account"}</button>
+                             ${account.shop_uuid ? `<button class="delete-shop-btn">${account.shop_is_active ? 'Ban Shop':"UnBan Shop"}</button>`:""}`;
     row.insertCell(11).innerHTML = account.shop_uuid || '';
     row.insertCell(12).innerHTML = account.shop_name || '';
-    row.insertCell(13).innerHTML = account.shop_is_active || '';
+    let isShopActiveCell = row.insertCell(13);
+    isShopActiveCell.innerHTML = account.shop_is_active ? 'Yes' : 'No';
+    if (account.shop_is_active) {
+        isShopActiveCell.style.backgroundColor = 'green';
+    } else {
+        isShopActiveCell.style.backgroundColor = 'red';
+    }
 }
 
 function formatDate(dateString) {
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
 }
-
-// // 添加一筆測試帳號資訊
-// function addTestAccount() {
-//     const testAccount = {
-//         id: "1",
-//         name: "測試用戶",
-//         password:"**********",
-//         imageURL: "https://example.com/image.jpg",
-//         email: "test@example.com",
-//         phone: "1234567890",
-//         card: "1234 5678 9012 3456",
-//         birthday: "1990-01-01",
-//         address: "測試地址 123",
-//         // createTime: new Date().toISOString()
-//     };
-
-//     renderRow(testAccount);
-// }
 
 function makeRowEditable(row) {
     console.log("click modify");
@@ -97,7 +84,7 @@ function makeRowEditable(row) {
         let cellText = cell.innerHTML;
         cell.setAttribute('data-original-text', cellText);
         // console.log(cellText)
-        if ([0, 3, 8, 9].includes(i)) continue;
+        if ([0, 3, 8, 9,10,11,12].includes(i)) continue;
         cell.innerHTML = '';
         let input = document.createElement('input');
         input.type = 'text';
@@ -112,7 +99,7 @@ function makeRowEditable(row) {
         }
         cell.appendChild(input);
     }
-    let actionsCell = row.cells[row.cells.length - 1];
+    let actionsCell = row.cells[10];
     actionsCell.innerHTML = `<button class="confirm-btn">Confirm</button>
                              <button class="cancel-btn">Cancel</button>`;
     actionsCell.getElementsByClassName('confirm-btn')[0].addEventListener('click', () => confirmEdit(row));
@@ -129,9 +116,10 @@ async function confirmEdit(row) {
     const address = row.cells[7].firstChild.value;
     const is_active = 1;
     const role = 0;
+    const baseURL = "https://nfta.noobdy.com";
     console.log(row.cells[0].getAttribute('data-original-text'))
     try {
-        const response = await fetch(`http://localhost:8000/api/account/?` +
+        const response = await fetch(`${baseURL}/api/account/?` +
             `account_uuid=${account_uuid}&`+
             (name ? `name=${encodeURIComponent(name)}&` : '') +
             (pwd ? `pwd=${encodeURIComponent(pwd)}&` : '') +
@@ -158,10 +146,11 @@ async function confirmEdit(row) {
 async function makeRowBan(row) {
     const account_uuid = row.cells[0].textContent;
     const button = row.cells[10].querySelector('.delete-btn');
-    const isBanning = button.textContent.trim() === 'Ban';
+    const isBanning = button.textContent.trim() === 'Ban Account';
 
     console.log(`Ban You? ${isBanning ? 0 : 1}`)
-    const apiUrl = `http://localhost:8000/api/account/?account_uuid=${account_uuid}&is_active=${isBanning ? 0 : 1}`;
+    const baseURL = "https://nfta.noobdy.com";
+    const apiUrl = `${baseURL}/api/account/?account_uuid=${account_uuid}&is_active=${isBanning ? 0 : 1}`;
     const requestOptions = {
         method: 'PUT',
         headers: {
@@ -183,22 +172,54 @@ async function makeRowBan(row) {
     }
 }
 
+async function makeRowShopBan(row) {
+    const shop_uuid = row.cells[11].textContent;
+    const button = row.cells[10].querySelector('.delete-shop-btn');
+    const isBanning = button.textContent.trim() === 'Ban Shop';
+
+    console.log(`Ban You? ${isBanning ? 0 : 1}`)
+    const baseURL = "https://nfta.noobdy.com";
+    const apiUrl = `${baseURL}/api/shop/?shop_uuid=${shop_uuid}&is_active=${isBanning ? 0 : 1}`;
+    const requestOptions = {
+        method: 'PUT',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ' + getCookie('token'),
+            'Content-Type': 'application/json'
+        },
+    };
+
+    try {
+        const response = await fetch(apiUrl, requestOptions);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        console.log(response)
+        clearTable();
+        fetchAccounts();
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
 function cancelEdit(row) {
     console.log("Cancel Edit");
     for (let i = 0; i < row.cells.length - 1; i++) {
         let cell = row.cells[i];
         cell.innerHTML = cell.getAttribute('data-original-text') || ''; // 恢复原始数据
     }
-    let actionsCell = row.cells[row.cells.length - 1];
+    let actionsCell = row.cells[10];
     console.log(row.cells[8].innerHTML);
     actionsCell.innerHTML = `<button class="modify-btn">Edit</button>
-                             <button class="delete-btn">${row.cells[8].innerHTML ? 'Ban':"UnBan"}</button>`;
+                             <button class="delete-btn">${row.cells[8].innerHTML ? 'Ban Account':"UnBan Account"}</button>
+                             ${row.cells[11].innerHTML ? `<button class="delete-shop-btn">${account.shop_is_active ? 'Ban Shop':"UnBan Shop"}</button>`:""}`;
     addEditButtonEventListener(actionsCell.getElementsByClassName('modify-btn')[0]);
 }
 
 function addEditButtonEventListener(button) {
     console.log("add edit event")
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
         let row = this.parentNode.parentNode;
         makeRowEditable(row);
     });
@@ -206,9 +227,19 @@ function addEditButtonEventListener(button) {
 
 function addBanButtonEventListener(button) {
     console.log("add Ban event")
-    button.addEventListener('click', function() {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
         let row = this.parentNode.parentNode;
         makeRowBan(row);
+    });
+}
+
+function addBanShopButtonEventListener(button) {
+    console.log("add Ban Shop event")
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
+        let row = this.parentNode.parentNode;
+        makeRowShopBan(row);
     });
 }
 
@@ -217,6 +248,8 @@ function addEditButtonEventListeners() {
     editButtons.forEach(addEditButtonEventListener);
     const banButtons = document.querySelectorAll('.delete-btn');
     banButtons.forEach(addBanButtonEventListener);
+    const banShopButtons = document.querySelectorAll('.delete-shop-btn');
+    banShopButtons.forEach(addBanShopButtonEventListener);
 }
 
 
@@ -299,6 +332,7 @@ function submitForm() {
     var confirmPassword = formData.get('confirmPassword');
     var email = formData.get('email');
     console.log(formData);
+    const baseURL = "https://nfta.noobdy.com";
 
     if (password !== confirmPassword) {
         alert("Passwords do not match.");
@@ -309,7 +343,7 @@ function submitForm() {
         return;
     }
     else {
-        fetch(`http://localhost:8000/api/account/?` +
+        fetch(`${baseURL}/api/account/?` +
         (formData.get('name') ? `name=${encodeURIComponent(formData.get('name'))}&` : '') +
         (formData.get('password') ? `pwd=${encodeURIComponent(formData.get('password'))}&` : '') +
         // (formData.get('imageURL') ? `image_url=${encodeURIComponent(formData.get('imageURL'))}&` : '') // 如果启用图片URL

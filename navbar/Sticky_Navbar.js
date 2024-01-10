@@ -48,3 +48,29 @@ function getCookie(name) {
     }
     return null;
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    var accountLink = document.getElementById('navbar-account');
+    const baseURL = "https://nfta.noobdy.com";
+    accountLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        fetch(`${baseURL}/api/account/`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + getCookie('token')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if(data.role === 1) {
+                window.location.href = '../admin/AdminPage.html';
+            } else {
+                window.location.href = accountLink.href;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+});

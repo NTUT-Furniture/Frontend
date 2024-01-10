@@ -1,5 +1,6 @@
 function SubscribeShop(shop) {
-    const url = `http://localhost:8000/api/subscription/?shop_uuid=${shop}&account_uuid=${getCookie("account_uuid")}`;
+    const baseURL = "https://nfta.noobdy.com";
+    const url = `${baseURL}/api/subscription/?shop_uuid=${shop}&account_uuid=${getCookie("account_uuid")}`;
     const fetchOptions = {
         method: 'POST',
         headers: {

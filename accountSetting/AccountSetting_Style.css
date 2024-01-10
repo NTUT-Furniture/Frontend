@@ -81,18 +81,18 @@ body {
     position: absolute;
     display: inline-block;
     box-sizing: border-box;
-    width: 780px; 
-    height: 700px;
+    width: 50%; 
+    height: 80%;
     flex-shrink: 0;
     border-radius: 47px;
     background: #D9D9D9;
+    overflow: auto;
 }
 
 .AccountSetting-form {
     width: 100%; 
     height: 100%;
     padding: 25px;
-    margin-left: 5px; 
     box-sizing: border-box; 
 }
 
@@ -125,27 +125,26 @@ body {
 }
 
 .AccountSetting-Button {
-    position: absolute;
-    top: 600px;
-    left: 400px;
+    position: relative;
     display: flex;
+    justify-content: flex-end; /* Aligns children to the right */
 }
 
 .AccountSetting-Button button {
     width: 162px;
     height: 52px;
-    margin: 10px; /* 调整按钮间距 */
-    padding: 10px; /* 调整按钮内边距 */
+    margin: 10px; 
+    padding: 10px; 
     border-radius: 15px;
     background: #FFF;
     border: none;
-    font-size: 32px; /* 调整字体大小 */
+    font-size: 32px;
     cursor: pointer;
 }
 
 #description {
     margin-left: 10px;
-    width: 660px;
+    width: 98%;
     height: 250px;
     flex-shrink: 0;
     font-size: 24px;
@@ -160,7 +159,7 @@ body {
 #Banner {
     margin-left: 10px;
     margin-top: 10px;
-    width: 680px;
+    width: 95%;
     height: 180px;
     border-radius: 15px;
     border: none; /* 將邊框設為無 */
@@ -240,4 +239,21 @@ tr {
     font-weight: bold; 
     font-style: italic; 
     font-size: 0.8em;  
+}
+
+.product-description {
+    visibility: hidden;
+    background-color: black;
+    color: #fff;
+    border-radius: 6px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1;
+    /* transform: translateX(-50%); */
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.product-name-tooltip:hover .product-description {
+    visibility: visible;
 }

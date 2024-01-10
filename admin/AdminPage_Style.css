@@ -1,7 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:400,700');
+
 body {
     margin: 0 auto;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: 'Lato', sans-serif;
     background-color: #E0C9CB;
 }
 
@@ -61,7 +63,7 @@ th {
     background-color: #f2f2f2;
 }
 
-.modify-btn, .delete-btn {
+.modify-btn, .delete-btn, .delete-shop-btn {
     margin-right: 5px;
     padding: 5px 10px;
     font-size: 14px;
@@ -75,7 +77,7 @@ th {
     color: white;
 }
 
-.delete-btn {
+.delete-btn, .delete-shop-btn{
     background-color: #dc3545;
     color: white;
 }

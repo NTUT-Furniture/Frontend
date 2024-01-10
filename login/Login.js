@@ -17,8 +17,8 @@ function submitForm() {
     const passwordInput = document.getElementById('password');
     const username = usernameInput.value;
     const password = passwordInput.value;
-
-    fetch('http://localhost:8000/api/token', {
+    const baseURL = "https://nfta.noobdy.com"
+    fetch(`${baseURL}/api/token`, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -48,6 +48,8 @@ async function UserLogin(userData) {
         alert('Invalid username or password. Please try again.');
     } else if (userData.detail && userData.detail[0].type === "missing") {
         alert('Missing username or password. Please try again.');
+    } else if (userData.detail && userData.detail=== "Inactive user") {
+        alert('You was had Banned! Please to Talk with Admin!');
     } else {
         try {
             alert('Login successful! Redirecting to HomePage.');
@@ -71,8 +73,9 @@ function setCookie(name, value, days) {
 }
 
 async function GetAccount(token, type) {
+    const baseURL = "https://nfta.noobdy.com";
     try {
-        const response = await fetch('http://localhost:8000/api/account/', {
+        const response = await fetch(`${baseURL}/api/account/`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

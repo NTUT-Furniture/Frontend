@@ -1,6 +1,7 @@
 // banner.js
 
 document.addEventListener('DOMContentLoaded', function () {
+    const baseURL = "https://nfta.noobdy.com";
     const banner = document.getElementById('banner');
 
     // 更新橫幅內容
@@ -34,7 +35,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function fetchImage(UUID, imgType) {
-        return `http://localhost:8000/api/image/${UUID}?img_type=${imgType}`;
+        const timestamp = new Date().getTime();
+        return `${baseURL}/api/image/${UUID}?img_type=${imgType}&_=${timestamp}`;
     }
 
     async function getShopUUID(){
@@ -42,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const passedShopUUID = urlParams.get('shop_uuid');
         if(passedShopUUID == null){
             console.log("get self shop_uuid");
-            const response = await fetch("http://localhost:8000/api/shop/mine", {
+            const response = await fetch(`${baseURL}/api/shop/mine`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
@@ -60,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function () {
             else if (response.status == 404){
                 console.log("fail to get self shop, because dont have shop");
                 try {
-                    const response = await fetch('http://localhost:8000/api/shop/?name=Default Shop&description=Default Description', {
+                    const response = await fetch('${baseURL}/api/shop/?name=Default Shop&description=Default Description', {
                         method: 'POST',
                         headers: {
                             'Accept': 'application/json',
@@ -91,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
     async function getShop() {
         try {
             // 替換 baseURL 為實際的 API 基礎 URL
-            const baseURL = 'http://localhost:8000/api/shop/';
+            const baseURL = `${baseURL}/api/shop/`;
             const url = new URL(baseURL);
 
             url.searchParams.append('shop_uuid', await getShopUUID());
@@ -113,6 +115,7 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const shopData = await getShop();
             const bannerImage = await fetchImage(shopData.shop_uuid, "banner");
+            console.log(bannerImage);
             const shopAvatar = await fetchImage(shopData.shop_uuid, "avatar");
             const Data = {
                 shop_uuid: shopData.shop_uuid,

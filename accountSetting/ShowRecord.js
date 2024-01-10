@@ -1,7 +1,8 @@
 async function showOrderRecord() {
     try {
         // Fetch data from API
-        const response = await fetch('http://localhost:8000/api/transaction/?target=Account', {
+        const baseURL = "https://nfta.noobdy.com";
+        const response = await fetch(`${baseURL}/api/transaction/?target=Account`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -56,7 +57,11 @@ async function showOrderRecord() {
                         </tr>
                         ${transaction.products.transaction_product_logs.map(product => `
                             <tr>
-                                <td>${product.product_name}</td>
+                                <td>
+                                    <span class="product-name-tooltip">${product.product_name}
+                                        <span class="product-description">${product.product_description}</span>
+                                    </span>
+                                </td>
                                 <td>${product.quantity}</td>
                                 <td>${product.price}</td>
                             </tr>
