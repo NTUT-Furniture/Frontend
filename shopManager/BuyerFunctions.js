@@ -40,8 +40,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function fetchBusinessCardData() {
         try {
-            const baseURL = `${baseURL}/api/product/all?`;
-            const url = new URL(baseURL);
+            const baseURL = "https://nfta.noobdy.com";
+            const ProductbaseURL = `${baseURL}/api/product/all?`;
+            const url = new URL(ProductbaseURL);
             const urlParams = new URLSearchParams(window.location.search);
             const passedShopUUID = urlParams.get('shop_uuid');
             const shopUUID = passedShopUUID || getCookie("shop_uuid");
@@ -59,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
     function fetchImage(UUID, imgType) {
         const timestamp = new Date().getTime();
+        const baseURL = "https://nfta.noobdy.com";
         return `${baseURL}/api/image/${UUID}?img_type=${imgType}&_=${timestamp}`;
     }
 

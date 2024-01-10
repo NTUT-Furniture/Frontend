@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
     addButton.classList.add('add-business-button'); // Add a class for styling
     transactionButton.textContent = 'Go to transaction';
     transactionButton.classList.add('transactions-button'); // Add a class for styling
-    
+
     // Apply styling to the button
     buttonContainer.style.position = 'absolute';
     buttonContainer.style.top = '420px';
@@ -19,9 +19,9 @@ document.addEventListener('DOMContentLoaded', function () {
     buttonContainer.appendChild(addButton);
     buttonContainer.appendChild(transactionButton);
     managementContainer.appendChild(buttonContainer);
-    
+
     let openDetailForm = null;
-    
+
     function renderBusinessCard(business) {
         const card = document.createElement('div');
         card.classList.add('business-card');
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const buttonWidth = '70px'; // Adjust the width as needed
         const buttonHeight = '30px'; // Adjust the height as needed
         const buttonMargin = '5px'; // Adjust the margin as needed
-    
+
         editButton.style.width = buttonWidth;
         editButton.style.height = buttonHeight;
         editButton.style.marginLeft = '20px';
@@ -66,20 +66,20 @@ document.addEventListener('DOMContentLoaded', function () {
         deleteButton.style.marginLeft = '65px';
         managementContainer.appendChild(card);
     }
-    
+
     // 定義跳轉頁面的函數
     function redirectToSpecificPage(business, businessImg) {
         // 在這裡實現跳轉到特定頁面的邏輯
         console.log(`Redirect to specific page for ${business}`);
 
-        window.location.href = '../productDetail/ProductDetail.html?' + 
-        `shopId=${encodeURIComponent(business.shop)}&`+
-        `productId=${encodeURIComponent(business.id)}&` +
-        `productName=${encodeURIComponent(business.name)}&`+
-        `productDetail=${encodeURIComponent(business.description)}&`+
-        `productSrc=${encodeURIComponent(businessImg)}&`+
-        `productPrice=${encodeURIComponent(business.price)}&`+
-        `productStock=${encodeURIComponent(business.stock)}&`;
+        window.location.href = '../productDetail/ProductDetail.html?' +
+            `shopId=${encodeURIComponent(business.shop)}&` +
+            `productId=${encodeURIComponent(business.id)}&` +
+            `productName=${encodeURIComponent(business.name)}&` +
+            `productDetail=${encodeURIComponent(business.description)}&` +
+            `productSrc=${encodeURIComponent(businessImg)}&` +
+            `productPrice=${encodeURIComponent(business.price)}&` +
+            `productStock=${encodeURIComponent(business.stock)}&`;
     }
 
     async function showDeleteForm(business, card) {
@@ -89,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function () {
             let baseURL = "https://nfta.noobdy.com";
             baseURL = `${baseURL}/api/product/?`;
             const url = new URL(baseURL);
-            url.searchParams.append("product_uuid",business.id);
+            url.searchParams.append("product_uuid", business.id);
             url.searchParams.append('is_active', "0");
             const response = await fetch(url.toString(), {
                 method: 'PUT',
@@ -98,8 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
             });
 
-        }
-        catch(error){
+        } catch (error) {
             throw error;
         }
     }
@@ -182,11 +181,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     formData[input.name] = input.value;
                 }
             });
-    
-            console.log("new product data",formData);
+
+            console.log("new product data", formData);
             console.log("old data", business);
             updateProduct(business, card, formData);
-            
+
             form.remove();
             popup.remove();
             openDetailForm = null;
@@ -196,11 +195,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
-    async function updateProduct(business, card, formData){
+    async function updateProduct(business, card, formData) {
         try {
-            const baseURL = `${baseURL}/api/product/?`;
-            const url = new URL(baseURL);
-            url.searchParams.append("product_uuid",business.id);
+            const baseURL = "https://nfta.noobdy.com";
+            const updateProductBaseURL = `${baseURL}/api/product/?`;
+            const url = new URL(updateProductBaseURL);
+            url.searchParams.append("product_uuid", business.id);
             url.searchParams.append('name', formData.name);
             url.searchParams.append('stock', formData.stock);
             url.searchParams.append('price', formData.price);
@@ -222,30 +222,29 @@ document.addEventListener('DOMContentLoaded', function () {
                         const imageElement = card.querySelector('.image');
                         if (imageElement) {
                             updateProductImg(business.id, formData['image'])
-                            .then(() => {
-                                console.log('get uploaded image');
-                                return fetchImage(business.id, 'avatar');  // Return the promise
-                            })
-                            .then((imageSrc) => {
-                                console.log('new image', imageSrc);
-                                imageSrc += '&t=' + new Date().getTime().toString();
-                                imageElement.src = imageSrc;
-                                imageElement.alt = business.name;
-                            })
-                            .catch((error) => {
-                                console.error('Error updating image:', error);
-                            });
+                                .then(() => {
+                                    console.log('get uploaded image');
+                                    return fetchImage(business.id, 'avatar');  // Return the promise
+                                })
+                                .then((imageSrc) => {
+                                    console.log('new image', imageSrc);
+                                    imageSrc += '&t=' + new Date().getTime().toString();
+                                    imageElement.src = imageSrc;
+                                    imageElement.alt = business.name;
+                                })
+                                .catch((error) => {
+                                    console.error('Error updating image:', error);
+                                });
                         }
                     } else {
                         const element = card.querySelector(`.${field}`);
                         if (element) {
                             business[field] = responseData[field];
                             console.log(element.innerText);
-                            if(field == "name" || field == "description"){
+                            if (field == "name" || field == "description") {
                                 element.innerText = responseData[field];
-                            }
-                            else{
-                                element.innerText = `${field.charAt(0).toUpperCase() + field.slice(1)}: ${responseData[field]}`;    
+                            } else {
+                                element.innerText = `${field.charAt(0).toUpperCase() + field.slice(1)}: ${responseData[field]}`;
                             }
                         }
                     }
@@ -259,11 +258,11 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("updated product in", business);
     }
 
-    async function updateProductImg(product_uuid, file){
+    async function updateProductImg(product_uuid, file) {
         if (file) {
             //const reader = new FileReader();
             //reader.readAsDataURL(file);
-
+            const baseURL = "https://nfta.noobdy.com";
             const formData = new FormData();
             formData.append('file', file);
             console.log("file", file);
@@ -287,11 +286,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Upload to API Error', error);
             }
         }
-    }        
-    
-    async function getShopUUID(){
+    }
+
+    async function getShopUUID() {
         const urlParams = new URLSearchParams(window.location.search);
         console.log("get self shop_uuid");
+        const baseURL = "https://nfta.noobdy.com";
         const response = await fetch(`${baseURL}/api/shop/mine`, {
             method: 'GET',
             headers: {
@@ -299,23 +299,24 @@ document.addEventListener('DOMContentLoaded', function () {
                 'Authorization': 'Bearer ' + getCookie('token'),
             },
         });
-        
+
         if (response.ok) {
             //get a self shop_uuid
             const jsonResponse = await response.json();
             console.log("success to get self shop")
             setCookie("shop_uuid", jsonResponse.shop_uuid);
             return jsonResponse.shop_uuid;
-        } 
-    
+        }
+
     }
 
     async function fetchBusinessCardData() {
         try {
-            const baseURL = `${baseURL}/api/product/all?`;
+            let baseURL = "https://nfta.noobdy.com"
+            baseURL = `${baseURL}/api/product/all?`;
             const url = new URL(baseURL);
             const self_shop_uuid = await getShopUUID();
-            
+
             console.log("self_shop_uuid", self_shop_uuid);
             url.searchParams.append('order', "shop_uuid");
             url.searchParams.append('shop_uuid', self_shop_uuid);
@@ -326,15 +327,16 @@ document.addEventListener('DOMContentLoaded', function () {
             throw new Error('Error fetching businessCard data: ' + error.message);
         }
     }
-    
+
     async function fetchImage(UUID, imgType) {
+        const baseURL = "https://nfta.noobdy.com"
         const timestamp = new Date().getTime();
         const imageUrl = `${baseURL}/api/image/${UUID}?img_type=${imgType}&_=${timestamp}`;
         console.log(`in fetch Image,UUID = ${UUID}, imgType = ${imgType}`);
         console.log(imageUrl);
         try {
-            const response = await fetch(imageUrl.toString(), { mode: 'no-cors' });
-    
+            const response = await fetch(imageUrl.toString(), {mode: 'no-cors'});
+
             // Check if the request was successful (status 200) since no response body can be accessed
             return imageUrl;
         } catch (error) {
@@ -349,14 +351,14 @@ document.addEventListener('DOMContentLoaded', function () {
             const products = await fetchBusinessCardData();
             console.log(products);
             const productsData = products.products;
-    
+
             const mappedData = [];
-    
+
             for (const product of productsData) {
                 try {
                     let productImage = await fetchImage(product.product_uuid, "avatar");
                     //console.log("is_active", product.is_active);
-                    
+
                     if (productImage) {
                         console.log("productImage", productImage);
                         productImage += '&t=' + new Date().getTime().toString();
@@ -364,7 +366,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         console.log("no picture, now product Image", productImage);
                         productImage = "../Resources/default_banner.webp";
                     }
-                    
+
                     //console.log("productImage", productImage);
                     mappedData.push({
                         shop: product.shop_uuid,
@@ -390,12 +392,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     renderBusinessCards();
 
-    async function createProduct(newBusinessCardData){
+    async function createProduct(newBusinessCardData) {
         console.log("in create", newBusinessCardData);
         try {
             // Replace baseURL with the actual API base URL for fetching images
-            const baseURL = `${baseURL}/api/product/?`;
-            const url = new URL(baseURL);
+            const baseURL = "https://nfta.noobdy.com";
+            const createProductBaseURL = `${baseURL}/api/product/?`;
+            const url = new URL(createProductBaseURL);
             url.searchParams.append('name', newBusinessCardData.name);
             url.searchParams.append('stock', newBusinessCardData.stock);
             url.searchParams.append('price', newBusinessCardData.price);
@@ -444,7 +447,7 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = `../shopTransaction/ShopTransaction.html`;
     })
 
-    function showAddProductPopup(defaultProduct){
+    function showAddProductPopup(defaultProduct) {
         if (openDetailForm) {
             openDetailForm.remove();
             openDetailForm = null;
@@ -498,7 +501,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 input.type = 'text';
                 input.value = defaultProduct[field];
             }
-            
+
             form.appendChild(input);
         });
 
@@ -518,10 +521,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     formData[input.name] = input.value;
                 }
             });
-    
-            console.log("new product data",formData);
+
+            console.log("new product data", formData);
             createProduct(formData);
-            
+
             form.remove();
             popup.remove();
             openDetailForm = null;
@@ -530,7 +533,7 @@ document.addEventListener('DOMContentLoaded', function () {
         popup.appendChild(form);
 
     }
-    
+
 
     function generateUniqueId() {
         return Date.now();
