@@ -43,6 +43,16 @@
     background-color: #ff0000;
 }
 
+.subscription-table-container {
+    max-height: 300px; /* 設定最大高度 */
+    overflow-y: auto; /* 將垂直滾輪添加到溢出的內容 */
+}
+
+.subscription-table {
+    width: 100%; /* 設定表格寬度為100% */
+    text-align: center; /* 將文本在表格中置中 */
+}
+
 .subscription-item {
     margin-bottom: 10px;
     display: flex;

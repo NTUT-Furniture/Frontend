@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>帳號管理頁面</title>
+    <title>Admin Page</title>
     <link rel="stylesheet" type="text/css" href="../admin/AdminPage_Style.css">
     <link rel="stylesheet" href="../navbar/Navbar.css">
 </head>
@@ -21,13 +21,13 @@
             </div>
         </li>
     </ul>
-    <h1>帳號管理</h1>
+    <h1>Account Management</h1>
     <div class="container">
         <div class="actions">
-            <button id="add">新增帳號</button>
+            <button id="add">Create Account</button>
         </div>
         <div class="account-info">
-            <h2>帳號資訊</h2>
+            <h2>Account Information</h2>
             <table id="accountsTable">
                 <thead>
                     <tr>
@@ -59,7 +59,7 @@
     <div id="modal" class="modal">
         <div class="modal-content">
             <span class="close-button">&times;</span>
-            <h2>新增帳號</h2>
+            <h2>Create Account</h2>
             <form id="addAccountForm">
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required><br>
@@ -79,8 +79,8 @@
                 <input type="date" id="birthday" name="birthday"><br>
                 <label for="address">Address:</label>
                 <input type="text" id="address" name="address"><br>
-                <button type="button" onclick="submitForm()">確認</button>
-                <button type="button" onclick="closeModal()">取消</button>
+                <button type="button" onclick="submitForm()">Comfirm</button>
+                <button type="button" onclick="closeModal()">Cancel</button>
             </form>
         </div>
     </div>

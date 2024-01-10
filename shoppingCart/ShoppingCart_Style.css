@@ -78,3 +78,31 @@
 #cart-popup button:hover {
     background-color: #ff0000;
 }
+
+#cart-popup .shopping-cart-container {
+    max-height: 300px; /* 設定最大高度，當超過這個高度時將出現滾輪 */
+    overflow-y: auto; /* 啟用垂直滾輪 */
+}
+
+#cart-popup table.shopping-cart-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin-top: 20px !important;
+}
+
+#cart-popup table.shopping-cart-table .item-row {
+    border-bottom: 1px solid #ccc !important;
+}
+
+#cart-popup table.shopping-cart-table .item-cell {
+    padding: 10px !important;
+}
+
+#cart-popup table.shopping-cart-table .qty-cell input {
+    width: 40px !important;
+}
+
+#cart-popup table.shopping-cart-table .button-cell button {
+    padding: 5px 10px !important;
+    cursor: pointer !important;
+}

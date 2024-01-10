@@ -7,38 +7,38 @@ async function toggleSub() {
 
 async function showSubscription(subPopup) {
     let resultPromise = getAccountSubscription();
-    let result = await resultPromise; // Wait for the promise to resolve
-    // console.log('hihi');
+    let result = await resultPromise;
     console.log(result);
     
     subPopup.innerHTML = "";
 
-    // Assuming the result is an object with a 'subscriptions' property
     if (result && result.subscriptions) {
         for (var i=0; i<result.subscriptions.length; i++) {
             // console.log('Subscriptions details:', result.subscriptions[i].shop_uuid);
         }
-        // console.log('Subscriptions details:', result.subscriptions);
-        // console.log('Subscriptions details:', result.subscriptions[0].shop_uuid);
+        
+        var subTableContainer = document.createElement("div");
+        subTableContainer.className = "subscription-table-container";
+        
+        var subTable = document.createElement("table");
+        subTable.className = "subscription-table";
+
         for (var i = 0; i < result.subscriptions.length; i++) {
             var shopID = result.subscriptions[i].uuid;
+            
+            var subRow = subTable.insertRow();
+            var subCell = subRow.insertCell(0);
 
-            // Create a div for each subscription item
             var subscriptionItem = document.createElement("div");
             subscriptionItem.className = "subscription-item";
 
-            // Display shop_uuid
             var shopUuidText = document.createTextNode(result.subscriptions[i].name);
             subscriptionItem.appendChild(shopUuidText);
 
-            // Create remove button with IIFE to capture the current shopID
             var removeButton = (function (shopID) {
                 var button = document.createElement("button");
                 button.textContent = "Unsubscribe";
                 button.onclick = async function () {
-                    // Handle remove button click event
-                    // console.log("Remove button clicked for shop_uuid: " + shopID);
-                    // Add your logic to remove the subscription
                     await unsubscibeWithAccount(shopID);
                     await showSubscription(subPopup);
                 };
@@ -46,30 +46,27 @@ async function showSubscription(subPopup) {
             })(shopID);
 
             subscriptionItem.appendChild(removeButton);
-
-            // Append the subscription item to the popup
-            subPopup.appendChild(subscriptionItem);
+            subCell.appendChild(subscriptionItem);
         }
+        subTableContainer.appendChild(subTable);
+        subPopup.appendChild(subTableContainer);
     } else {
-        // console.log('No subscriptions found.');
         var nothing = document.createElement("div");
-        nothing.innerHTML = "<strong>u do not subscribe any shop</strong>"
+        nothing.innerHTML = "<strong>you do not subscribe any shop</strong>"
         subPopup.appendChild(nothing);
     }
     var closeButton = document.createElement("button");
     closeButton.innerText = 'Close';
-    closeButton.onclick = toggleSub; // Use your checkout function here
+    closeButton.onclick = toggleSub;
     closeButton.style.position = 'absolute';
-    closeButton.style.bottom = '10px';  // Adjust the bottom spacing as needed
-    closeButton.style.right = '10px';  // Adjust the right spacing as needed
+    closeButton.style.bottom = '10px';
+    closeButton.style.right = '10px';
     subPopup.appendChild(closeButton);
 }
 
 async function getAccountSubscription() {
-    // console.log('Get Subscription');
     try {
         accID = getCookie('account_uuid');
-        // console.log('subscription account_uuid: ' + accID);
         let baseURL = "https://nfta.noobdy.com";
         baseURL = `${baseURL}/api/subscription/account?`;
         const url = new URL(baseURL);
@@ -85,11 +82,8 @@ async function getAccountSubscription() {
 
         if (response.ok) {
             const jsonResponse = await response.json();
-            // console.log(jsonResponse);
-            // console.log('Success Get Subscription');
             return jsonResponse;
         } else {
-            // console.log('u have not subscribe any shop');
             return null;
         }
     } catch (error) {
@@ -100,8 +94,6 @@ async function getAccountSubscription() {
 async function unsubscibeWithAccount(shopID) {
     try {
         accID = getCookie('account_uuid');
-        // console.log('subscription account_uuid: ' + accID);
-        // console.log('subscription shop_uuid: ' + shopID);
         let baseURL = "https://nfta.noobdy.com";
         baseURL = `${baseURL}/api/subscription/unsubscribe?`;
         const url = new URL(baseURL);

@@ -1,53 +1,36 @@
 let shopping = [];
+let usingCouponCode = "";
 
-// Display shopping cart content
-function displayShopping(coupon = 1) {
-    // Retrieve the shopping cart data from the query parameters
+function displayShopping(coupon = 1, couponCode = "") {
     const urlParams = new URLSearchParams(window.location.search);
     const cartParam = urlParams.get('cart');
     if (cartParam) {
         try {
-            // Parse the JSON string to get the shopping cart array
             shopping = JSON.parse(decodeURIComponent(cartParam));
+            usingCouponCode = couponCode;
         } catch (error) {
             console.error('Error parsing shopping cart data:', error);
         }
     }
 
-    // Perform checkout logic with the shopping cart data
     console.log('Checkout successful! Items purchased:', shopping);
     
-    var cartItem = document.getElementById('cartItem'); // Corrected ID here
+    var cartItem = document.getElementById('cartItem');
     cartItem.innerHTML = '';
-    // Add table headers
     var headerRow = cartItem.insertRow(0);
-    var headerCell1 = headerRow.insertCell(0);
-    var headerCell2 = headerRow.insertCell(1);
-    var headerCell3 = headerRow.insertCell(2);
-    headerCell1.textContent = 'Item Name';
-    headerCell2.textContent = 'Quantity';
-    headerCell3.textContent = 'Price';
-    
+    headerRow.innerHTML = '<th>Product Name</th><th>Quantity</th><th>Price</th>';
+
     var cost = 0;
-    // Add table content
+
     shopping.forEach(function (item, index) {
-        var row = cartItem.insertRow(index + 1); // Index + 1 to skip the header row
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
-        var cell3 = row.insertCell(2);
-        cell1.textContent = item.name;
-        cell2.textContent = item.quantity;
-        cell3.textContent = item.quantity * item.price;
+        var row = cartItem.insertRow(index + 1);
+        row.innerHTML = `<td>${item.name}</td><td>${item.quantity}</td><td>${item.quantity * item.price}</td>`;
         cost += item.quantity * item.price;
     });
-    console.log(cost);
-    console.log(coupon);
-    console.log(cost * coupon);
     const totalCost = document.getElementById('totalCost');
     totalCost.innerHTML = `<h2>total cost: ${cost * coupon}</h2>`;
 }
 
-// Apply coupon function
 async function applyCoupon() {
     var couponInput = document.getElementById('coupon');
     var message = document.getElementById('message');
@@ -61,7 +44,7 @@ async function applyCoupon() {
             const element = nowCoupons.coupons[index];
             if (couponInput.value.trim() === element.coupon_code) {
                 message.textContent = 'Coupon applied successfully! Use Coupon: ' + element.coupon_code;
-                displayShopping((100 - element.discount) / 100);
+                displayShopping(element.discount / 100, element.coupon_code);
                 usingCoupon = true;
                 break;
             }
@@ -95,11 +78,8 @@ async function getCurrentCoupons() {
 
         if (response.ok) {
             const jsonResponse = await response.json();
-            console.log(jsonResponse);
-            console.log('Success Get Current Coupons');
             return jsonResponse;
         } else {
-            console.log('No coupons now');
             return null;
         }
     } catch (error) {
@@ -107,18 +87,110 @@ async function getCurrentCoupons() {
     }
 }
 
-// Checkout function
-function checkout() {
+async function checkout() {
     console.log('Checkout successful! Items purchased:', shopping);
     alert('Checkout successful!');
-    clearShoppingCartCookie();
-    window.location.href = '../home/Index.html';
+    let requestBodies = convertToRequestBody(shopping);
+
+    try {
+        const transactionResults = await Promise.all(requestBodies.map(requestBody => createTransaction(requestBody)));
+        
+        transactionResults.forEach(result => {
+            console.log(result);
+        });
+
+        clearShoppingCartCookie();
+        window.location.href = '../home/Index.html';
+    } catch (error) {
+        console.error('Error during checkout:', error);
+        alert('Checkout failed. Please try again later.');
+    }
 }
 
-// Continue shopping function
 function continueShopping() {
     window.location.href = '../home/Index.html';
 }
 
+function convertToRequestBody(productList) {
+    let groupedItems = {};
+    productList.forEach(item => {
+        if (!groupedItems[item.shopID]) {
+            groupedItems[item.shopID] = [];
+        }
+        groupedItems[item.shopID].push(item);
+    });
+
+    let requestBodies = [];
+    for (let shopID in groupedItems) {
+        let products = {
+            transaction_product_logs: groupedItems[shopID].map(item => ({
+                product_uuid: item.id,
+                quantity: item.quantity
+            }))
+        };
+        let requestBody;
+        if (usingCouponCode === "") {
+            requestBody = {
+                shop_uuid: shopID,
+                status: "Ordered",
+                products: products
+            };
+        }
+        else {
+            requestBody = {
+                shop_uuid: shopID,
+                coupon_code: usingCouponCode,
+                status: "Ordered",
+                products: products
+            };
+        }
+        requestBodies.push(requestBody);
+    }
+
+    return requestBodies;
+}
+
+async function createTransaction(requestBody) {
+    const keyOrder = ['shop_uuid', 'coupon_code', 'receive_time', 'status', 'products'];
+    const sortedRequestBody = {};
+
+    keyOrder.forEach(key => {
+        if (requestBody.hasOwnProperty(key)) {
+            sortedRequestBody[key] = requestBody[key];
+        }
+    });
+
+    const jsonString = JSON.stringify(sortedRequestBody, null, 2);
+    console.log(jsonString);
+
+    const baseURL = "https://nfta.noobdy.com"
+    const api = `${baseURL}/api/transaction/`;
+    
+    try {
+        const response = await fetch(api, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + getCookie('token'),
+                'Content-Type': 'application/json'
+            },
+            body: jsonString
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(`Request sent successfully for shop_uuid: ${requestBody.shop_uuid}`);
+        console.log('API Response:', data);
+
+        return data;
+    } catch (error) {
+        console.error(`Error sending request for shop_uuid: ${requestBody.shop_uuid}`);
+        console.error('Error details:', error);
+        throw error;
+    }
+}
 
 displayShopping();
