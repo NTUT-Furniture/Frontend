@@ -83,12 +83,9 @@ function handleEdit(row, transaction) {
     buttonCell.appendChild(cancelButton);
 }
 
-//http://localhost:8000/api/transaction/325ea530-8f2f-11ee-8b4f-42010aae0002?status=Ordered
 function handleSave(row, transaction, statusSelect, receiveTimeInput) {
-    // Implement logic to save the edited data to the backend
         // Retrieve the transaction id
         const transactionId = transaction.transaction_uuid;
-
         // Retrieve the updated status and receive time
         const updatedStatus = statusSelect.value;
         let updatedReceiveTime = receiveTimeInput.value;
