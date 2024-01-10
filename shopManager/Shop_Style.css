@@ -157,7 +157,7 @@
 }
 
 #business-management .detail-popup {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -165,7 +165,7 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     background-color: #B4B4B4;
     display: block; /* 預設隱藏 */
-    width: 50%;
+    width: 30%;
     height: 50%;
     max-width: 600px; /* 可以根據需要調整最大寬度 */
     max-height: 400px; /* 可以根據需要調整最大高度 */
