@@ -91,10 +91,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     
     async function getShop() {
+        const baseURL= "https://nfta.noobdy.com";
         try {
             // 替換 baseURL 為實際的 API 基礎 URL
-            const baseURL = `${baseURL}/api/shop/`;
-            const url = new URL(baseURL);
+            const getShopbaseURL = `${baseURL}/api/shop/`;
+            const url = new URL(getShopbaseURL);
 
             url.searchParams.append('shop_uuid', await getShopUUID());
 
